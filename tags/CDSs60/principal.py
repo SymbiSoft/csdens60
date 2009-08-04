@@ -1,9 +1,14 @@
-import e32, appuifw, key_codes, graphics
+import e32, appuifw, key_codes, graphics, sys
+
+modulospropios = 'c:\\Python\\modules'
+sys.path.append(modulospropios)
+
+import diario, dieta, est, citas, config, export
 
 # Archivo: principal.py
 # Autor: Jorge Aguirre Andreu
 # Descripción: Proyecto de fin de carrera, es un sistema de gestión de todos los aspectos
-# del control de la diabetes para la plataforma s60, en concreto resolución de 352x416
+# del control de la diabetes para la plataforma s60, en concreto resolución de 352x416.
 #
 #   Copyright (C) 2009  Jorge Aguirre Andreu
 #
@@ -65,22 +70,22 @@ def press_select():
     canvas.blit(im[photo])
 
 def press_diario():
-    appuifw.note(u"Dietas", "info")
+    diario.mostrarDiario()
 
 def press_dieta():
-    appuifw.note(u"Dietas", "info")
+    dieta.mostrarDieta()
 
 def press_configuracion():
-    appuifw.note(u"Configuracion", "info")
+    config.mostrarConfig()
 
 def press_exportar():
-    appuifw.note(u"Exportar", "info")
+    export.mostrarExport()
 
 def press_citas():
-    appuifw.note(u"Citas", "info")
+    citas.mostrarCitas()
 
 def press_estadisticas():
-    appuifw.note(u"Estadisticas", "info")
+    est.mostrarEst()
 
 def handle_redraw(rect):
     global photo
