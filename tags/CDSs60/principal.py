@@ -1,10 +1,3 @@
-import e32, appuifw, key_codes, graphics, sys
-
-modulospropios = 'c:\\Python\\modules'
-sys.path.append(modulospropios)
-
-import diario, dieta, est, citas, config, export
-
 # Archivo: principal.py
 # Autor: Jorge Aguirre Andreu
 # Descripción: Proyecto de fin de carrera, es un sistema de gestión de todos los aspectos
@@ -25,13 +18,23 @@ import diario, dieta, est, citas, config, export
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import e32, appuifw, key_codes, graphics, sys
+
+modulospropios = 'c:\\Python\\modules'
+sys.path.append(modulospropios)
+
+import dieta, est, citas, config, export, diario
+from idioma import getLang,fijarIdioma
 
 #cambiar la unidad de c a e para el movil
+
+fijarIdioma(u"en")
 
 ruta = 'c:\\python\\resources\\ui\\'
 im = [ graphics.Image.open(ruta+'menuprincipal0.png'), graphics.Image.open(ruta+'menuprincipal1.png'), 
 graphics.Image.open(ruta+'menuprincipal2.png'), graphics.Image.open(ruta+'menuprincipal3.png'), 
 graphics.Image.open(ruta+'menuprincipal4.png'), graphics.Image.open(ruta+'menuprincipal5.png') ]
+tx = [u"       Diario",u"       Dieta",u"Configuración",u"    Exportar",u"Citas médicas",u"  Estadísticas"]
 photo = 0
     
 def press_right():
@@ -41,7 +44,7 @@ def press_right():
         photo = 0
     else:
         photo = photo + 1
-    canvas.blit(im[photo])
+    appuifw.app.body=canvas
     
 def press_left():
     #giro a la izquierda del menu
@@ -50,7 +53,7 @@ def press_left():
         photo = 5
     else:
         photo = photo - 1
-    canvas.blit(im[photo])
+    appuifw.app.body=canvas
     
 def press_select():
 	#en python no existe la sentencia switch, para seleccionar opciones
@@ -70,6 +73,7 @@ def press_select():
     canvas.blit(im[photo])
 
 def press_diario():
+    appuifw.app.exit_key_handler = mostrarPrincipal
     diario.mostrarDiario()
 
 def press_dieta():
@@ -90,33 +94,38 @@ def press_estadisticas():
 def handle_redraw(rect):
     global photo
     canvas.blit(im[photo])
-    
+    canvas.text((250,410),getLang(u"SALIR"),0xffffff,font=(u"legend",25,appuifw.STYLE_BOLD))
+    canvas.text((80,245),tx[photo],0xaaaaaa,font="title")
+    canvas.text((78,243),tx[photo],0x000000,font="title")
+
 def confirma():
-    opcion = [u"Si", u"No"]
-    test = appuifw.popup_menu(opcion, u"¿Está seguro?")
-
+    #TODO: ESTO HAY QUE QUITARLO!
+    app_lock.signal()
+    #TODO: ESTO HA Y QUE QUITARLO!
+    return
+    opcion = [getLang(u"SÍ"),getLang(u"NO")]
+    test = appuifw.popup_menu(opcion,getLang(u"¿ESTÁ SEGURO?"))
     if test == 0 :
-	    appuifw.note(u"Hasta luego", "conf")
+	    appuifw.note(getLang(u"HASTA LUEGO"), "conf")
 	    app_lock.signal()
-        
 
-canvas=appuifw.Canvas(redraw_callback=handle_redraw)
-appuifw.app.body=canvas
-#acceso con el teclado directamente
-canvas.bind(key_codes.EKeySelect, press_select)
-canvas.bind(key_codes.EKeyRightArrow, press_right)
-canvas.bind(key_codes.EKeyLeftArrow, press_left)
-canvas.bind(key_codes.EKey2, press_diario)
-canvas.bind(key_codes.EKey6, press_dieta)
-canvas.bind(key_codes.EKey9, press_configuracion)
-canvas.bind(key_codes.EKey0, press_exportar)
-canvas.bind(key_codes.EKey7, press_citas)
-canvas.bind(key_codes.EKey4, press_estadisticas)
+def mostrarPrincipal():
+    global canvas
+    canvas=appuifw.Canvas(redraw_callback=handle_redraw)
+    appuifw.app.body=canvas
+    canvas.bind(key_codes.EKeySelect, press_select)
+    canvas.bind(key_codes.EKeyRightArrow, press_right)
+    canvas.bind(key_codes.EKeyLeftArrow, press_left)
+    canvas.bind(key_codes.EKey2, press_diario)
+    canvas.bind(key_codes.EKey6, press_dieta)
+    canvas.bind(key_codes.EKey9, press_configuracion)
+    canvas.bind(key_codes.EKey0, press_exportar)
+    canvas.bind(key_codes.EKey7, press_citas)
+    canvas.bind(key_codes.EKey4, press_estadisticas)
+    appuifw.app.exit_key_handler = confirma
+    appuifw.app.screen = 'full'
+    appuifw.app.title = u"CSDs60"
 
-canvas.blit(im[photo])
-
-appuifw.app.exit_key_handler = confirma
-appuifw.app.screen = 'full'
-appuifw.app.title = u"CSDs60"
+mostrarPrincipal()
 app_lock = e32.Ao_lock()
 app_lock.wait()
