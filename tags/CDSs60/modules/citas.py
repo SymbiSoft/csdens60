@@ -1,5 +1,3 @@
-import e32, appuifw
-
 # Archivo: citas.py
 # Autor: Jorge Aguirre Andreu
 # Descripción: Lleva el control de todas las citas con los distintos médicos del diabético, desde 
@@ -21,5 +19,49 @@ import e32, appuifw
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-def mostrarCitas():
-    appuifw.note(u"Citas", "info")
+import e32, appuifw, sys, os, graphics
+
+try:
+    raise Exception
+except Exception:
+    path = sys.exc_info()[2].tb_frame.f_code.co_filename
+if not path:
+    path = os.path.join(os.getcwd(), 'default.py')
+unidad=path[0]
+
+modulospropios = unidad+':\\Python\\modules'
+sys.path.append(modulospropios)
+from idioma import getLang
+
+def handle_redraw(rect):
+    global canvasCitas
+    global imCitas
+    canvasCitas.blit(imCitas)
+    canvasCitas.text((150,85),getLang(u"CITAS"),0xbbbbbb,font=(u"symbol",27))
+    canvasCitas.text((149,84),getLang(u"CITAS"),0x000000,font=(u"symbol",27))
+    canvasCitas.text((240,410),getLang(u"VOLVER"),0xffffff,font=(u"legend",25,appuifw.STYLE_BOLD))
+    canvasCitas.text((25,410),getLang(u"OPCIONES"),0xffffff,font=(u"legend",25,appuifw.STYLE_BOLD))
+
+def volverAtras():
+    global gvAtras
+    gvAtrasEnvio=[0 for x in range(len(gvAtras)-1)]
+    for i in range(len(gvAtras)-1):
+        gvAtrasEnvio[i]=gvAtras[i]
+    gvAtras[len(gvAtras)-1](gvAtrasEnvio)
+
+def mostrarCitas(vAtras):
+    ruta = unidad+':\\python\\resources\\ui\\'
+    global imCitas
+    imCitas = graphics.Image.open(ruta+'fondo11.png')
+    global canvasCitas
+    canvasCitas = appuifw.Canvas(redraw_callback = handle_redraw)
+    canvasCitas.blit(imCitas)
+    appuifw.app.body = canvasCitas
+    appuifw.app.screen = 'full'
+    appuifw.app.title = u"Citas"
+    global gvAtras
+    gvAtras=vAtras
+    if len(vAtras)==1:
+        appuifw.app.exit_key_handler=gvAtras[0]
+    else:
+        appuifw.app.exit_key_handler=volverAtras

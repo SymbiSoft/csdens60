@@ -1,8 +1,6 @@
 # Archivo: diario.py
 # Autor: Jorge Aguirre Andreu
-# Descripción: Muestra un diario de diabetico digital, donde llevar desde las dosis de insulina y análisis de glucosa
-# hasta las comidas que comes, el deporte que realizas, medicamentos que tomas, enfermedad que padezcas y 
-# si has tenido hipoglucemias o hiperglucemias. 
+# Descripción: Muestra un calendario para poder acceder al diario de diabetico. 
 #
 #   Copyright (C) 2009  Jorge Aguirre Andreu
 #
@@ -19,12 +17,21 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import sys,e32, appuifw, graphics, key_codes
+import sys, e32, appuifw, graphics, key_codes, os
 
 from time import localtime
 
-modulospropios = 'c:\\Python\\modules'
+try:
+    raise Exception
+except Exception:
+    path = sys.exc_info()[2].tb_frame.f_code.co_filename
+if not path:
+    path = os.path.join(os.getcwd(), 'default.py')
+unidad=path[0]
+
+modulospropios = unidad+':\\Python\\modules'
 sys.path.append(modulospropios)
+from idioma import getLang
 
 import diario_dia
 
@@ -49,7 +56,7 @@ def numDias(mes,ano):
     return num
 
 def dibujarCalendario():
-    meses=[u"Enero",u"Febrero",u"Marzo",u"Abril",u"Mayo",u"Junio",u"Julio",u"Agosto",u"Septiembre",u"Octubre",u"Noviembre",u"Diciembre"]
+    meses=[getLang(u"ENERO"),getLang(u"FEBRERO"),getLang(u"MARZO"),getLang(u"ABRIL"),getLang(u"MAYO"),getLang(u"JUNIO"),getLang(u"JULIO"),getLang(u"AGOSTO"),getLang(u"SEPTIEMBRE"),getLang(u"OCTUBRE"),getLang(u"NOVIEMBRE"),getLang(u"DICIEMBRE")]
     global actDia
     global actMes
     global actAno
@@ -65,7 +72,7 @@ def dibujarCalendario():
     canvasDiario.rectangle((19,105,340,380),outline=0xaaaaaa,fill=0xaaaaaa)
     canvasDiario.rectangle((16,102,337,377),outline=0x000000,fill=0xffffff)
     canvasDiario.text((110,125),u"%s %d" % (meses[actMes-1],actAno),0x000000,font=(u"annotation",20))
-    canvasDiario.text((40,155),u"L      M       X       J       V       S       D",0x555555,font=(u"annotation",20))
+    canvasDiario.text((40,155),getLang(u"DIAS"),0x555555,font=(u"annotation",20))
     for i in range(6):
         for j in range(7):
             x = calInicioX+j*calAncho-j
@@ -143,28 +150,41 @@ def press_select():
     global actPos
     global actMes
     global actAno
-    diario_dia.mostrar_diario_dia(actPos+1,actMes,actAno)
+    global gvAtras
+    gvAtrasEnvio=[0 for x in range(len(gvAtras)+1)]
+    for i in range(len(gvAtras)):
+        gvAtrasEnvio[i]=gvAtras[i]
+    gvAtrasEnvio[len(gvAtras)]=mostrarDiario
+    diario_dia.mostrar_diario_dia(actPos+1,actMes,actAno,gvAtrasEnvio)
 
 def handle_redraw(rect):
     global canvasDiario
     global imDiario
     canvasDiario.blit(imDiario)
-    canvasDiario.text((190,85),u"Diario",0xbbbbbb,font=(u"symbol",27))
-    canvasDiario.text((189,84),u"Diario",0x000000,font=(u"symbol",27))
-    canvasDiario.text((240,410),u"Volver",0xffffff,font=(u"legend",25,appuifw.STYLE_BOLD))
-    canvasDiario.text((25,410),u"Opciones",0xffffff,font=(u"legend",25,appuifw.STYLE_BOLD))
+    canvasDiario.text((190,85),getLang(u"DIARIO"),0xbbbbbb,font=(u"symbol",27))
+    canvasDiario.text((189,84),getLang(u"DIARIO"),0x000000,font=(u"symbol",27))
+    canvasDiario.text((240,410),getLang(u"VOLVER"),0xffffff,font=(u"legend",25,appuifw.STYLE_BOLD))
+    canvasDiario.text((25,410),getLang(u"OPCIONES"),0xffffff,font=(u"legend",25,appuifw.STYLE_BOLD))
     dibujarCalendario()
 
-def mostrarDiario():
+def volverAtras():
+    global gvAtras
+    gvAtrasEnvio=[0 for x in range(len(gvAtras)-1)]
+    for i in range(len(gvAtras)-1):
+        gvAtrasEnvio[i]=gvAtras[i]
+    gvAtras[len(gvAtras)-1](gvAtrasEnvio)
+
+def mostrarDiario(vAtras):
     global actDia
-    actDia=localtime()[2]
+    #en el portatil marca un dia mas de la cuenta como actual
+    actDia=(localtime()[2])-1
     global actMes
     actMes=localtime()[1]
     global actAno
     actAno=localtime()[0]
     global actPos
     actPos=-1
-    ruta = 'c:\\python\\resources\\ui\\'
+    ruta = unidad+':\\python\\resources\\ui\\'
     global imDiario
     imDiario = graphics.Image.open(ruta+'fondo01.png')
     global canvasDiario
@@ -178,3 +198,9 @@ def mostrarDiario():
     canvasDiario.bind(key_codes.EKeyRightArrow, press_right)
     canvasDiario.bind(key_codes.EKeyDownArrow, press_down)
     canvasDiario.bind(key_codes.EKeyLeftArrow, press_left)
+    global gvAtras
+    gvAtras=vAtras
+    if len(vAtras)==1:
+        appuifw.app.exit_key_handler=gvAtras[0]
+    else:
+        appuifw.app.exit_key_handler=volverAtras
