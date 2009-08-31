@@ -1,6 +1,6 @@
-# Archivo: idioma.py
+# Archivo: configuracion.py
 # Autor: Jorge Aguirre Andreu
-# Descripción: Cambia dinamicamente el idioma de la aplicacion, usa las 2 ultimas letras del archivo de idioma.
+# Descripción: Encargado de recoger todos los parametros de configuracion de la aplicacion. 
 #
 #   Copyright (C) 2009  Jorge Aguirre Andreu
 #
@@ -17,27 +17,7 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import sys, e32, appuifw, string, os
+cfgIdioma=u"es"
 
-try:
-    raise Exception
-except Exception:
-    path = sys.exc_info()[2].tb_frame.f_code.co_filename
-if not path:
-    path = os.path.join(os.getcwd(), 'default.py')
-unidad=path[0]
 
-modulospropios = unidad+':\\Python\\modules\\idiomas'
-sys.path.append(modulospropios)
-from configuracion import *
-
-idioma=cfgIdioma
-
-def fijarIdioma(id):
-    global idioma
-    idioma=id
-
-def getLang(palabra):
-    global idioma
-    exec("from csds60_"+idioma+" import csds60")
-    return csds60[palabra]
+        

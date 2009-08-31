@@ -1,7 +1,6 @@
-# Archivo: config.py
+# Archivo: extra_diario.py
 # Autor: Jorge Aguirre Andreu
-# Descripción: Lleva todo lo relacionado con el perfil del usuario, como su peso, la activación de servicios de aviso
-# para citas médicas o cantidad de tiras reactivas.
+# Descripción: Muestra las opciones extra del diario de diabetico
 #
 #   Copyright (C) 2009  Jorge Aguirre Andreu
 #
@@ -18,7 +17,7 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import e32, appuifw, sys, os, graphics
+import e32, appuifw, graphics, sys, os
 
 try:
     raise Exception
@@ -33,13 +32,13 @@ sys.path.append(modulospropios)
 from idioma import getLang
 
 def handle_redraw(rect):
-    global canvasConf
-    global imConf
-    canvasConf.blit(imConf)
-    canvasConf.text((150,85),getLang(u"CONFIGURACION"),0xbbbbbb,font=(u"symbol",27))
-    canvasConf.text((149,84),getLang(u"CONFIGURACION"),0x000000,font=(u"symbol",27))
-    canvasConf.text((240,410),getLang(u"VOLVER"),0xffffff,font=(u"legend",25,appuifw.STYLE_BOLD))
-    canvasConf.text((25,410),getLang(u"OPCIONES"),0xffffff,font=(u"legend",25,appuifw.STYLE_BOLD))
+    global canvasExtra
+    global imExtra
+    canvasExtra.blit(imExtra)
+    canvasExtra.text((190,85),getLang(u"DIARIO"),0xbbbbbb,font=(u"symbol",27))
+    canvasExtra.text((189,84),getLang(u"DIARIO"),0x000000,font=(u"symbol",27))
+    canvasExtra.text((240,410),getLang(u"VOLVER"),0xffffff,font=(u"legend",25,appuifw.STYLE_BOLD))
+    canvasExtra.text((25,410),getLang(u"OPCIONES"),0xffffff,font=(u"legend",25,appuifw.STYLE_BOLD))
 
 def volverAtras():
     global gvAtras
@@ -48,16 +47,16 @@ def volverAtras():
         gvAtrasEnvio[i]=gvAtras[i]
     gvAtras[len(gvAtras)-1](gvAtrasEnvio)
 
-def mostrarConfig(vAtras):
+def mostrar_extra(vAtras):
     ruta = unidad+':\\python\\resources\\ui\\'
-    global imConf
-    imConf = graphics.Image.open(ruta+'fondo11.png')
-    global canvasConf
-    canvasConf = appuifw.Canvas(redraw_callback = handle_redraw)
-    canvasConf.blit(imConf)
-    appuifw.app.body = canvasConf
+    global imExtra
+    imExtra = graphics.Image.open(ruta+'fondo11.png')
+    global canvasExtra
+    canvasExtra = appuifw.Canvas(redraw_callback = handle_redraw)
+    canvasExtra.blit(imExtra)
+    appuifw.app.body = canvasExtra
     appuifw.app.screen = 'full'
-    appuifw.app.title = u"Configuracion"
+    appuifw.app.title = u"Extra_diario"
     global gvAtras
     gvAtras=vAtras
     if len(vAtras)==1:

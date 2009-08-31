@@ -18,23 +18,53 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import e32, appuifw, key_codes, graphics, sys
 
-modulospropios = 'c:\\Python\\modules'
+# ------------------------------------------
+# INICIO: IMPORTAR
+# ------------------------------------------
+
+import e32, appuifw, key_codes, graphics, sys, os
+
+try:
+    raise Exception
+except Exception:
+    path = sys.exc_info()[2].tb_frame.f_code.co_filename
+if not path:
+    path = os.path.join(os.getcwd(), 'default.py')
+unidad=path[0]
+
+modulospropios = unidad+':\\Python\\modules'
 sys.path.append(modulospropios)
 
 import dieta, est, citas, config, export, diario
-from idioma import getLang,fijarIdioma
+from idioma import getLang
+from configuracion import *
 
-#cambiar la unidad de c a e para el movil
+# ------------------------------------------
+# FIN: IMPORTAR
+# ------------------------------------------
 
-fijarIdioma(u"en")
 
-ruta = 'c:\\python\\resources\\ui\\'
-im = [ graphics.Image.open(ruta+'menuprincipal0.png'), graphics.Image.open(ruta+'menuprincipal1.png'), 
-graphics.Image.open(ruta+'menuprincipal2.png'), graphics.Image.open(ruta+'menuprincipal3.png'), 
-graphics.Image.open(ruta+'menuprincipal4.png'), graphics.Image.open(ruta+'menuprincipal5.png') ]
-tx = [u"       Diario",u"       Dieta",u"Configuración",u"    Exportar",u"Citas médicas",u"  Estadísticas"]
+ruta = unidad+':\\python\\resources\\ui\\'
+
+im=[
+    graphics.Image.open(ruta+'menuprincipal0.png'),
+    graphics.Image.open(ruta+'menuprincipal1.png'), 
+    graphics.Image.open(ruta+'menuprincipal2.png'),
+    graphics.Image.open(ruta+'menuprincipal3.png'), 
+    graphics.Image.open(ruta+'menuprincipal4.png'),
+    graphics.Image.open(ruta+'menuprincipal5.png')
+    ]
+    
+tx=[
+    getLang(u"MENUDIARIO"),
+    getLang(u"MENUDIETA"),
+    getLang(u"MENUCONFIGURACIÓN"),
+    getLang(u"MENUEXPORTAR"),
+    getLang(u"MENUCITASMÉDICAS"),
+    getLang(u"MENUESTADÍSTICAS")
+    ]
+    
 photo = 0
     
 def press_right():
@@ -73,23 +103,22 @@ def press_select():
     canvas.blit(im[photo])
 
 def press_diario():
-    appuifw.app.exit_key_handler = mostrarPrincipal
-    diario.mostrarDiario()
+    diario.mostrarDiario([mostrarPrincipal])
 
 def press_dieta():
-    dieta.mostrarDieta()
+    dieta.mostrarDieta([mostrarPrincipal])
 
 def press_configuracion():
-    config.mostrarConfig()
+    config.mostrarConfig([mostrarPrincipal])
 
 def press_exportar():
-    export.mostrarExport()
+    export.mostrarExport([mostrarPrincipal])
 
 def press_citas():
-    citas.mostrarCitas()
+    citas.mostrarCitas([mostrarPrincipal])
 
 def press_estadisticas():
-    est.mostrarEst()
+    est.mostrarEst([mostrarPrincipal])
 
 def handle_redraw(rect):
     global photo

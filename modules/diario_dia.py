@@ -19,7 +19,20 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import e32, appuifw, graphics, key_codes
+import e32, appuifw, graphics, key_codes, sys, os
+
+try:
+    raise Exception
+except Exception:
+    path = sys.exc_info()[2].tb_frame.f_code.co_filename
+if not path:
+    path = os.path.join(os.getcwd(), 'default.py')
+unidad=path[0]
+
+modulospropios = unidad+':\\Python\\modules'
+sys.path.append(modulospropios)
+from idioma import getLang
+
 
 def handle_redraw(rect):
     global actDia
@@ -37,6 +50,7 @@ def handle_redraw(rect):
     flechaDerecha=[(0,0),(10,5),(0,10)]
     desp=130
     canvasDiarioDia.blit(imDiarioDia)
+    colorTexto=[0 for x in range(24)]
     for i in range(11):
         if i!=2 and i!=5 and i!=8 and actMod==True:
             if movimientos[actPos][2]==u"%di"%i:
@@ -45,57 +59,63 @@ def handle_redraw(rect):
             elif movimientos[actPos][2]==u"%dd"%i:
                 canvasDiarioDia.polygon([(flechaIzquierdaX+dx+desp,flechaIzquierdaY+dy) for dx,dy in flechaIzquierda],0xff0000,0xff0000)
                 canvasDiarioDia.polygon([(flechaDerechaX+dx+desp,flechaDerechaY+dy) for dx,dy in flechaDerecha],0xff0000,0xff0000)
+        #intento de rellenar el cuadro
+        elif (i==2 or i==5 or i==8 or i==11) and actMod==True:
+            if movimientos[actPos][2]==u"%di"%i:
+                canvasDiarioDia.rectangle((151,162,166,177),outline=colorTexto[5],fill=0xff0000)
+            elif movimientos[actPos][2]==u"%dd"%i:
+                canvasDiarioDia.rectangle((281,162,296,177),outline=colorTexto[6],fill=0xff0000)
         flechaIzquierdaY+=20
         flechaDerechaY+=20
-    colorTexto=[0 for x in range(26)]
-    for i in range(26):
+    
+    for i in range(24):
         colorTexto[i]=0x000000
     colorTexto[actPos]=0xff0000
-    canvasDiarioDia.text((120,85),u"Diario (%d-%d-%d)"%(actDia,actMes,actAno),0xbbbbbb,font=(u"symbol",27))
-    canvasDiarioDia.text((119,84),u"Diario (%d-%d-%d)"%(actDia,actMes,actAno),0x000000,font=(u"symbol",27))
-    canvasDiarioDia.text((145,115),u"Antes",0x000000,font=(u"legend",17,appuifw.STYLE_BOLD))
-    canvasDiarioDia.text((265,115),u"Después",0x000000,font=(u"legend",17,appuifw.STYLE_BOLD))
+    canvasDiarioDia.text((240,410),getLang(u"VOLVER"),0xffffff,font=(u"legend",25,appuifw.STYLE_BOLD))
+    canvasDiarioDia.text((44,410),getLang(u"EXTRA"),0xffffff,font=(u"legend",25,appuifw.STYLE_BOLD))
+    canvasDiarioDia.text((120,85),getLang(u"DIARIO")+" (%d-%d-%d)"%(actDia,actMes,actAno),0xbbbbbb,font=(u"symbol",27))
+    canvasDiarioDia.text((119,84),getLang(u"DIARIO")+" (%d-%d-%d)"%(actDia,actMes,actAno),0x000000,font=(u"symbol",27))
+    canvasDiarioDia.text((145,115),getLang(u"ANTES"),0x000000,font=(u"legend",17,appuifw.STYLE_BOLD))
+    canvasDiarioDia.text((265,115),getLang(u"DESPUES"),0x000000,font=(u"legend",17,appuifw.STYLE_BOLD))
     canvasDiarioDia.rectangle((20,120,120,340),outline=0xeeeeee,fill=0xeeeeee)
     canvasDiarioDia.line((20,120,330,120),0)
-    canvasDiarioDia.text((30,135),u"Desayuno",0x000000,font=(u"legend",17,appuifw.STYLE_BOLD))
+    canvasDiarioDia.text((30,135),getLang(u"DESAYUNO"),0x000000,font=(u"legend",17,appuifw.STYLE_BOLD))
     canvasDiarioDia.text((140,135),u"%03d mg"%datos[0],colorTexto[0],font=(u"legend",17))
     canvasDiarioDia.text((270,135),u"%03d mg"%datos[1],colorTexto[1],font=(u"legend",17))
-    canvasDiarioDia.text((40,155),u"Dosis",colorTexto[2],font=(u"legend",17))
+    canvasDiarioDia.text((40,155),getLang(u"DOSIS"),colorTexto[2],font=(u"legend",17))
     canvasDiarioDia.text((149,155),u"%02d ml"%datos[3],colorTexto[3],font=(u"legend",17))
     canvasDiarioDia.text((279,155),u"%02d ml"%datos[4],colorTexto[4],font=(u"legend",17))
-    canvasDiarioDia.text((40,175),u"Deporte",0x000000,font=(u"legend",17))
+    canvasDiarioDia.text((40,175),getLang(u"DEPORTE"),0x000000,font=(u"legend",17))
     canvasDiarioDia.rectangle((151,162,166,177),outline=colorTexto[5],fill=0xffffff)
     canvasDiarioDia.rectangle((281,162,296,177),outline=colorTexto[6],fill=0xffffff)
     canvasDiarioDia.line((20,180,330,180),0)
-    canvasDiarioDia.text((30,195),u"Almuerzo",0x000000,font=(u"legend",17,appuifw.STYLE_BOLD))
+    canvasDiarioDia.text((30,195),getLang(u"ALMUERZO"),0x000000,font=(u"legend",17,appuifw.STYLE_BOLD))
     canvasDiarioDia.text((140,195),u"%03d mg"%datos[7],colorTexto[7],font=(u"legend",17))
     canvasDiarioDia.text((270,195),u"%03d mg"%datos[8],colorTexto[8],font=(u"legend",17))
-    canvasDiarioDia.text((40,215),u"Dosis",colorTexto[9],font=(u"legend",17))
+    canvasDiarioDia.text((40,215),getLang(u"DOSIS"),colorTexto[9],font=(u"legend",17))
     canvasDiarioDia.text((149,215),u"%02d ml"%datos[10],colorTexto[10],font=(u"legend",17))
     canvasDiarioDia.text((279,215),u"%02d ml"%datos[11],colorTexto[11],font=(u"legend",17))
-    canvasDiarioDia.text((40,235),u"Deporte",0x000000,font=(u"legend",17))
+    canvasDiarioDia.text((40,235),getLang(u"DEPORTE"),0x000000,font=(u"legend",17))
     canvasDiarioDia.rectangle((151,222,166,237),outline=colorTexto[12],fill=0xffffff)
     canvasDiarioDia.rectangle((281,222,296,237),outline=colorTexto[13],fill=0xffffff)
     canvasDiarioDia.line((20,240,330,240),0)
-    canvasDiarioDia.text((30,255),u"Cena",0x000000,font=(u"legend",17,appuifw.STYLE_BOLD))
+    canvasDiarioDia.text((30,255),getLang(u"CENA"),0x000000,font=(u"legend",17,appuifw.STYLE_BOLD))
     canvasDiarioDia.text((140,255),u"%03d mg"%datos[14],colorTexto[14],font=(u"legend",17))
     canvasDiarioDia.text((270,255),u"%03d mg"%datos[15],colorTexto[15],font=(u"legend",17))
-    canvasDiarioDia.text((40,275),u"Dosis",colorTexto[16],font=(u"legend",17))
+    canvasDiarioDia.text((40,275),getLang(u"DOSIS"),colorTexto[16],font=(u"legend",17))
     canvasDiarioDia.text((149,275),u"%02d ml"%datos[17],colorTexto[17],font=(u"legend",17))
     canvasDiarioDia.text((279,275),u"%02d ml"%datos[18],colorTexto[18],font=(u"legend",17))
-    canvasDiarioDia.text((40,295),u"Deporte",0x000000,font=(u"legend",17))
+    canvasDiarioDia.text((40,295),getLang(u"DEPORTE"),0x000000,font=(u"legend",17))
     canvasDiarioDia.rectangle((151,282,166,297),outline=colorTexto[19],fill=0xffffff)
     canvasDiarioDia.rectangle((281,282,296,297),outline=colorTexto[20],fill=0xffffff)
     canvasDiarioDia.line((20,300,330,300),0)
-    canvasDiarioDia.text((30,315),u"Orina",0x000000,font=(u"legend",17,appuifw.STYLE_BOLD))
+    canvasDiarioDia.text((30,315),getLang(u"ORINA"),0x000000,font=(u"legend",17,appuifw.STYLE_BOLD))
     canvasDiarioDia.text((140,315),u"%03d mg"%datos[21],colorTexto[21],font=(u"legend",17))
-    canvasDiarioDia.text((270,315),u"%03d mg"%datos[22],colorTexto[22],font=(u"legend",17))
-    canvasDiarioDia.text((40,335),u"Acetona",0x000000,font=(u"legend",17))
-    canvasDiarioDia.text((140,335),u"%03d mg"%datos[23],colorTexto[23],font=(u"legend",17))
-    canvasDiarioDia.text((270,335),u"%03d mg"%datos[24],colorTexto[24],font=(u"legend",17))
+    canvasDiarioDia.text((40,335),getLang(u"ACETONA"),0x000000,font=(u"legend",17))
+    canvasDiarioDia.text((158,335),u"%d +"%datos[22],colorTexto[22],font=(u"legend",17))
     canvasDiarioDia.line((20,340,330,340),0)
-    canvasDiarioDia.text((30,365),u"Glucagón",0x000000,font=(u"legend",17))
-    canvasDiarioDia.rectangle((151,352,166,367),outline=colorTexto[25],fill=0xffffff)
+    canvasDiarioDia.text((30,365),getLang(u"GLUCAGON"),0x000000,font=(u"legend",17))
+    canvasDiarioDia.rectangle((151,352,166,367),outline=colorTexto[23],fill=0xffffff)
 
 def press_select():
     global actMod
@@ -105,47 +125,42 @@ def press_select():
         actMod=True
     appuifw.app.body = canvasDiarioDia
 
-def press_up():
+def moverCursor(desp,pos):
     global actPos
+    global movimientos
     if actMod==True:
         global datos
-        datos[actPos]+=50
+        datos[actPos]+=desp
+        if desp>0:
+            if datos[actPos]>movimientos[actPos][3]:
+                datos[actPos]=movimientos[actPos][3]
+        else:
+            if datos[actPos]<0:
+                datos[actPos]=0
     else:
-        global movimientos
-        actPos+=movimientos[actPos][1][0]
+        actPos+=movimientos[actPos][1][pos]
     appuifw.app.body = canvasDiarioDia
+
+def press_up():
+    moverCursor(50,0)
 
 def press_right():
-    global actPos
-    if actMod==True:
-        global datos
-        datos[actPos]+=1
-    else:
-        global movimientos
-        actPos+=movimientos[actPos][1][1]
-    appuifw.app.body = canvasDiarioDia
+    moverCursor(1,1)
 
 def press_down():
-    global actPos
-    if actMod==True:
-        global datos
-        datos[actPos]-=50
-    else:
-        global movimientos
-        actPos+=movimientos[actPos][1][2]
-    appuifw.app.body = canvasDiarioDia
+    moverCursor(-50,2)
 
 def press_left():
-    global actPos
-    if actMod==True:
-        global datos
-        datos[actPos]-=1
-    else:
-        global movimientos
-        actPos+=movimientos[actPos][1][3]
-    appuifw.app.body = canvasDiarioDia
+    moverCursor(-1,3)
 
-def mostrar_diario_dia(dia,mes,ano):
+def volverAtras():
+    global gvAtras
+    gvAtrasEnvio=[0 for x in range(len(gvAtras)-1)]
+    for i in range(len(gvAtras)-1):
+        gvAtrasEnvio[i]=gvAtras[i]
+    gvAtras[len(gvAtras)-1](gvAtrasEnvio)
+
+def mostrar_diario_dia(dia,mes,ano,vAtras):
     global actDia
     actDia=dia
     global actMes
@@ -153,43 +168,42 @@ def mostrar_diario_dia(dia,mes,ano):
     global actAno
     actAno=ano
     global datos
-    datos=[0 for x in range(26)]
-    for i in range(26):
+    datos=[0 for x in range(24)]
+    for i in range(24):
         datos[i]=0
     global movimientos
+    #posiciones de vector 5,6,12,13,19,20,23 cambiadas para usar en bucle de arriba
     movimientos=[
-        [0,[0,1,3,0],u"0i"],
-        [1,[0,0,3,-1],u"0d"],
-        [2,[0,1,7,0],u"--"],
-        [3,[-3,1,2,-1],u"1i"],
-        [4,[-3,0,2,-1],u"1d"],
-        [5,[-2,1,2,0],u"--"],
-        [6,[-2,0,2,-1],u"--"],
-        [7,[-2,1,3,0],u"3i"],
-        [8,[-2,0,3,-1],u"3d"],
-        [9,[-7,1,7,0],u"--"],
-        [10,[-3,1,2,-1],u"4i"],
-        [11,[-3,0,2,-1],u"4d"],
-        [12,[-2,1,2,0],u"--"],
-        [13,[-2,0,2,-1],u"--"],
-        [14,[-2,1,3,0],u"6i"],
-        [15,[-2,0,3,-1],u"6d"],
-        [16,[-7,1,0,0],u"--"],
-        [17,[-3,1,2,-1],u"7i"],
-        [18,[-3,0,2,-1],u"7d"],
-        [19,[-2,1,2,0],u"--"],
-        [20,[-2,0,2,-1],u"--"],
-        [21,[-2,1,2,0],u"9i"],
-        [22,[-2,0,2,-1],u"9d"],
-        [23,[-2,1,2,0],u"10i"],
-        [24,[-2,0,0,-1],u"10d"],
-        [25,[-2,0,0,0],u"--"]
+        [0,[0,1,3,0],u"0i",500],
+        [1,[0,0,3,-1],u"0d",500],
+        [2,[0,1,7,0],u"--",0],
+        [3,[-3,1,2,-1],u"1i",99],
+        [4,[-3,0,2,-1],u"1d",99],
+        [5,[-2,1,2,0],u"2i",0],
+        [6,[-2,0,2,-1],u"2d",0],
+        [7,[-2,1,3,0],u"3i",500],
+        [8,[-2,0,3,-1],u"3d",500],
+        [9,[-7,1,7,0],u"--",0],
+        [10,[-3,1,2,-1],u"4i",99],
+        [11,[-3,0,2,-1],u"4d",99],
+        [12,[-2,1,2,0],u"5i",0],
+        [13,[-2,0,2,-1],u"5d",0],
+        [14,[-2,1,3,0],u"6i",500],
+        [15,[-2,0,3,-1],u"6d",500],
+        [16,[-7,1,0,0],u"--",0],
+        [17,[-3,1,2,-1],u"7i",99],
+        [18,[-3,0,2,-1],u"7d",99],
+        [19,[-2,1,2,0],u"8i",0],
+        [20,[-2,0,2,-1],u"8d",0],
+        [21,[-2,0,1,0],u"9i",500],
+        [22,[-1,0,1,0],u"10i",4],
+        [23,[-1,0,0,0],u"11i",0],
         ]
     global actPos
     actPos=0
     global actMod
     actMod=False
-    ruta = 'c:\\python\\resources\\ui\\'
+    ruta = unidad+':\\python\\resources\\ui\\'
     global imDiarioDia
     imDiarioDia = graphics.Image.open(ruta+'fondo11.png')
     global canvasDiarioDia
@@ -203,3 +217,16 @@ def mostrar_diario_dia(dia,mes,ano):
     canvasDiarioDia.bind(key_codes.EKeyRightArrow, press_right)
     canvasDiarioDia.bind(key_codes.EKeyDownArrow, press_down)
     canvasDiarioDia.bind(key_codes.EKeyLeftArrow, press_left)
+    #prueba de boton izq
+    #global gvAtras
+    #gvAtrasEnvio=[0 for x in range(len(gvAtras)+1)]
+    #for i in range(len(gvAtras)):
+    #    gvAtrasEnvio[i]=gvAtras[i]
+    #gvAtrasEnvio[len(gvAtras)]=mostrarDiario
+    #appuifw.app.menu_key_handler = extra_diario.mostrar_extra(gvAtrasEnvio)
+    global gvAtras
+    gvAtras=vAtras
+    if len(vAtras)==1:
+        appuifw.app.exit_key_handler=gvAtras[0]
+    else:
+        appuifw.app.exit_key_handler=volverAtras
