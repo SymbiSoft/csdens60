@@ -4,12 +4,13 @@
 #
 #   Copyright (C) 2009  Jorge Aguirre Andreu
 #
-#   This program is free software: you can redistribute it and/or modify
+#   This file is part of CSDs60.
+#   CSDs60 is free software: you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
 #   the Free Software Foundation, either version 3 of the License, or
 #   (at your option) any later version.
 
-#   This program is distributed in the hope that it will be useful,
+#   CSDs60 is distributed in the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #   GNU General Public License for more details.
@@ -48,10 +49,13 @@ csds60={
     u"ANTES":u"Before",
     u"DESPUES":u"After",
     u"DESAYUNO":u"Breakfast",
+    u"MEDIAMAÑANA":u"Midmorning",
     u"DOSIS":u"Dosis",
     u"DEPORTE":u"Sport",
     u"ALMUERZO":u"Lunch",
+    u"MERIENDA":u"Tea hour",
     u"CENA":u"Dinner",
+    u"RESOPON":u"Midnight",
     u"ORINA":u"Orine",
     u"ACETONA":u"Acetone",
     u"GLUCAGON":u"Glucagon",
@@ -60,5 +64,16 @@ csds60={
     u"CONFIGURACION":u"  Preferences",
     u"CITAS":u"Medical Dates",
     u"EXPORTAR":u"  Export",
+    u"ENFERMEDADES":u"Illnesses",
+    u"MEDICAMENTOS":u"Medicines",
+    u"ESCRIBE TEXTO:":u"Type text:",
+    u"COMIDAS":u"Meals",
+    u"LIC":u"License",
+    u"T":u"This program comes with",
+    u"T1":u"ABSOLUTELY NO WARRANTY;",
+    u"T2":u"This is free software,",
+    u"T3":u"and you are welcome to redistribute it",
+    u"T4":u"under certain conditions. See",
+    u"NADA":u"Nothing",
     u"EST":u"  Stadistics"
     }

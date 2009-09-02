@@ -1,17 +1,17 @@
 # Archivo: diario_dia.py
 # Autor: Jorge Aguirre Andreu
 # Descripción: Muestra un diario de diabetico digital, donde llevar desde las dosis de insulina y análisis de glucosa
-# hasta las comidas que comes, el deporte que realizas, medicamentos que tomas, enfermedad que padezcas y 
-# si has tenido hipoglucemias o hiperglucemias. 
+# hasta el deporte que realizas. 
 #
 #   Copyright (C) 2009  Jorge Aguirre Andreu
 #
-#   This program is free software: you can redistribute it and/or modify
+#   This file is part of CSDs60.
+#   CSDs60 is free software: you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
 #   the Free Software Foundation, either version 3 of the License, or
 #   (at your option) any later version.
 
-#   This program is distributed in the hope that it will be useful,
+#   CSDs60 is distributed in the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #   GNU General Public License for more details.
@@ -203,7 +203,6 @@ def mostrar_diario_dia(dia,mes,ano,vAtras):
     for i in range(24):
         datos[i]=0
     global movimientos
-    #posiciones de vector 5,6,12,13,19,20,23 cambiadas para usar en bucle de arriba
     movimientos=[
         [0,[0,1,3,0],u"0i",500],
         [1,[0,0,3,-1],u"0d",500],

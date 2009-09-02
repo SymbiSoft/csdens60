@@ -5,12 +5,13 @@
 #
 #   Copyright (C) 2009  Jorge Aguirre Andreu
 #
-#   This program is free software: you can redistribute it and/or modify
+#   This file is part of CSDs60.
+#   CSDs60 is free software: you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
 #   the Free Software Foundation, either version 3 of the License, or
 #   (at your option) any later version.
 
-#   This program is distributed in the hope that it will be useful,
+#   CSDs60 is distributed in the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #   GNU General Public License for more details.
@@ -36,7 +37,7 @@ unidad=path[0]
 modulospropios = unidad+':\\Python\\modules'
 sys.path.append(modulospropios)
 
-import dieta, est, citas, config, export, diario
+import dieta, est, citas, config, export, diario, licencia
 from idioma import getLang
 from configuracion import *
 
@@ -137,10 +138,18 @@ def confirma():
     if test == 0 :
 	    appuifw.note(getLang(u"HASTA LUEGO"), "conf")
 	    app_lock.signal()
+        
+def teclaPresionada(key):
+    if key['type']==3:
+        if key['scancode']==164:
+            verLicencia()
+            
+def verLicencia():
+    licencia.mostrar_licencia([mostrarPrincipal])
 
 def mostrarPrincipal():
     global canvas
-    canvas=appuifw.Canvas(redraw_callback=handle_redraw)
+    canvas=appuifw.Canvas(redraw_callback=handle_redraw, event_callback=teclaPresionada)
     appuifw.app.body=canvas
     canvas.bind(key_codes.EKeySelect, press_select)
     canvas.bind(key_codes.EKeyRightArrow, press_right)
