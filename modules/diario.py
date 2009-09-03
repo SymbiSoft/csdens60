@@ -177,7 +177,6 @@ def volverAtras():
 
 def mostrarDiario(vAtras):
     global actDia
-    #en el portatil marca un dia mas de la cuenta como actual
     actDia=(localtime()[2])-1
     global actMes
     actMes=localtime()[1]
