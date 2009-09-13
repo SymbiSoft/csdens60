@@ -33,6 +33,7 @@ modulospropios = unidad+':\\Python\\modules'
 sys.path.append(modulospropios)
 from idioma import getLang
 import extra_diario
+import base_de_datos
 
 
 def handle_redraw(rect):
@@ -126,6 +127,10 @@ def press_select():
     global actPos
     global datos
     if actMod==True:
+        global actDia
+        global actMes
+        global actAno
+        base_de_datos.actualizar_diario_dia(actDia,actMes,actAno,movimientos[actPos][4],datos[actPos])
         actMod=False
     else:
         if movimientos[actPos][2]==u"sb":
@@ -133,6 +138,7 @@ def press_select():
                 datos[actPos]=1
             else:
                 datos[actPos]=0
+            base_de_datos.actualizar_diario_dia(actDia,actMes,actAno,movimientos[actPos][4],datos[actPos])
         else:
             actMod=True
     appuifw.app.body = canvasDiarioDia
@@ -179,11 +185,14 @@ def teclaPresionada(key):
 
 def diarioExtra():
     global gvAtras
+    global actDia
+    global actMes
+    global actAno
     gvAtrasEnvio=[0 for x in range(len(gvAtras)+1)]
     for i in range(len(gvAtras)):
         gvAtrasEnvio[i]=gvAtras[i]
     gvAtrasEnvio[len(gvAtras)]=mostrar_diario_dia_aux
-    extra_diario.mostrar_extra(gvAtrasEnvio)
+    extra_diario.mostrar_extra(actDia,actMes,actAno,gvAtrasEnvio)
 
 def mostrar_diario_dia_aux(vAtras):
     global actDia
@@ -198,37 +207,37 @@ def mostrar_diario_dia(dia,mes,ano,vAtras):
     actMes=mes
     global actAno
     actAno=ano
+    global movimientos
+    movimientos=[
+        [0,[0,1,3,0],u"0i",500,u"desayunoantes"],
+        [1,[0,0,3,-1],u"0d",500,u"desayunodespues"],
+        [2,[0,1,7,0],u"--",0,u"desayunodosis"],
+        [3,[-3,1,2,-1],u"1i",99,u"desayunodosisantes"],
+        [4,[-3,0,2,-1],u"1d",99,u"desayunodosisdespues"],
+        [5,[-2,1,2,0],u"sb",0,u"desayunodeporteantes"],
+        [6,[-2,0,2,-1],u"sb",0,u"desayunodeportedespues"],
+        [7,[-2,1,3,0],u"3i",500,u"almuerzoantes"],
+        [8,[-2,0,3,-1],u"3d",500,u"almuerzodespues"],
+        [9,[-7,1,7,0],u"--",0,u"almuerzodosis"],
+        [10,[-3,1,2,-1],u"4i",99,u"almuerzodosisantes"],
+        [11,[-3,0,2,-1],u"4d",99,u"almuerzodosisdespues"],
+        [12,[-2,1,2,0],u"sb",0,u"almuerzodeporteantes"],
+        [13,[-2,0,2,-1],u"sb",0,u"almuerzodeportedespues"],
+        [14,[-2,1,3,0],u"6i",500,u"cenaantes"],
+        [15,[-2,0,3,-1],u"6d",500,u"cenadespues"],
+        [16,[-7,1,0,0],u"--",0,u"cenadosis"],
+        [17,[-3,1,2,-1],u"7i",99,u"cenadosisantes"],
+        [18,[-3,0,2,-1],u"7d",99,u"cenadosisdespues"],
+        [19,[-2,1,2,0],u"sb",0,u"cenadeporteantes"],
+        [20,[-2,0,2,-1],u"sb",0,u"cenadeportedespues"],
+        [21,[-2,0,1,0],u"9i",500,u"orina"],
+        [22,[-1,0,1,0],u"10i",4,u"acetona"],
+        [23,[-1,0,0,0],u"sb",0,u"glucagon"],
+        ]
     global datos
     datos=[0 for x in range(24)]
     for i in range(24):
-        datos[i]=0
-    global movimientos
-    movimientos=[
-        [0,[0,1,3,0],u"0i",500],
-        [1,[0,0,3,-1],u"0d",500],
-        [2,[0,1,7,0],u"--",0],
-        [3,[-3,1,2,-1],u"1i",99],
-        [4,[-3,0,2,-1],u"1d",99],
-        [5,[-2,1,2,0],u"sb",0],
-        [6,[-2,0,2,-1],u"sb",0],
-        [7,[-2,1,3,0],u"3i",500],
-        [8,[-2,0,3,-1],u"3d",500],
-        [9,[-7,1,7,0],u"--",0],
-        [10,[-3,1,2,-1],u"4i",99],
-        [11,[-3,0,2,-1],u"4d",99],
-        [12,[-2,1,2,0],u"sb",0],
-        [13,[-2,0,2,-1],u"sb",0],
-        [14,[-2,1,3,0],u"6i",500],
-        [15,[-2,0,3,-1],u"6d",500],
-        [16,[-7,1,0,0],u"--",0],
-        [17,[-3,1,2,-1],u"7i",99],
-        [18,[-3,0,2,-1],u"7d",99],
-        [19,[-2,1,2,0],u"sb",0],
-        [20,[-2,0,2,-1],u"sb",0],
-        [21,[-2,0,1,0],u"9i",500],
-        [22,[-1,0,1,0],u"10i",4],
-        [23,[-1,0,0,0],u"sb",0],
-        ]
+        datos[i]=base_de_datos.obtener_diario_dia(actDia,actMes,actAno,movimientos[i][4])
     global actPos
     actPos=0
     global actMod
