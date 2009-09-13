@@ -32,20 +32,17 @@ unidad=path[0]
 modulospropios = unidad+':\\Python\\modules'
 sys.path.append(modulospropios)
 from idioma import getLang
+import base_de_datos
 
 def handle_redraw(rect):
     global canvasExtra
     global imExtra
     global actPos
     global valor
-    valor=[0 for x in range(8)]
-    for i in range(8):
-        valor[i]=getLang(u"NADA")
     colorTexto=[0 for x in range(8)]
     colorRelleno=[0 for x in range(8)]
     for i in range(8):
         colorTexto[i]=0x000000
-        
     colorTexto[actPos]=0xff0000    
     canvasExtra.blit(imExtra)
     canvasExtra.text((190,85),getLang(u"EXTRA"),0xbbbbbb,font=(u"symbol",27))
@@ -81,26 +78,19 @@ def volverAtras():
     gvAtras[len(gvAtras)-1](gvAtrasEnvio)
     
 def press_select():
-    global actMod
     global movimientos
     global actPos
-    global datos
     global valor
-    valor=[0 for x in range(8)]
-    
-    if actMod==True:        
-        actMod=False
-    else:
-        valor[actPos]=appuifw.query(getLang(u"ESCRIBE TEXTO:"), "text")
-        print "%s"%valor[actPos]        
-        actMod=True
+    valor[actPos]=appuifw.query(getLang(u"ESCRIBE TEXTO:"), "text")
+    base_de_datos.actualizar_extra_diario(actDia,actMes,actAno,movimientos[actPos][3],valor[actPos])
+    if valor[actPos]==None:
+        valor[actPos]=getLang(u"NADA")
     appuifw.app.body = canvasExtra
     
 def moverCursor(pos):
     global actPos
     global movimientos
-    if actMod==False:
-        actPos+=movimientos[actPos][1][pos]
+    actPos+=movimientos[actPos][1][pos]
     appuifw.app.body = canvasExtra
     
 def press_up():
@@ -115,26 +105,34 @@ def press_down():
 def press_left():
     moverCursor(3)
 
-def mostrar_extra(vAtras):
-    global valor
-    valor=[0 for x in range(8)]
-    global datos
-    datos=[0 for x in range(8)]
+def mostrar_extra(dia,mes,ano,vAtras):
+    global actDia
+    actDia=dia
+    global actMes
+    actMes=mes
+    global actAno
+    actAno=ano    
     global movimientos
     movimientos=[
-        [0,[0,0,1,0],u"--"],
-        [1,[-1,0,1,0],u"--"],
-        [2,[-1,0,1,0],u"--"],
-        [3,[-1,0,1,0],u"--"],
-        [4,[-1,0,1,0],u"--"],
-        [5,[-1,0,1,0],u"--"],
-        [6,[-1,0,1,0],u"--"],
-        [7,[-1,0,0,0],u"--"],
+        [0,[0,0,1,0],u"--",u"desayuno"],
+        [1,[-1,0,1,0],u"--",u"mediamanana"],
+        [2,[-1,0,1,0],u"--",u"almuerzo"],
+        [3,[-1,0,1,0],u"--",u"merienda"],
+        [4,[-1,0,1,0],u"--",u"cena"],
+        [5,[-1,0,1,0],u"--",u"resopon"],
+        [6,[-1,0,1,0],u"--",u"enfermedades"],
+        [7,[-1,0,0,0],u"--",u"medicamentos"],
         ]
+    global valor
+    valor=[0 for x in range(8)]
+    #for i in range(8):
+        #valor[i]=getLang(u"NADA")
+    for i in range(8):
+        valor[i]=base_de_datos.obtener_extra_diario(actDia,actMes,actAno,movimientos[i][3])
+        if valor[i]==0:
+            valor[i]=getLang(u"NADA")
     global actPos
     actPos=0
-    global actMod
-    actMod=False
     ruta = unidad+':\\python\\resources\\ui\\'
     global imExtra
     imExtra = graphics.Image.open(ruta+'fondo01.png')
