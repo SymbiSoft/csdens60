@@ -42,6 +42,24 @@ except:
     db.open(u'%s:\\Python\\resources\\db\\%s'%(unidad,database))
     db.execute(u"create table diario (fecha date,tipo varchar,valor bigint)")
     db.execute(u"create table extra (fecha date,tipo varchar,valor varchar)")
+    db.execute(u"create table insulinas (tipo varchar,orden integer)")
+    #Datos de ejemplo (se insertaran en la base de datos si la siguiente condicion se evalua como verdadera, y no si es falsa):
+    if True:
+        fechaValues=[2009,9,18,0,0,0,0,0,1] #dia,mes,año de insersion de los datos
+        fecha=time.mktime(time.struct_time(fechaValues))
+        db.execute(u"insert into insulinas (tipo,orden) values('%s',%d)"%('insul1',0))
+        db.execute(u"insert into insulinas (tipo,orden) values('%s',%d)"%('insul2',-1))
+        db.execute(u"insert into insulinas (tipo,orden) values('%s',%d)"%('insul3',1))
+        db.execute(u"insert into insulinas (tipo,orden) values('%s',%d)"%('insul4',2))
+        db.execute(u"insert into diario (fecha,tipo,valor) values(#%s#,'%s',%d)"%(e32db.format_time(fecha),'desayunoinsul1antes',1))
+        db.execute(u"insert into diario (fecha,tipo,valor) values(#%s#,'%s',%d)"%(e32db.format_time(fecha),'desayunoinsul3antes',3))
+        db.execute(u"insert into diario (fecha,tipo,valor) values(#%s#,'%s',%d)"%(e32db.format_time(fecha),'desayunoinsul4antes',4))
+        db.execute(u"insert into diario (fecha,tipo,valor) values(#%s#,'%s',%d)"%(e32db.format_time(fecha),'almuerzoinsul1antes',2))
+        db.execute(u"insert into diario (fecha,tipo,valor) values(#%s#,'%s',%d)"%(e32db.format_time(fecha),'almuerzoinsul3antes',6))
+        db.execute(u"insert into diario (fecha,tipo,valor) values(#%s#,'%s',%d)"%(e32db.format_time(fecha),'almuerzoinsul4antes',8))
+        db.execute(u"insert into diario (fecha,tipo,valor) values(#%s#,'%s',%d)"%(e32db.format_time(fecha),'cenainsul1antes',3))
+        db.execute(u"insert into diario (fecha,tipo,valor) values(#%s#,'%s',%d)"%(e32db.format_time(fecha),'cenainsul3antes',9))
+        db.execute(u"insert into diario (fecha,tipo,valor) values(#%s#,'%s',%d)"%(e32db.format_time(fecha),'cenainsul4antes',12))
 
 def obtener_diario_dia(dia,mes,ano,tipo):
     fechaValues=[ano,mes,dia,0,0,0,0,0,1]
@@ -78,3 +96,14 @@ def actualizar_extra_diario(dia,mes,ano,tipo,valor):
         db.execute(u"update extra set valor='%s' where fecha=#%s# and tipo='%s'"%(valor,e32db.format_time(fecha),tipo))
     else:
         db.execute(u"insert into extra (fecha,tipo,valor) values(#%s#,'%s','%s')"%(e32db.format_time(fecha),tipo,valor))
+
+def obtener_insulina(posicion):
+    dbv.prepare(db,u"select * from insulinas where orden=%d"%(posicion));
+    if dbv.count_line()!=0:
+        dbv.get_line()
+        return dbv.col(1)
+    return None
+
+def obtener_numero_insulinas():
+    dbv.prepare(db,u"select * from insulinas where orden>=0")
+    return dbv.count_line()-1
