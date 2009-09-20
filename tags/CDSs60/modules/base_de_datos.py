@@ -47,10 +47,10 @@ except:
     if True:
         fechaValues=[2009,9,18,0,0,0,0,0,1] #dia,mes,año de insersion de los datos
         fecha=time.mktime(time.struct_time(fechaValues))
-        db.execute(u"insert into insulinas (tipo,orden) values('%s',%d)"%('insul1',0))
-        db.execute(u"insert into insulinas (tipo,orden) values('%s',%d)"%('insul2',-1))
-        db.execute(u"insert into insulinas (tipo,orden) values('%s',%d)"%('insul3',1))
-        db.execute(u"insert into insulinas (tipo,orden) values('%s',%d)"%('insul4',2))
+        db.execute(u"insert into insulinas (tipo,orden) values('%s',%d)"%('Rapida',0))
+        db.execute(u"insert into insulinas (tipo,orden) values('%s',%d)"%('Lantus',1))
+        db.execute(u"insert into insulinas (tipo,orden) values('%s',%d)"%('insul3',-1))  #-1 es que esta introducida en la bd pero no se usa
+        db.execute(u"insert into insulinas (tipo,orden) values('%s',%d)"%('insul4',-1))
         db.execute(u"insert into diario (fecha,tipo,valor) values(#%s#,'%s',%d)"%(e32db.format_time(fecha),'desayunoinsul1antes',1))
         db.execute(u"insert into diario (fecha,tipo,valor) values(#%s#,'%s',%d)"%(e32db.format_time(fecha),'desayunoinsul3antes',3))
         db.execute(u"insert into diario (fecha,tipo,valor) values(#%s#,'%s',%d)"%(e32db.format_time(fecha),'desayunoinsul4antes',4))
