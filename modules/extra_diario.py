@@ -52,23 +52,23 @@ def handle_redraw(rect):
     canvasExtra.rectangle((20,120,150,340),outline=0xeeeeee,fill=0xeeeeee)
     canvasExtra.line((20,120,330,120),0)
     canvasExtra.text((40,135),getLang(u"DESAYUNO"),0x000000,font=(u"legend",17,appuifw.STYLE_BOLD))
-    canvasExtra.text((220,135),valor[0],colorTexto[0],font=(u"legend",17))
+    canvasExtra.text((155,135),ajustar_texto(valor[0]),colorTexto[0],font=(u"legend",17))
     canvasExtra.text((40,155),getLang(u"MEDIAMAÑANA"),0x000000,font=(u"legend",17,appuifw.STYLE_BOLD))
-    canvasExtra.text((220,155),valor[1],colorTexto[1],font=(u"legend",17))
+    canvasExtra.text((155,155),ajustar_texto(valor[1]),colorTexto[1],font=(u"legend",17))
     canvasExtra.text((40,175),getLang(u"ALMUERZO"),0x000000,font=(u"legend",17,appuifw.STYLE_BOLD))
-    canvasExtra.text((220,175),valor[2],colorTexto[2],font=(u"legend",17))
+    canvasExtra.text((155,175),ajustar_texto(valor[2]),colorTexto[2],font=(u"legend",17))
     canvasExtra.text((40,195),getLang(u"MERIENDA"),0x000000,font=(u"legend",17,appuifw.STYLE_BOLD))
-    canvasExtra.text((220,195),valor[3],colorTexto[3],font=(u"legend",17))
+    canvasExtra.text((155,195),ajustar_texto(valor[3]),colorTexto[3],font=(u"legend",17))
     canvasExtra.text((40,215),getLang(u"CENA"),0x000000,font=(u"legend",17,appuifw.STYLE_BOLD))
-    canvasExtra.text((220,215),valor[4],colorTexto[4],font=(u"legend",17))
+    canvasExtra.text((155,215),ajustar_texto(valor[4]),colorTexto[4],font=(u"legend",17))
     canvasExtra.text((40,235),getLang(u"RESOPON"),0x000000,font=(u"legend",17,appuifw.STYLE_BOLD))
-    canvasExtra.text((220,235),valor[5],colorTexto[5],font=(u"legend",17))
+    canvasExtra.text((155,235),ajustar_texto(valor[5]),colorTexto[5],font=(u"legend",17))
     canvasExtra.line((20,240,330,240),0)
     canvasExtra.text((30,255),getLang(u"ENFERMEDADES"),0x000000,font=(u"legend",17,appuifw.STYLE_BOLD))
-    canvasExtra.text((220,255),valor[6],colorTexto[6],font=(u"legend",17))
+    canvasExtra.text((155,255),ajustar_texto(valor[6]),colorTexto[6],font=(u"legend",17))
     canvasExtra.line((20,280,330,280),0)
     canvasExtra.text((30,295),getLang(u"MEDICAMENTOS"),0x000000,font=(u"legend",17,appuifw.STYLE_BOLD))
-    canvasExtra.text((220,295),valor[7],colorTexto[7],font=(u"legend",17))
+    canvasExtra.text((155,295),ajustar_texto(valor[7]),colorTexto[7],font=(u"legend",17))
 
 def volverAtras():
     global gvAtras
@@ -81,10 +81,13 @@ def press_select():
     global movimientos
     global actPos
     global valor
+    #-------------------------------------------------------------carga valor de la base de datos si cancela
+    temp=base_de_datos.obtener_extra_diario(actDia,actMes,actAno,movimientos[actPos][3])
+    valor[actPos]=temp
     valor[actPos]=appuifw.query(getLang(u"ESCRIBE TEXTO:"), "text")
     base_de_datos.actualizar_extra_diario(actDia,actMes,actAno,movimientos[actPos][3],valor[actPos])
     if valor[actPos]==None:
-        valor[actPos]=getLang(u"NADA")
+        valor[actPos]=temp
     appuifw.app.body = canvasExtra
     
 def moverCursor(pos):
@@ -104,6 +107,31 @@ def press_down():
 
 def press_left():
     moverCursor(3)
+
+def ajustar_texto(texto):
+    maximo=13
+    grupos=[
+        [u"aábdeéghnñoópquúü",float(13)/float(20)],
+        [u"cçsvy",float(13)/float(26)],
+        [u"fiíjl",float(13)/float(36)],
+        [u"kxz",float(13)/float(23)],
+        [u"rt",float(13)/float(30)],
+        [u"m",float(13)/float(13)],
+        [u"w",float(13)/float(14)],
+        [u" .,:;",float(13)/float(44)],
+    ]
+    total=float(0)
+    numero=0
+    for i in texto:
+        for j in grupos:
+            if i in j[0] and total<maximo:
+                if total+j[1]<maximo:
+                    total=total+j[1]
+                    numero=numero+1
+    if numero<len(texto):
+        return texto[:numero-2]+"..."
+    return texto[:numero]
+
 
 def mostrar_extra(dia,mes,ano,vAtras):
     global actDia
@@ -125,8 +153,6 @@ def mostrar_extra(dia,mes,ano,vAtras):
         ]
     global valor
     valor=[0 for x in range(8)]
-    #for i in range(8):
-        #valor[i]=getLang(u"NADA")
     for i in range(8):
         valor[i]=base_de_datos.obtener_extra_diario(actDia,actMes,actAno,movimientos[i][3])
         if valor[i]==0:

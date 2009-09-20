@@ -55,6 +55,7 @@ def handle_redraw(rect):
     canvasDiarioDia.blit(imDiarioDia)
     colorTexto=[0 for x in range(24)]
     colorRelleno=[0 for x in range(24)]
+    canvasDiarioDia.rectangle((20,120,120,340),outline=0xeeeeee,fill=0xeeeeee)
     for i in range(11):
         if i!=2 and i!=5 and i!=8 and actMod==True:
             if movimientos[actPos][2]==u"%di"%i:
@@ -63,9 +64,11 @@ def handle_redraw(rect):
             elif movimientos[actPos][2]==u"%dd"%i:
                 canvasDiarioDia.polygon([(flechaIzquierdaX+dx+desp,flechaIzquierdaY+dy) for dx,dy in flechaIzquierda],0xff0000,0xff0000)
                 canvasDiarioDia.polygon([(flechaDerechaX+dx+desp,flechaDerechaY+dy) for dx,dy in flechaDerecha],0xff0000,0xff0000)
+            elif movimientos[actPos][2]==u"%dt"%i:
+                canvasDiarioDia.polygon([(flechaIzquierdaX+dx-105,flechaIzquierdaY+dy) for dx,dy in flechaIzquierda],0xff0000,0xff0000)
+                canvasDiarioDia.polygon([(flechaDerechaX+dx-90,flechaDerechaY+dy) for dx,dy in flechaDerecha],0xff0000,0xff0000)
         flechaIzquierdaY+=20
         flechaDerechaY+=20
-    
     for i in range(24):
         colorTexto[i]=0x000000
     for i in range(24):
@@ -81,12 +84,11 @@ def handle_redraw(rect):
     canvasDiarioDia.text((119,84),getLang(u"DIARIO")+" (%d-%d-%d)"%(actDia,actMes,actAno),0x000000,font=(u"symbol",27))
     canvasDiarioDia.text((145,115),getLang(u"ANTES"),0x000000,font=(u"legend",17,appuifw.STYLE_BOLD))
     canvasDiarioDia.text((265,115),getLang(u"DESPUES"),0x000000,font=(u"legend",17,appuifw.STYLE_BOLD))
-    canvasDiarioDia.rectangle((20,120,120,340),outline=0xeeeeee,fill=0xeeeeee)
     canvasDiarioDia.line((20,120,330,120),0)
     canvasDiarioDia.text((30,135),getLang(u"DESAYUNO"),0x000000,font=(u"legend",17,appuifw.STYLE_BOLD))
     canvasDiarioDia.text((140,135),u"%03d mg"%datos[0],colorTexto[0],font=(u"legend",17))
     canvasDiarioDia.text((270,135),u"%03d mg"%datos[1],colorTexto[1],font=(u"legend",17))
-    canvasDiarioDia.text((40,155),getLang(u"DOSIS"),colorTexto[2],font=(u"legend",17))
+    canvasDiarioDia.text((40,155),base_de_datos.obtener_insulina(datos[2]),colorTexto[2],font=(u"legend",17))
     canvasDiarioDia.text((149,155),u"%02d ml"%datos[3],colorTexto[3],font=(u"legend",17))
     canvasDiarioDia.text((279,155),u"%02d ml"%datos[4],colorTexto[4],font=(u"legend",17))
     canvasDiarioDia.text((40,175),getLang(u"DEPORTE"),0x000000,font=(u"legend",17))
@@ -96,7 +98,7 @@ def handle_redraw(rect):
     canvasDiarioDia.text((30,195),getLang(u"ALMUERZO"),0x000000,font=(u"legend",17,appuifw.STYLE_BOLD))
     canvasDiarioDia.text((140,195),u"%03d mg"%datos[7],colorTexto[7],font=(u"legend",17))
     canvasDiarioDia.text((270,195),u"%03d mg"%datos[8],colorTexto[8],font=(u"legend",17))
-    canvasDiarioDia.text((40,215),getLang(u"DOSIS"),colorTexto[9],font=(u"legend",17))
+    canvasDiarioDia.text((40,215),base_de_datos.obtener_insulina(datos[9]),colorTexto[9],font=(u"legend",17))
     canvasDiarioDia.text((149,215),u"%02d ml"%datos[10],colorTexto[10],font=(u"legend",17))
     canvasDiarioDia.text((279,215),u"%02d ml"%datos[11],colorTexto[11],font=(u"legend",17))
     canvasDiarioDia.text((40,235),getLang(u"DEPORTE"),0x000000,font=(u"legend",17))
@@ -106,7 +108,7 @@ def handle_redraw(rect):
     canvasDiarioDia.text((30,255),getLang(u"CENA"),0x000000,font=(u"legend",17,appuifw.STYLE_BOLD))
     canvasDiarioDia.text((140,255),u"%03d mg"%datos[14],colorTexto[14],font=(u"legend",17))
     canvasDiarioDia.text((270,255),u"%03d mg"%datos[15],colorTexto[15],font=(u"legend",17))
-    canvasDiarioDia.text((40,275),getLang(u"DOSIS"),colorTexto[16],font=(u"legend",17))
+    canvasDiarioDia.text((40,275),base_de_datos.obtener_insulina(datos[16]),colorTexto[16],font=(u"legend",17))
     canvasDiarioDia.text((149,275),u"%02d ml"%datos[17],colorTexto[17],font=(u"legend",17))
     canvasDiarioDia.text((279,275),u"%02d ml"%datos[18],colorTexto[18],font=(u"legend",17))
     canvasDiarioDia.text((40,295),getLang(u"DEPORTE"),0x000000,font=(u"legend",17))
@@ -146,8 +148,11 @@ def press_select():
 def moverCursor(desp,pos):
     global actPos
     global movimientos
+    global datos
+    global actDia
+    global actMes
+    global actAno
     if actMod==True:
-        global datos
         datos[actPos]+=desp
         if desp>0:
             if datos[actPos]>movimientos[actPos][3]:
@@ -157,6 +162,16 @@ def moverCursor(desp,pos):
                 datos[actPos]=0
     else:
         actPos+=movimientos[actPos][1][pos]
+    if movimientos[actPos][2][1]==u"t":
+        comida=u"cena"
+        if actPos==2:
+            comida=u"desayuno"
+        elif actPos==9:
+            comida=u"almuerzo"
+        movimientos[actPos+1][4]=u""+comida+base_de_datos.obtener_insulina(datos[actPos])+"antes"
+        movimientos[actPos+2][4]=u""+comida+base_de_datos.obtener_insulina(datos[actPos])+"despues"
+        datos[actPos+1]=base_de_datos.obtener_diario_dia(actDia,actMes,actAno,movimientos[actPos+1][4])
+        datos[actPos+2]=base_de_datos.obtener_diario_dia(actDia,actMes,actAno,movimientos[actPos+2][4])
     appuifw.app.body = canvasDiarioDia
 
 def press_up():
@@ -211,23 +226,23 @@ def mostrar_diario_dia(dia,mes,ano,vAtras):
     movimientos=[
         [0,[0,1,3,0],u"0i",500,u"desayunoantes"],
         [1,[0,0,3,-1],u"0d",500,u"desayunodespues"],
-        [2,[0,1,7,0],u"--",0,u"desayunodosis"],
-        [3,[-3,1,2,-1],u"1i",99,u"desayunodosisantes"],
-        [4,[-3,0,2,-1],u"1d",99,u"desayunodosisdespues"],
+        [2,[0,1,7,0],u"1t",base_de_datos.obtener_numero_insulinas(),u"desayunodosis"],
+        [3,[-3,1,2,-1],u"1i",99,u"desayuno"+base_de_datos.obtener_insulina(0)+"antes"],
+        [4,[-3,0,2,-1],u"1d",99,u"desayuno"+base_de_datos.obtener_insulina(0)+"despues"],
         [5,[-2,1,2,0],u"sb",0,u"desayunodeporteantes"],
         [6,[-2,0,2,-1],u"sb",0,u"desayunodeportedespues"],
         [7,[-2,1,3,0],u"3i",500,u"almuerzoantes"],
         [8,[-2,0,3,-1],u"3d",500,u"almuerzodespues"],
-        [9,[-7,1,7,0],u"--",0,u"almuerzodosis"],
-        [10,[-3,1,2,-1],u"4i",99,u"almuerzodosisantes"],
-        [11,[-3,0,2,-1],u"4d",99,u"almuerzodosisdespues"],
+        [9,[-7,1,7,0],u"4t",base_de_datos.obtener_numero_insulinas(),u"almuerzodosis"],
+        [10,[-3,1,2,-1],u"4i",99,u"almuerzo"+base_de_datos.obtener_insulina(0)+"antes"],
+        [11,[-3,0,2,-1],u"4d",99,u"almuerzo"+base_de_datos.obtener_insulina(0)+"despues"],
         [12,[-2,1,2,0],u"sb",0,u"almuerzodeporteantes"],
         [13,[-2,0,2,-1],u"sb",0,u"almuerzodeportedespues"],
         [14,[-2,1,3,0],u"6i",500,u"cenaantes"],
         [15,[-2,0,3,-1],u"6d",500,u"cenadespues"],
-        [16,[-7,1,0,0],u"--",0,u"cenadosis"],
-        [17,[-3,1,2,-1],u"7i",99,u"cenadosisantes"],
-        [18,[-3,0,2,-1],u"7d",99,u"cenadosisdespues"],
+        [16,[-7,1,0,0],u"7t",base_de_datos.obtener_numero_insulinas(),u"cenadosis"],
+        [17,[-3,1,2,-1],u"7i",99,u"cena"+base_de_datos.obtener_insulina(0)+"antes"],
+        [18,[-3,0,2,-1],u"7d",99,u"cena"+base_de_datos.obtener_insulina(0)+"despues"],
         [19,[-2,1,2,0],u"sb",0,u"cenadeporteantes"],
         [20,[-2,0,2,-1],u"sb",0,u"cenadeportedespues"],
         [21,[-2,0,1,0],u"9i",500,u"orina"],
