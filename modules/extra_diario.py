@@ -81,13 +81,18 @@ def press_select():
     global movimientos
     global actPos
     global valor
-    #-------------------------------------------------------------carga valor de la base de datos si cancela
-    temp=base_de_datos.obtener_extra_diario(actDia,actMes,actAno,movimientos[actPos][3])
-    valor[actPos]=temp
-    valor[actPos]=appuifw.query(getLang(u"ESCRIBE TEXTO:"), "text")
-    base_de_datos.actualizar_extra_diario(actDia,actMes,actAno,movimientos[actPos][3],valor[actPos])
+    global actDia
+    global actMes
+    global actAno
+    valor[actPos]=appuifw.query(getLang(u"ESCRIBE TEXTO:"), "text", base_de_datos.obtener_extra_diario(actDia,actMes,actAno,movimientos[actPos][3]))
     if valor[actPos]==None:
-        valor[actPos]=temp
+        contenidoDB=base_de_datos.obtener_extra_diario(actDia,actMes,actAno,movimientos[actPos][3])
+        if contenidoDB==0:
+            valor[actPos]=getLang(u"NADA")
+        else:
+            valor[actPos]=contenidoDB
+    else:
+        base_de_datos.actualizar_extra_diario(actDia,actMes,actAno,movimientos[actPos][3],valor[actPos])
     appuifw.app.body = canvasExtra
     
 def moverCursor(pos):
@@ -128,9 +133,9 @@ def ajustar_texto(texto):
                 if total+j[1]<maximo:
                     total=total+j[1]
                     numero=numero+1
-    if numero<len(texto):
+    if numero+1<len(texto):
         return texto[:numero-2]+"..."
-    return texto[:numero]
+    return texto
 
 
 def mostrar_extra(dia,mes,ano,vAtras):
