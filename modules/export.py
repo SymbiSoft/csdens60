@@ -20,7 +20,7 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import e32, appuifw, sys, os, graphics
+import e32, appuifw, sys, os, graphics, codecs
 
 try:
     raise Exception
@@ -33,6 +33,25 @@ unidad=path[0]
 modulospropios = unidad+':\\Python\\modules'
 sys.path.append(modulospropios)
 from idioma import getLang
+import base_de_datos
+
+
+def generar_xml():
+    global unidad
+    xml=u""
+    datos=base_de_datos.obtener_datos_diario()
+    fecha=0
+    for i in range(datos.count_line()):
+        datos.get_line()
+        if fecha!=datos.col(1):
+            fecha=datos.col(1)
+            xml=xml+u"</dia>\n<dia>\n\t<fecha>"+str(fecha)+u"</fecha>\n"
+        xml=xml+u"\t<"+str(datos.col(2))+u">"+str(datos.col(3))+u"</"+str(datos.col(2))+u">\n"
+        datos.next_line()
+    xmlFinal=u"<?xml version=\"1.0\" encoding=\"UTF-8\"?>"+xml[6:]+u"</dia>"
+    fichero=codecs.open(unidad+':\\Python\\resources\db\db.xml','w','utf8')
+    fichero.write(xmlFinal)
+    
 
 def handle_redraw(rect):
     global canvasExport
@@ -66,3 +85,4 @@ def mostrarExport(vAtras):
         appuifw.app.exit_key_handler=gvAtras[0]
     else:
         appuifw.app.exit_key_handler=volverAtras
+    generar_xml()
