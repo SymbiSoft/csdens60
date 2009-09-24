@@ -107,3 +107,8 @@ def obtener_insulina(posicion):
 def obtener_numero_insulinas():
     dbv.prepare(db,u"select * from insulinas where orden>=0")
     return dbv.count_line()-1
+
+def obtener_datos_diario():
+    dbv.prepare(db,u"select * from diario order by fecha")
+    return dbv
+    
