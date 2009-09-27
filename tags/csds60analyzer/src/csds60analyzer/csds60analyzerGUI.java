@@ -345,7 +345,6 @@ public class csds60analyzerGUI extends javax.swing.JFrame{
         });
     }
 
-    @Override
     public void paint(Graphics g){
         if(grafica == null)
             grafica = this.creaImagen();
