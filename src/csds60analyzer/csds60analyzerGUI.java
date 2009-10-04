@@ -1,5 +1,26 @@
 package csds60analyzer;
 
+/* Archivo: csds60analyzer.java
+   Autor: Jorge Aguirre Andreu
+   Descripción: Aplicación para visualizar gráficas estadísticas a partir de un archivo
+   xml exportado previamente desde la aplicación csds60
+
+    Copyright (C) 2009  Jorge Aguirre Andreu
+
+    This file is part of CSDs60.
+    CSDs60 is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    CSDs60 is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
+
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.awt.Color;
@@ -145,6 +166,7 @@ public class csds60analyzerGUI extends javax.swing.JFrame{
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("CSDs60Analyzer");
         setBackground(new java.awt.Color(255, 255, 255));
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setResizable(false);
 
         CBdesayunoantes.setBackground(new java.awt.Color(255, 255, 255));
