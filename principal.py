@@ -131,7 +131,7 @@ def handle_redraw(rect):
 def confirma():
     #TODO: ESTO HAY QUE QUITARLO!
     app_lock.signal()
-    #TODO: ESTO HA Y QUE QUITARLO!
+    #TODO: ESTO HAY QUE QUITARLO!
     return
     opcion = [getLang(u"SÍ"),getLang(u"NO")]
     test = appuifw.popup_menu(opcion,getLang(u"¿ESTÁ SEGURO?"))
