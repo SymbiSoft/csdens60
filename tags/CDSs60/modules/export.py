@@ -1,7 +1,7 @@
 # Archivo: export.py
 # Autor: Jorge Aguirre Andreu
-# Descripción: Puedes exportar todo el diario, las citas médicas, las dietas, las estadisticas a un formato
-# (por determinar) mediante conexión(a determinar) con un ordenador(del endocrino), asi se facilitan las revisiones
+# Descripción: Puedes exportar todo el diario en un archivo xml para la aplicación
+# csds60analyzer mediante conexión(a determinar) con un ordenador(del endocrino), asi se facilitan las revisiones
 # y se agiliza el trato entre ambas partes.
 #
 #   Copyright (C) 2009  Jorge Aguirre Andreu
