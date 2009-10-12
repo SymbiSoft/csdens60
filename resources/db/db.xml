@@ -1,141 +1,352 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?><root>
 <dia>
 	<fecha>1253916000.0</fecha>
-	<desayunodespues>169</desayunodespues>
-	<desayunoantes>200</desayunoantes>
+	<almuerzoRapidaantes>6</almuerzoRapidaantes>
+	<almuerzoantes>226</almuerzoantes>
+	<almuerzodespues>129</almuerzodespues>
+	<cenaLantusantes>7</cenaLantusantes>
+	<cenaRapidaantes>4</cenaRapidaantes>
+	<cenaantes>81</cenaantes>
+	<cenadespues>150</cenadespues>
+	<desayunoLantusantes>24</desayunoLantusantes>
+	<desayunoRapidaantes>5</desayunoRapidaantes>
+	<desayunoantes>139</desayunoantes>
+	<desayunodespues>148</desayunodespues>
 </dia>
 <dia>
 	<fecha>1254002400.0</fecha>
-	<desayunodespues>115</desayunodespues>
-	<desayunoantes>140</desayunoantes>
+	<almuerzoRapidaantes>6</almuerzoRapidaantes>
+	<almuerzoantes>121</almuerzoantes>
+	<almuerzodespues>135</almuerzodespues>
+	<cenaLantusantes>7</cenaLantusantes>
+	<cenaRapidaantes>4</cenaRapidaantes>
+	<cenaantes>156</cenaantes>
+	<cenadespues>139</cenadespues>
+	<desayunoLantusantes>24</desayunoLantusantes>
+	<desayunoRapidaantes>5</desayunoRapidaantes>
+	<desayunoantes>145</desayunoantes>
+	<desayunodespues>149</desayunodespues>
 </dia>
 <dia>
 	<fecha>1254088800.0</fecha>
-	<desayunodespues>142</desayunodespues>
-	<desayunoantes>187</desayunoantes>
+	<almuerzoRapidaantes>3</almuerzoRapidaantes>
+	<almuerzoantes>87</almuerzoantes>
+	<almuerzodespues>115</almuerzodespues>
+	<cenaLantusantes>7</cenaLantusantes>
+	<cenaRapidaantes>2</cenaRapidaantes>
+	<cenaantes>224</cenaantes>
+	<cenadespues>107</cenadespues>
+	<desayunoLantusantes>24</desayunoLantusantes>
+	<desayunoRapidaantes>3</desayunoRapidaantes>
+	<desayunoantes>97</desayunoantes>
+	<desayunodespues>80</desayunodespues>
 </dia>
 <dia>
 	<fecha>1254175200.0</fecha>
-	<desayunodespues>63</desayunodespues>
-	<desayunoantes>183</desayunoantes>
+	<almuerzoRapidaantes>2</almuerzoRapidaantes>
+	<almuerzoantes>168</almuerzoantes>
+	<almuerzodespues>200</almuerzodespues>
+	<cenaLantusantes>7</cenaLantusantes>
+	<cenaRapidaantes>6</cenaRapidaantes>
+	<cenaantes>191</cenaantes>
+	<cenadespues>178</cenadespues>
+	<desayunoLantusantes>24</desayunoLantusantes>
+	<desayunoRapidaantes>4</desayunoRapidaantes>
+	<desayunoantes>196</desayunoantes>
+	<desayunodespues>206</desayunodespues>
 </dia>
 <dia>
 	<fecha>1254261600.0</fecha>
-	<desayunodespues>198</desayunodespues>
-	<desayunoantes>328</desayunoantes>
+	<almuerzoRapidaantes>6</almuerzoRapidaantes>
+	<almuerzoantes>114</almuerzoantes>
+	<almuerzodespues>77</almuerzodespues>
+	<cenaLantusantes>7</cenaLantusantes>
+	<cenaRapidaantes>3</cenaRapidaantes>
+	<cenaantes>134</cenaantes>
+	<cenadespues>78</cenadespues>
+	<desayunoLantusantes>24</desayunoLantusantes>
+	<desayunoRapidaantes>4</desayunoRapidaantes>
+	<desayunoantes>70</desayunoantes>
+	<desayunodespues>80</desayunodespues>
 </dia>
 <dia>
 	<fecha>1254348000.0</fecha>
-	<desayunodespues>50</desayunodespues>
-	<desayunoantes>303</desayunoantes>
+	<almuerzoRapidaantes>5</almuerzoRapidaantes>
+	<almuerzoantes>98</almuerzoantes>
+	<almuerzodespues>154</almuerzodespues>
+	<cenaLantusantes>7</cenaLantusantes>
+	<cenaRapidaantes>3</cenaRapidaantes>
+	<cenaantes>79</cenaantes>
+	<cenadespues>162</cenadespues>
+	<desayunoLantusantes>24</desayunoLantusantes>
+	<desayunoRapidaantes>2</desayunoRapidaantes>
+	<desayunoantes>159</desayunoantes>
+	<desayunodespues>163</desayunodespues>
 </dia>
 <dia>
 	<fecha>1254434400.0</fecha>
-	<desayunodespues>119</desayunodespues>
-	<desayunoantes>75</desayunoantes>
+	<almuerzoRapidaantes>2</almuerzoRapidaantes>
+	<almuerzoantes>224</almuerzoantes>
+	<almuerzodespues>182</almuerzodespues>
+	<cenaLantusantes>7</cenaLantusantes>
+	<cenaRapidaantes>3</cenaRapidaantes>
+	<cenaantes>74</cenaantes>
+	<cenadespues>196</cenadespues>
+	<desayunoLantusantes>24</desayunoLantusantes>
+	<desayunoRapidaantes>6</desayunoRapidaantes>
+	<desayunoantes>182</desayunoantes>
+	<desayunodespues>177</desayunodespues>
 </dia>
 <dia>
 	<fecha>1254520800.0</fecha>
-	<desayunodespues>100</desayunodespues>
-	<desayunoantes>89</desayunoantes>
+	<almuerzoRapidaantes>4</almuerzoRapidaantes>
+	<almuerzoantes>105</almuerzoantes>
+	<almuerzodespues>240</almuerzodespues>
+	<cenaLantusantes>7</cenaLantusantes>
+	<cenaRapidaantes>5</cenaRapidaantes>
+	<cenaantes>90</cenaantes>
+	<cenadespues>222</cenadespues>
+	<desayunoLantusantes>24</desayunoLantusantes>
+	<desayunoRapidaantes>2</desayunoRapidaantes>
+	<desayunoantes>231</desayunoantes>
+	<desayunodespues>211</desayunodespues>
 </dia>
 <dia>
 	<fecha>1254607200.0</fecha>
-	<desayunodespues>261</desayunodespues>
-	<desayunoantes>240</desayunoantes>
+	<almuerzoRapidaantes>3</almuerzoRapidaantes>
+	<almuerzoantes>178</almuerzoantes>
+	<almuerzodespues>170</almuerzodespues>
+	<cenaLantusantes>7</cenaLantusantes>
+	<cenaRapidaantes>3</cenaRapidaantes>
+	<cenaantes>233</cenaantes>
+	<cenadespues>173</cenadespues>
+	<desayunoLantusantes>24</desayunoLantusantes>
+	<desayunoRapidaantes>4</desayunoRapidaantes>
+	<desayunoantes>179</desayunoantes>
+	<desayunodespues>182</desayunodespues>
 </dia>
 <dia>
 	<fecha>1254693600.0</fecha>
-	<desayunodespues>160</desayunodespues>
-	<desayunoantes>131</desayunoantes>
+	<almuerzoRapidaantes>6</almuerzoRapidaantes>
+	<almuerzoantes>230</almuerzoantes>
+	<almuerzodespues>226</almuerzodespues>
+	<cenaLantusantes>7</cenaLantusantes>
+	<cenaRapidaantes>2</cenaRapidaantes>
+	<cenaantes>226</cenaantes>
+	<cenadespues>237</cenadespues>
+	<desayunoLantusantes>24</desayunoLantusantes>
+	<desayunoRapidaantes>2</desayunoRapidaantes>
+	<desayunoantes>230</desayunoantes>
+	<desayunodespues>218</desayunodespues>
 </dia>
 <dia>
 	<fecha>1254780000.0</fecha>
-	<desayunodespues>83</desayunodespues>
-	<desayunoantes>100</desayunoantes>
+	<almuerzoRapidaantes>3</almuerzoRapidaantes>
+	<almuerzoantes>154</almuerzoantes>
+	<almuerzodespues>117</almuerzodespues>
+	<cenaLantusantes>7</cenaLantusantes>
+	<cenaRapidaantes>5</cenaRapidaantes>
+	<cenaantes>223</cenaantes>
+	<cenadespues>106</cenadespues>
+	<desayunoLantusantes>24</desayunoLantusantes>
+	<desayunoRapidaantes>2</desayunoRapidaantes>
+	<desayunoantes>125</desayunoantes>
+	<desayunodespues>131</desayunodespues>
 </dia>
 <dia>
 	<fecha>1254866400.0</fecha>
-	<desayunodespues>48</desayunodespues>
-	<desayunoantes>196</desayunoantes>
+	<almuerzoRapidaantes>6</almuerzoRapidaantes>
+	<almuerzoantes>122</almuerzoantes>
+	<almuerzodespues>160</almuerzodespues>
+	<cenaLantusantes>7</cenaLantusantes>
+	<cenaRapidaantes>4</cenaRapidaantes>
+	<cenaantes>223</cenaantes>
+	<cenadespues>172</cenadespues>
+	<desayunoLantusantes>24</desayunoLantusantes>
+	<desayunoRapidaantes>4</desayunoRapidaantes>
+	<desayunoantes>168</desayunoantes>
+	<desayunodespues>157</desayunodespues>
 </dia>
 <dia>
 	<fecha>1254952800.0</fecha>
-	<desayunodespues>74</desayunodespues>
-	<desayunoantes>151</desayunoantes>
+	<almuerzoRapidaantes>4</almuerzoRapidaantes>
+	<almuerzoantes>236</almuerzoantes>
+	<almuerzodespues>178</almuerzodespues>
+	<cenaLantusantes>7</cenaLantusantes>
+	<cenaRapidaantes>3</cenaRapidaantes>
+	<cenaantes>115</cenaantes>
+	<cenadespues>156</cenadespues>
+	<desayunoLantusantes>24</desayunoLantusantes>
+	<desayunoRapidaantes>4</desayunoRapidaantes>
+	<desayunoantes>160</desayunoantes>
+	<desayunodespues>163</desayunodespues>
 </dia>
 <dia>
 	<fecha>1255039200.0</fecha>
-	<desayunodespues>151</desayunodespues>
-	<desayunoantes>63</desayunoantes>
+	<almuerzoRapidaantes>6</almuerzoRapidaantes>
+	<almuerzoantes>152</almuerzoantes>
+	<almuerzodespues>206</almuerzodespues>
+	<cenaLantusantes>7</cenaLantusantes>
+	<cenaRapidaantes>3</cenaRapidaantes>
+	<cenaantes>116</cenaantes>
+	<cenadespues>230</cenadespues>
+	<desayunoLantusantes>24</desayunoLantusantes>
+	<desayunoRapidaantes>3</desayunoRapidaantes>
+	<desayunoantes>222</desayunoantes>
+	<desayunodespues>229</desayunodespues>
 </dia>
 <dia>
 	<fecha>1255125600.0</fecha>
-	<desayunodespues>149</desayunodespues>
-	<desayunoantes>93</desayunoantes>
+	<almuerzoRapidaantes>5</almuerzoRapidaantes>
+	<almuerzoantes>140</almuerzoantes>
+	<almuerzodespues>216</almuerzodespues>
+	<cenaLantusantes>7</cenaLantusantes>
+	<cenaRapidaantes>2</cenaRapidaantes>
+	<cenaantes>155</cenaantes>
+	<cenadespues>244</cenadespues>
+	<desayunoLantusantes>24</desayunoLantusantes>
+	<desayunoRapidaantes>3</desayunoRapidaantes>
+	<desayunoantes>232</desayunoantes>
+	<desayunodespues>246</desayunodespues>
 </dia>
 <dia>
 	<fecha>1255212000.0</fecha>
-	<desayunodespues>100</desayunodespues>
-	<desayunoantes>106</desayunoantes>
+	<almuerzoRapidaantes>3</almuerzoRapidaantes>
+	<almuerzoantes>133</almuerzoantes>
+	<almuerzodespues>187</almuerzodespues>
+	<cenaLantusantes>7</cenaLantusantes>
+	<cenaRapidaantes>6</cenaRapidaantes>
+	<cenaantes>142</cenaantes>
+	<cenadespues>189</cenadespues>
+	<desayunoLantusantes>24</desayunoLantusantes>
+	<desayunoRapidaantes>5</desayunoRapidaantes>
+	<desayunoantes>176</desayunoantes>
+	<desayunodespues>158</desayunodespues>
 </dia>
 <dia>
 	<fecha>1255298400.0</fecha>
-	<desayunodespues>34</desayunodespues>
-	<desayunoantes>133</desayunoantes>
+	<almuerzoRapidaantes>6</almuerzoRapidaantes>
+	<almuerzoantes>197</almuerzoantes>
+	<almuerzodespues>230</almuerzodespues>
+	<cenaLantusantes>7</cenaLantusantes>
+	<cenaRapidaantes>5</cenaRapidaantes>
+	<cenaantes>135</cenaantes>
+	<cenadespues>208</cenadespues>
+	<desayunoLantusantes>24</desayunoLantusantes>
+	<desayunoRapidaantes>6</desayunoRapidaantes>
+	<desayunoantes>211</desayunoantes>
+	<desayunodespues>201</desayunodespues>
 </dia>
 <dia>
 	<fecha>1255384800.0</fecha>
-	<desayunodespues>78</desayunodespues>
-	<desayunoantes>175</desayunoantes>
+	<almuerzoRapidaantes>3</almuerzoRapidaantes>
+	<almuerzoantes>194</almuerzoantes>
+	<almuerzodespues>172</almuerzodespues>
+	<cenaLantusantes>7</cenaLantusantes>
+	<cenaRapidaantes>5</cenaRapidaantes>
+	<cenaantes>154</cenaantes>
+	<cenadespues>193</cenadespues>
+	<desayunoLantusantes>24</desayunoLantusantes>
+	<desayunoRapidaantes>4</desayunoRapidaantes>
+	<desayunoantes>190</desayunoantes>
+	<desayunodespues>189</desayunodespues>
 </dia>
 <dia>
 	<fecha>1255471200.0</fecha>
-	<desayunodespues>158</desayunodespues>
-	<desayunoantes>213</desayunoantes>
+	<almuerzoRapidaantes>5</almuerzoRapidaantes>
+	<almuerzoantes>230</almuerzoantes>
+	<almuerzodespues>250</almuerzodespues>
+	<cenaLantusantes>7</cenaLantusantes>
+	<cenaRapidaantes>2</cenaRapidaantes>
+	<cenaantes>212</cenaantes>
+	<cenadespues>215</cenadespues>
+	<desayunoLantusantes>24</desayunoLantusantes>
+	<desayunoRapidaantes>3</desayunoRapidaantes>
+	<desayunoantes>234</desayunoantes>
+	<desayunodespues>251</desayunodespues>
 </dia>
 <dia>
 	<fecha>1255557600.0</fecha>
-	<desayunodespues>149</desayunodespues>
-	<desayunoantes>74</desayunoantes>
+	<almuerzoRapidaantes>6</almuerzoRapidaantes>
+	<almuerzoantes>198</almuerzoantes>
+	<almuerzodespues>219</almuerzodespues>
+	<cenaLantusantes>7</cenaLantusantes>
+	<cenaRapidaantes>5</cenaRapidaantes>
+	<cenaantes>232</cenaantes>
+	<cenadespues>225</cenadespues>
+	<desayunoLantusantes>24</desayunoLantusantes>
+	<desayunoRapidaantes>2</desayunoRapidaantes>
+	<desayunoantes>216</desayunoantes>
+	<desayunodespues>204</desayunodespues>
 </dia>
 <dia>
 	<fecha>1255644000.0</fecha>
-	<desayunodespues>48</desayunodespues>
-	<desayunoantes>244</desayunoantes>
+	<almuerzoRapidaantes>5</almuerzoRapidaantes>
+	<almuerzoantes>230</almuerzoantes>
+	<almuerzodespues>68</almuerzodespues>
+	<cenaLantusantes>7</cenaLantusantes>
+	<cenaRapidaantes>4</cenaRapidaantes>
+	<cenaantes>87</cenaantes>
+	<cenadespues>81</cenadespues>
+	<desayunoLantusantes>24</desayunoLantusantes>
+	<desayunoRapidaantes>6</desayunoRapidaantes>
+	<desayunoantes>84</desayunoantes>
+	<desayunodespues>103</desayunodespues>
 </dia>
 <dia>
 	<fecha>1255730400.0</fecha>
-	<desayunodespues>190</desayunodespues>
-	<desayunoantes>109</desayunoantes>
+	<almuerzoRapidaantes>3</almuerzoRapidaantes>
+	<almuerzoantes>75</almuerzoantes>
+	<almuerzodespues>167</almuerzodespues>
+	<cenaLantusantes>7</cenaLantusantes>
+	<cenaRapidaantes>4</cenaRapidaantes>
+	<cenaantes>236</cenaantes>
+	<cenadespues>129</cenadespues>
+	<desayunoLantusantes>24</desayunoLantusantes>
+	<desayunoRapidaantes>2</desayunoRapidaantes>
+	<desayunoantes>149</desayunoantes>
+	<desayunodespues>155</desayunodespues>
 </dia>
 <dia>
 	<fecha>1255816800.0</fecha>
-	<desayunodespues>144</desayunodespues>
-	<desayunoantes>70</desayunoantes>
+	<almuerzoRapidaantes>4</almuerzoRapidaantes>
+	<almuerzoantes>230</almuerzoantes>
+	<almuerzodespues>194</almuerzodespues>
+	<cenaLantusantes>7</cenaLantusantes>
+	<cenaRapidaantes>4</cenaRapidaantes>
+	<cenaantes>148</cenaantes>
+	<cenadespues>229</cenadespues>
+	<desayunoLantusantes>24</desayunoLantusantes>
+	<desayunoRapidaantes>3</desayunoRapidaantes>
+	<desayunoantes>210</desayunoantes>
+	<desayunodespues>203</desayunodespues>
 </dia>
 <dia>
 	<fecha>1255903200.0</fecha>
-	<desayunodespues>49</desayunodespues>
-	<desayunoantes>137</desayunoantes>
+	<almuerzoRapidaantes>3</almuerzoRapidaantes>
+	<almuerzoantes>95</almuerzoantes>
+	<almuerzodespues>177</almuerzodespues>
+	<cenaLantusantes>7</cenaLantusantes>
+	<cenaRapidaantes>5</cenaRapidaantes>
+	<cenaantes>207</cenaantes>
+	<cenadespues>207</cenadespues>
+	<desayunoLantusantes>24</desayunoLantusantes>
+	<desayunoRapidaantes>4</desayunoRapidaantes>
+	<desayunoantes>195</desayunoantes>
+	<desayunodespues>180</desayunodespues>
 </dia>
 <dia>
 	<fecha>1255989600.0</fecha>
-	<desayunodespues>76</desayunodespues>
-	<desayunoantes>251</desayunoantes>
+	<almuerzoRapidaantes>2</almuerzoRapidaantes>
+	<almuerzoantes>98</almuerzoantes>
+	<almuerzodespues>109</almuerzodespues>
+	<cenaLantusantes>7</cenaLantusantes>
+	<cenaRapidaantes>5</cenaRapidaantes>
+	<cenaantes>172</cenaantes>
+	<cenadespues>118</cenadespues>
+	<desayunoLantusantes>24</desayunoLantusantes>
+	<desayunoRapidaantes>4</desayunoRapidaantes>
+	<desayunoantes>106</desayunoantes>
+	<desayunodespues>105</desayunodespues>
 </dia>
-<dia>
-	<fecha>1256076000.0</fecha>
-	<desayunodespues>268</desayunodespues>
-	<desayunoantes>44</desayunoantes>
-</dia>
-<dia>
-	<fecha>1256162400.0</fecha>
-	<desayunodespues>235</desayunodespues>
-	<desayunoantes>187</desayunoantes>
-</dia>
-<dia>
-	<fecha>1256248800.0</fecha>
-	<desayunodespues>233</desayunodespues>
-	<desayunoantes>206</desayunoantes>
-</dia>
+</root>
