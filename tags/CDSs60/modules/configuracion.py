@@ -17,6 +17,11 @@
 
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+from time import localtime
+
+actMes=localtime()[1]
+actAno=localtime()[0]
+database = u"csds60"
+database = database +"_"+ str(actMes)+"_"+str(actAno) + ".db"
 
 cfgIdioma=u"es"
-database=u"csds60.db"

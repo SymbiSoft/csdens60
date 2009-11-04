@@ -21,6 +21,7 @@
 
 import e32db,sys,time
 from random import randrange
+from time import localtime
 
 try:
     raise Exception
@@ -36,6 +37,7 @@ from configuracion import *
 
 db = e32db.Dbms()
 dbv = e32db.Db_view()
+
 try:
     db.open(u'%s:\\Python\\resources\\db\\%s'%(unidad,database))
 except:
@@ -55,29 +57,29 @@ except:
         #-1 es que esta introducida en la bd pero no se usa
         db.execute(u"insert into insulinas (tipo,orden) values('%s',%d)"%('Rapida',0))
         db.execute(u"insert into insulinas (tipo,orden) values('%s',%d)"%('Lantus',1))
-        for i in range(1253916000,1297116000,86400):
-            rDesayunoAntes=randrange(70,240)
-            rDesayunoDespues=randrange(rDesayunoAntes-20,rDesayunoAntes+20)
-            rDesayunoRapida=randrange(2,7)
-            rDesayunoLantus=24
-            rAlmuerzoAntes=randrange(70,240)
-            rAlmuerzoDespues=randrange(rDesayunoAntes-20,rDesayunoAntes+20)
-            rAlmuerzoRapida=randrange(2,7)
-            rCenaAntes=randrange(70,240)
-            rCenaDespues=randrange(rDesayunoAntes-20,rDesayunoAntes+20)
-            rCenaRapida=randrange(2,7)
-            rCenaLantus=7
-            db.execute(u"insert into diario (fecha,tipo,valor) values(#%s#,'%s',%d)"%(e32db.format_time(i),'desayunoantes',rDesayunoAntes))
-            db.execute(u"insert into diario (fecha,tipo,valor) values(#%s#,'%s',%d)"%(e32db.format_time(i),'desayunodespues',rDesayunoDespues))
-            db.execute(u"insert into diario (fecha,tipo,valor) values(#%s#,'%s',%d)"%(e32db.format_time(i),'desayunoRapidaantes',rDesayunoRapida))
-            db.execute(u"insert into diario (fecha,tipo,valor) values(#%s#,'%s',%d)"%(e32db.format_time(i),'desayunoLantusantes',rDesayunoLantus))
-            db.execute(u"insert into diario (fecha,tipo,valor) values(#%s#,'%s',%d)"%(e32db.format_time(i),'almuerzoantes',rAlmuerzoAntes))
-            db.execute(u"insert into diario (fecha,tipo,valor) values(#%s#,'%s',%d)"%(e32db.format_time(i),'almuerzodespues',rAlmuerzoDespues))
-            db.execute(u"insert into diario (fecha,tipo,valor) values(#%s#,'%s',%d)"%(e32db.format_time(i),'almuerzoRapidaantes',rAlmuerzoRapida))
-            db.execute(u"insert into diario (fecha,tipo,valor) values(#%s#,'%s',%d)"%(e32db.format_time(i),'cenaantes',rCenaAntes))
-            db.execute(u"insert into diario (fecha,tipo,valor) values(#%s#,'%s',%d)"%(e32db.format_time(i),'cenadespues',rCenaDespues))
-            db.execute(u"insert into diario (fecha,tipo,valor) values(#%s#,'%s',%d)"%(e32db.format_time(i),'cenaRapidaantes',rCenaRapida))
-            db.execute(u"insert into diario (fecha,tipo,valor) values(#%s#,'%s',%d)"%(e32db.format_time(i),'cenaLantusantes',rCenaLantus))
+        #for i in range(1253916000,1297116000,86400):
+         #   rDesayunoAntes=randrange(70,240)
+         #   rDesayunoDespues=randrange(rDesayunoAntes-20,rDesayunoAntes+20)
+         #   rDesayunoRapida=randrange(2,7)
+         #   rDesayunoLantus=24
+         #   rAlmuerzoAntes=randrange(70,240)
+         #   rAlmuerzoDespues=randrange(rDesayunoAntes-20,rDesayunoAntes+20)
+         #   rAlmuerzoRapida=randrange(2,7)
+         #   rCenaAntes=randrange(70,240)
+         #   rCenaDespues=randrange(rDesayunoAntes-20,rDesayunoAntes+20)
+         #   rCenaRapida=randrange(2,7)
+         #   rCenaLantus=7
+         #   db.execute(u"insert into diario (fecha,tipo,valor) values(#%s#,'%s',%d)"%(e32db.format_time(i),'desayunoantes',rDesayunoAntes))
+         #   db.execute(u"insert into diario (fecha,tipo,valor) values(#%s#,'%s',%d)"%(e32db.format_time(i),'desayunodespues',rDesayunoDespues))
+         #   db.execute(u"insert into diario (fecha,tipo,valor) values(#%s#,'%s',%d)"%(e32db.format_time(i),'desayunoRapidaantes',rDesayunoRapida))
+         #   db.execute(u"insert into diario (fecha,tipo,valor) values(#%s#,'%s',%d)"%(e32db.format_time(i),'desayunoLantusantes',rDesayunoLantus))
+         #   db.execute(u"insert into diario (fecha,tipo,valor) values(#%s#,'%s',%d)"%(e32db.format_time(i),'almuerzoantes',rAlmuerzoAntes))
+         #   db.execute(u"insert into diario (fecha,tipo,valor) values(#%s#,'%s',%d)"%(e32db.format_time(i),'almuerzodespues',rAlmuerzoDespues))
+         #   db.execute(u"insert into diario (fecha,tipo,valor) values(#%s#,'%s',%d)"%(e32db.format_time(i),'almuerzoRapidaantes',rAlmuerzoRapida))
+         #   db.execute(u"insert into diario (fecha,tipo,valor) values(#%s#,'%s',%d)"%(e32db.format_time(i),'cenaantes',rCenaAntes))
+         #   db.execute(u"insert into diario (fecha,tipo,valor) values(#%s#,'%s',%d)"%(e32db.format_time(i),'cenadespues',rCenaDespues))
+         #   db.execute(u"insert into diario (fecha,tipo,valor) values(#%s#,'%s',%d)"%(e32db.format_time(i),'cenaRapidaantes',rCenaRapida))
+         #   db.execute(u"insert into diario (fecha,tipo,valor) values(#%s#,'%s',%d)"%(e32db.format_time(i),'cenaLantusantes',rCenaLantus))
 
 def obtener_diario_dia(dia,mes,ano,tipo):
     fechaValues=[ano,mes,dia,0,0,0,0,0,1]

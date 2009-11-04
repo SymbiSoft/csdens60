@@ -1,7 +1,8 @@
 # Archivo: export.py
 # Autor: Jorge Aguirre Andreu
 # Descripción: Puedes exportar todo el diario en un archivo xml para la aplicación
-# csds60analyzer mediante conexión(a determinar) con un ordenador(del endocrino), asi se facilitan las revisiones
+# csds60analyzer, exportar a html para su visionado y enviar dichos datos mediante 
+# conexión(a determinar) con un ordenador(del endocrino), asi se facilitan las revisiones
 # y se agiliza el trato entre ambas partes.
 #
 #   Copyright (C) 2009  Jorge Aguirre Andreu
@@ -20,7 +21,7 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import e32, appuifw, sys, os, graphics, codecs
+import e32, appuifw, sys, os, graphics, codecs, key_codes
 
 try:
     raise Exception
@@ -33,6 +34,7 @@ unidad=path[0]
 modulospropios = unidad+':\\Python\\modules'
 sys.path.append(modulospropios)
 from idioma import getLang
+from configuracion import *
 import base_de_datos
 
 
@@ -49,7 +51,7 @@ def generar_xml():
         xml=xml+u"\t<"+str(datos.col(2))+u">"+str(datos.col(3))+u"</"+str(datos.col(2))+u">\n"
         datos.next_line()
     xmlFinal=u"<?xml version=\"1.0\" encoding=\"UTF-8\"?><root>"+xml[6:]+u"</dia></root>"
-    fichero=codecs.open(unidad+':\\Python\\resources\db\db.xml','w','utf8')
+    fichero=codecs.open(unidad+':\\Python\\resources\db\db_'+str(actMes)+"_"+str(actAno)+'.xml','w','utf8')
     fichero.write(xmlFinal)
 
 def generar_html():
@@ -80,17 +82,30 @@ childNodes[j].className==\"datosDiaTitulo\"){var diaValor=dias[i].childNodes[j];
         html=html+u"<div class=\"datosDiaContAtr\">"+str(datos.col(2))+u"</div><div class=\"datosDiaContVal\">"+str(datos.col(3))+u"</div>"
         datos.next_line()
     htmlFinal=cabecerahtml+css+javascript+u"</head><body><div id=\"datosCont\">"+html[12:]+u"</div></body></html>"
-    fichero=codecs.open(unidad+':\\Python\\resources\db\datos.html','w','utf8')
+    fichero=codecs.open(unidad+':\\Python\\resources\db\datos_'+str(actMes)+"_"+str(actAno)+'.html','w','utf8')
     fichero.write(htmlFinal)
 
 def handle_redraw(rect):
     global canvasExport
     global imExport
+    global actPos
+    colorTexto=[0 for x in range(8)]
+    for i in range(3):
+        colorTexto[i]=0x000000
+    colorTexto[actPos]=0xff0000
     canvasExport.blit(imExport)
     canvasExport.text((178,85),getLang(u"EXPORTAR"),0xbbbbbb,font=(u"symbol",27))
     canvasExport.text((177,84),getLang(u"EXPORTAR"),0x000000,font=(u"symbol",27))
     canvasExport.text((240,410),getLang(u"VOLVER"),0xffffff,font=(u"legend",25,appuifw.STYLE_BOLD))
     canvasExport.text((25,410),getLang(u"OPCIONES"),0xffffff,font=(u"legend",25,appuifw.STYLE_BOLD))
+    
+    canvasExport.line((20,120,330,120),0)
+    canvasExport.text((40,135),getLang(u"XML"),colorTexto[0],font=(u"legend",17,appuifw.STYLE_BOLD))
+    canvasExport.line((20,155,330,155),0)
+    canvasExport.text((40,170),getLang(u"HTML"),colorTexto[1],font=(u"legend",17,appuifw.STYLE_BOLD))
+    canvasExport.line((20,190,330,190),0)
+    canvasExport.text((40,205),getLang(u"BLUET"),colorTexto[2],font=(u"legend",17,appuifw.STYLE_BOLD))
+    canvasExport.line((20,225,330,225),0)
 
 def volverAtras():
     global gvAtras
@@ -98,8 +113,47 @@ def volverAtras():
     for i in range(len(gvAtras)-1):
         gvAtrasEnvio[i]=gvAtras[i]
     gvAtras[len(gvAtras)-1](gvAtrasEnvio)
+    
+def moverCursor(pos):
+    global actPos
+    global movimientos
+    actPos+=movimientos[actPos][1][pos]
+    appuifw.app.body = canvasExport
+    
+def press_select():
+    global movimientos
+    global actPos
+    if(movimientos[actPos][3]) == u"XML":
+        generar_xml()
+        appuifw.note(u"XML", "conf")
+    elif(movimientos[actPos][3]) == u"HTML":
+        generar_html()
+        appuifw.note(u"HTML", "conf")
+    elif(movimientos[actPos][3]) == u"BLUET":
+        appuifw.note(u"BLUETOOTH", "conf")
+    appuifw.app.body = canvasExport    
+    
+def press_up():
+    moverCursor(0)
+
+def press_right():
+    moverCursor(1)
+
+def press_down():
+    moverCursor(2)
+
+def press_left():
+    moverCursor(3)
 
 def mostrarExport(vAtras):
+    global movimientos
+    movimientos=[
+        [0,[0,0,1,0],u"--",u"XML"],
+        [1,[-1,0,1,0],u"--",u"HTML"],
+        [2,[-1,0,0,0],u"--",u"BLUET"],
+        ]
+    global actPos
+    actPos=0
     ruta = unidad+':\\python\\resources\\ui\\'
     global imExport
     imExport = graphics.Image.open(ruta+'fondo11.png')
@@ -109,11 +163,14 @@ def mostrarExport(vAtras):
     appuifw.app.body = canvasExport
     appuifw.app.screen = 'full'
     appuifw.app.title = u"Exportar"
+    canvasExport.bind(key_codes.EKeySelect, press_select)
+    canvasExport.bind(key_codes.EKeyUpArrow, press_up)
+    canvasExport.bind(key_codes.EKeyRightArrow, press_right)
+    canvasExport.bind(key_codes.EKeyDownArrow, press_down)
+    canvasExport.bind(key_codes.EKeyLeftArrow, press_left)
     global gvAtras
     gvAtras=vAtras
     if len(vAtras)==1:
         appuifw.app.exit_key_handler=gvAtras[0]
     else:
-        appuifw.app.exit_key_handler=volverAtras
-    generar_xml()
-    generar_html()
+        appuifw.app.exit_key_handler=volverAtras    
