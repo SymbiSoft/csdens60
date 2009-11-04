@@ -64,7 +64,7 @@ csds60={
     u"CONFIGURACION":u"  Preferences",
     u"CITAS":u"Medical Dates",
     u"EXPORTAR":u"  Export",
-    u"ENFERMEDADES":u"Illnesses",
+    u"NOTAS ADICIONALES":u"Extra notes",
     u"MEDICAMENTOS":u"Medicines",
     u"ESCRIBE TEXTO:":u"Type text:",
     u"COMIDAS":u"Meals",
@@ -75,5 +75,8 @@ csds60={
     u"T3":u"and you are welcome to redistribute it",
     u"T4":u"under certain conditions. See",
     u"NADA":u"Nothing",
-    u"EST":u"  Stadistics"
+    u"EST":u"  Stadistics",
+    u"XML":u"Data to XML",
+    u"HTML":u"Data to HTML",
+    u"BLUET":u"Send data on Bluetooth"
     }

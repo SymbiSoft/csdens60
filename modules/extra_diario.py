@@ -64,7 +64,7 @@ def handle_redraw(rect):
     canvasExtra.text((40,235),getLang(u"RESOPON"),0x000000,font=(u"legend",17,appuifw.STYLE_BOLD))
     canvasExtra.text((155,235),ajustar_texto(valor[5]),colorTexto[5],font=(u"legend",17))
     canvasExtra.line((20,240,330,240),0)
-    canvasExtra.text((30,255),getLang(u"ENFERMEDADES"),0x000000,font=(u"legend",17,appuifw.STYLE_BOLD))
+    canvasExtra.text((30,255),getLang(u"NOTAS ADICIONALES"),0x000000,font=(u"legend",17,appuifw.STYLE_BOLD))
     canvasExtra.text((155,255),ajustar_texto(valor[6]),colorTexto[6],font=(u"legend",17))
     canvasExtra.line((20,280,330,280),0)
     canvasExtra.text((30,295),getLang(u"MEDICAMENTOS"),0x000000,font=(u"legend",17,appuifw.STYLE_BOLD))

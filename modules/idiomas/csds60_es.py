@@ -64,7 +64,7 @@ csds60={
     u"CONFIGURACION":u"Configuración",
     u"CITAS":u"Citas Médicas",
     u"EXPORTAR":u"Exportar",
-    u"ENFERMEDADES":u"Enfermedades",
+    u"NOTAS ADICIONALES":u"Notas extra",
     u"MEDICAMENTOS":u"Medicamentos",
     u"ESCRIBE TEXTO:":u"Escribe texto:",
     u"COMIDAS":u"Comidas",
@@ -75,5 +75,8 @@ csds60={
     u"T3":u"y puedes redistribuirlo sin problemas",
     u"T4":u"bajo ciertas condiciones. Más info aquí",
     u"NADA":u"Nada",
-    u"EST":u"Estadísticas"
+    u"EST":u"Estadísticas",
+    u"XML":u"Exportar datos a XML",
+    u"HTML":u"Exportar datos a HTML",
+    u"BLUET":u"Enviar datos por Bluetooth"
     }
