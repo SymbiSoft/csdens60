@@ -35,6 +35,7 @@ unidad=path[0]
 modulospropios = unidad+':\\Python\\modules'
 sys.path.append(modulospropios)
 from idioma import getLang
+import citas_dia
 
 def esBisiesto(ano):
     return ano % 4 == 0 and ano % 100 != 0 or ano % 400 == 0
@@ -156,6 +157,7 @@ def press_select():
     for i in range(len(gvAtras)):
         gvAtrasEnvio[i]=gvAtras[i]
     gvAtrasEnvio[len(gvAtras)]=mostrarCitas
+    citas_dia.mostrar_citas_dia(actPos+1,actMes,actAno,gvAtrasEnvio)
     
 def handle_redraw(rect):
     global canvasCitas

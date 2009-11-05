@@ -35,6 +35,7 @@ modulospropios = unidad+':\\Python\\modules'
 sys.path.append(modulospropios)
 from idioma import getLang
 from configuracion import *
+from e32socket import *
 import base_de_datos
 
 
@@ -84,6 +85,29 @@ childNodes[j].className==\"datosDiaTitulo\"){var diaValor=dias[i].childNodes[j];
     htmlFinal=cabecerahtml+css+javascript+u"</head><body><div id=\"datosCont\">"+html[12:]+u"</div></body></html>"
     fichero=codecs.open(unidad+':\\Python\\resources\db\datos_'+str(actMes)+"_"+str(actAno)+'.html','w','utf8')
     fichero.write(htmlFinal)
+    
+def enviarBluetooth():
+    global unidad
+    generar_xml()
+    generar_html()
+    try:
+        xmlpath = u''
+        htmlpath = u''
+        xmlpath = xmlpath + unidad+':\\Python\\resources\db\db_'+str(actMes)+'_'+str(actAno)+'.xml'
+        htmlpath = htmlpath + unidad+':\\Python\\resources\db\datos_'+str(actMes)+'_'+str(actAno)+'.html'
+        #encuentra dispositivos con Bluetooth
+        phone = bt_obex_discover()
+        #direccion mac del dispositivo
+        addr=phone[0]
+        #puerto del dispositivo
+        port=phone[1].values()[0]
+        file = appuifw.query(getLang(u'XML CARGA'),'text',xmlpath)
+        bt_obex_send_file(addr, port , file)
+        file = appuifw.query(getLang(u'HTML CARGA'),'text',htmlpath)
+        bt_obex_send_file(addr, port , file)
+        appuifw.note(getLang(u"ARCH ENVIADOS"), 'conf')
+    except Exception, error:
+        appuifw.note(unicode(error), 'error') 
 
 def handle_redraw(rect):
     global canvasExport
@@ -125,12 +149,12 @@ def press_select():
     global actPos
     if(movimientos[actPos][3]) == u"XML":
         generar_xml()
-        appuifw.note(u"XML", "conf")
+        appuifw.note(getLang(u"XML GEN"), "conf")
     elif(movimientos[actPos][3]) == u"HTML":
         generar_html()
-        appuifw.note(u"HTML", "conf")
+        appuifw.note(getLang(u"HTML GEN"), "conf")
     elif(movimientos[actPos][3]) == u"BLUET":
-        appuifw.note(u"BLUETOOTH", "conf")
+        enviarBluetooth()
     appuifw.app.body = canvasExport    
     
 def press_up():
@@ -156,7 +180,7 @@ def mostrarExport(vAtras):
     actPos=0
     ruta = unidad+':\\python\\resources\\ui\\'
     global imExport
-    imExport = graphics.Image.open(ruta+'fondo11.png')
+    imExport = graphics.Image.open(ruta+'fondo01.png')
     global canvasExport
     canvasExport = appuifw.Canvas(redraw_callback = handle_redraw)
     canvasExport.blit(imExport)

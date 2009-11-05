@@ -78,5 +78,15 @@ csds60={
     u"EST":u"  Stadistics",
     u"XML":u"Data to XML",
     u"HTML":u"Data to HTML",
-    u"BLUET":u"Send data on Bluetooth"
+    u"BLUET":u"Send data on Bluetooth",
+    u"XML GEN":u"XML Created",
+    u"HTML GEN":u"HTML Created",
+    u'XML CARGA':u"Load the XML, press OK:",
+    u'HTML CARGA':u"Load the HTML, press OK:",
+    u"ARCH ENVIADOS":u"Sent Files",
+    u"NUEVO":u"new",
+    u"CITA":u"Dates",
+    u"NREG":u"New record",
+    u"AREG":u"Record updated",
+    u"BREG":u"Records deleted"
     }
