@@ -50,6 +50,7 @@ except:
     db.execute(u"insert into ordendiario(tipo,orden) values('desa',1)")
     db.execute(u"insert into ordendiario(tipo,orden) values('almu',2)")
     db.execute(u"insert into ordendiario(tipo,orden) values('cena',3)")
+    db.execute(u"create table registroscitas (fecha date,descripcion varchar)")
     #Datos de ejemplo (se insertaran en la base de datos si la siguiente condicion se evalua como verdadera, y no si es falsa):
     if True:
         #fechaValues=[2009,9,18,0,0,0,0,0,1] #dia,mes,año de insersion de los datos
@@ -131,4 +132,29 @@ def obtener_numero_insulinas():
 def obtener_datos_diario():
     dbv.prepare(db,u"select * from diario order by fecha,tipo")
     return dbv
+    
+def actualizar_registros_citas(dia,mes,ano,descripcion):
+    fechaValues=[ano,mes,dia,0,0,0,0,0,1]
+    fecha=time.mktime(time.struct_time(fechaValues))
+    dbv.prepare(db,u"select * from registroscitas where fecha=#%s#"%(e32db.format_time(fecha)))
+    if dbv.count_line()!=0:
+        db.execute(u"update registroscitas set descripcion='%s' where fecha=#%s#"%(descripcion,e32db.format_time(fecha)))
+    else:
+        db.execute(u"insert into registroscitas (fecha,descripcion) values(#%s#,'%s')"%(e32db.format_time(fecha),descripcion))
+    
+def obtener_registros_citas(dia,mes,ano):
+    fechaValues=[ano,mes,dia,0,0,0,0,0,1]
+    fecha=time.mktime(time.struct_time(fechaValues))
+    dbv.prepare(db,u"select * from registroscitas where fecha=#%s#"%(e32db.format_time(fecha)))
+    if dbv.count_line()!=0:
+        dbv.get_line()
+        return dbv.col(2)
+    return None
+    
+def borrar_registros_citas(dia,mes,ano):
+    fechaValues=[ano,mes,dia,0,0,0,0,0,1]
+    fecha=time.mktime(time.struct_time(fechaValues))
+    dbv.prepare(db,u"select * from registroscitas where fecha=#%s#"%(e32db.format_time(fecha)))
+    if dbv.count_line()!=0:
+        db.execute(u"delete from registroscitas where fecha=#%s#"%(e32db.format_time(fecha)))
     
