@@ -1,6 +1,6 @@
 # Archivo: citas_dia.py
 # Autor: Jorge Aguirre Andreu
-# Descripción: Muestra un listado de citas médicas a las que debe acudir el usuario, previamente
+# Descripción: Muestra las citas médicas a las que debe acudir el usuario, previamente
 # introducidas por él mismo. 
 #
 #   Copyright (C) 2009  Jorge Aguirre Andreu
@@ -42,36 +42,44 @@ def handle_redraw(rect):
     global actMes
     global actAno
     global actPos
-    colorTexto=[0 for x in range(8)]
-    for i in range(3):
+    global valor
+    colorTexto=[0 for x in range(2)]
+    for i in range(2):
         colorTexto[i]=0x000000
     colorTexto[actPos]=0xff0000
     canvasCitasDia.blit(imCitasDia)
     canvasCitasDia.text((120,85),getLang(u"CITA")+" (%d-%d-%d)"%(actDia,actMes,actAno),0xbbbbbb,font=(u"symbol",27))
     canvasCitasDia.text((119,84),getLang(u"CITA")+" (%d-%d-%d)"%(actDia,actMes,actAno),0x000000,font=(u"symbol",27))
     canvasCitasDia.text((240,410),getLang(u"VOLVER"),0xffffff,font=(u"legend",25,appuifw.STYLE_BOLD))
-    canvasCitasDia.text((25,410),getLang(u"NUEVO"),0xffffff,font=(u"legend",25,appuifw.STYLE_BOLD))
     
     canvasCitasDia.line((20,120,330,120),0)
     canvasCitasDia.text((40,135),getLang(u"NREG"),colorTexto[0],font=(u"legend",17,appuifw.STYLE_BOLD))
     canvasCitasDia.line((20,155,330,155),0)
-    canvasCitasDia.text((40,170),u"Registro1",colorTexto[1],font=(u"legend",17,appuifw.STYLE_BOLD))
+    canvasCitasDia.text((40,170),ajustar_texto(valor),0x000000,font=(u"legend",17))
     canvasCitasDia.line((20,190,330,190),0)
-    canvasCitasDia.text((40,205),getLang(u"BREG"),colorTexto[2],font=(u"legend",17,appuifw.STYLE_BOLD))
+    canvasCitasDia.text((40,205),getLang(u"BREG"),colorTexto[1],font=(u"legend",17,appuifw.STYLE_BOLD))
     canvasCitasDia.line((20,225,330,225),0)
 
 def press_select():
     global movimientos
     global actPos
+    global valor
+    global actDia
+    global actMes
+    global actAno       
     if(movimientos[actPos][2]) == u"nuevo":
-        #nuevo_registro()
-        appuifw.note(getLang(u"NREG"), "conf")
-    elif(movimientos[actPos][2]) == u"--":
-        #actualizar_registro_actual()
-        appuifw.note(getLang(u"AREG"), "conf")
+        valor = appuifw.query(getLang(u"ESCRIBE TEXTO:"), "text", base_de_datos.obtener_registros_citas(actDia,actMes,actAno))
+        if valor == None:
+            contenidoDB = base_de_datos.obtener_registros_citas(actDia,actMes,actAno)
+            if contenidoDB == 0:
+                valor = getLang(u"NADA")
+            else:
+                valor = contenidoDB
+        else:
+            base_de_datos.actualizar_registros_citas(actDia,actMes,actAno,valor)
     elif(movimientos[actPos][2]) == u"borra":
-        #borrar_registros()
-        appuifw.note(getLang(u"BREG"), "conf")
+        valor = getLang(u"NADA")
+        base_de_datos.borrar_registros_citas(actDia,actMes,actAno)
     appuifw.app.body = canvasCitasDia
 
 def moverCursor(pos):
@@ -97,7 +105,31 @@ def volverAtras():
     gvAtrasEnvio=[0 for x in range(len(gvAtras)-1)]
     for i in range(len(gvAtras)-1):
         gvAtrasEnvio[i]=gvAtras[i]
-    gvAtras[len(gvAtras)-1](gvAtrasEnvio)            
+    gvAtras[len(gvAtras)-1](gvAtrasEnvio)
+
+def ajustar_texto(texto):
+    maximo=13
+    grupos=[
+        [u"aábdeéghnñoópquúü",float(13)/float(20)],
+        [u"cçsvy",float(13)/float(26)],
+        [u"fiíjl",float(13)/float(36)],
+        [u"kxz",float(13)/float(23)],
+        [u"rt",float(13)/float(30)],
+        [u"m",float(13)/float(13)],
+        [u"w",float(13)/float(14)],
+        [u" .,:;",float(13)/float(44)],
+    ]
+    total=float(0)
+    numero=0
+    for i in texto:
+        for j in grupos:
+            if i in j[0] and total<maximo:
+                if total+j[1]<maximo:
+                    total=total+j[1]
+                    numero=numero+1
+    if numero+1<len(texto):
+        return texto[:numero-2]+"..."
+    return texto    
 
 def mostrar_citas_dia_aux(vAtras):
     global actDia
@@ -113,24 +145,21 @@ def mostrar_citas_dia(dia,mes,ano,vAtras):
     global actAno
     actAno=ano
     global movimientos
-    #numero de registros de la bd para ese dia, tantos -- como haya
     movimientos=[
         [0,[0,0,1,0],u"nuevo"],
-        [1,[-1,0,1,0],u"--"],
-        [2,[-1,0,0,0],u"borra"]        
+        [1,[-1,0,0,0],u"borra"]        
         ]
-    #global datos
-    #numero de registros de la bd para ese dia
-    #datos=[0 for x in range()]
-    #for i in range(#numero de registros de la bd para ese dia):
-     #   datos[i]=base_de_datos.obtener_citas_dia(actDia,actMes,actAno,movimientos[i])
+    global valor
+    valor = base_de_datos.obtener_registros_citas(actDia,actMes,actAno)
+    if valor == None:
+        valor = getLang(u"NADA")
     global actPos
     actPos=0
     global actMod
     actMod=False
     ruta = unidad+':\\python\\resources\\ui\\'
     global imCitasDia
-    imCitasDia = graphics.Image.open(ruta+'fondo11.png')
+    imCitasDia = graphics.Image.open(ruta+'fondo01.png')
     global canvasCitasDia
     canvasCitasDia = appuifw.Canvas(redraw_callback = handle_redraw)
     canvasCitasDia.blit(imCitasDia)

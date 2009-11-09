@@ -87,6 +87,5 @@ csds60={
     u"NUEVO":u"new",
     u"CITA":u"Dates",
     u"NREG":u"New record",
-    u"AREG":u"Record updated",
     u"BREG":u"Records deleted"
     }

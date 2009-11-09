@@ -87,6 +87,5 @@ csds60={
     u"NUEVO":u"nuevo",
     u"CITA":u"Citas",
     u"NREG":u"Nuevo registro",
-    u"AREG":u"Registro actualizado",
     u"BREG":u"Registros eliminados"
     }
