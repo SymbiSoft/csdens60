@@ -19,9 +19,48 @@
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 from time import localtime
 
-actMes=localtime()[1]
-actAno=localtime()[0]
+#creacion de la base de datos del mes actual
+actMes = localtime()[1]
+actAno = localtime()[0]
 database = u"csds60"
-database = database +"_"+ str(actMes)+"_"+str(actAno) + ".db"
+database = database +"_"+ str(actMes)+"_"+str(actAno) + ".db" 
 
-cfgIdioma=u"es"
+#idioma seleccionado
+cfgIdioma = u"es" 
+
+#numero de tiras reactivas minimo para activar la alarma
+alarmaTiras = 5 
+#numero de dias con antelacion antes de la fecha de la cita 
+alarmaCitas = 3 
+
+#peso de la persona en kg
+peso = 76.00 
+#altura de la persona en cm
+estatura = 175 
+
+#total de insulinas que se administra diariamente
+totalInsulina = 38 
+#cantidad de glucosa que baja una unidad de insulina(parte entera)
+factorSensibilidad = 1800//totalInsulina
+
+#dosis de insulina recomendada por el medico, ayudara a calcular los ratios
+dosisDesayuno = 4
+dosisAlmuerzo = 3
+dosisCena = 2
+
+#ratio es la necesidad de insulina por racion de hidratos de carbono
+#ratios de desayuno, almuerzo y cena; normalmente los ratios del desayuno a cena varian,
+#por eso es necesario guardar los 3 tipos
+ratioDesayuno = 0.75
+ratioAlmuerzo = 1
+ratioCena = 2
+
+#1 racion de hidratos de carbono -> un vaso de leche o 2 yogures naturales
+#2              "                -> un pan o tazon de cereales, legumbres, patatas, pasta
+#2              "                -> 1 pieza mediana de fruta
+#1              "                -> 1 plato de verdura
+#0              "                -> carne o pescado
+#para calcular la dosis de insulina, la formula es (cantidad de raciones de hc)/(ratio pertinente) +
+#correcion de glucosa si superamos 250 mg, cuya formula es (glucosa actual - 100) / (factor sensibilidad)     
+
+
