@@ -51,6 +51,14 @@ except:
     db.execute(u"insert into ordendiario(tipo,orden) values('almu',2)")
     db.execute(u"insert into ordendiario(tipo,orden) values('cena',3)")
     db.execute(u"create table registroscitas (fecha date,descripcion varchar)")
+    db.execute(u"create table tiposalimentos (tipo varchar, racion integer)")
+    db.execute(u"insert into tiposalimentos(tipo,racion) values('vaso de leche o 2 yogures naturales',1)")
+    db.execute(u"insert into tiposalimentos(tipo,racion) values('un pan o tazon de cereales o pasta',2)")
+    db.execute(u"insert into tiposalimentos(tipo,racion) values('tazon de legumbres o patatas',2)")    
+    db.execute(u"insert into tiposalimentos(tipo,racion) values('1 pieza mediana de fruta',2)")
+    db.execute(u"insert into tiposalimentos(tipo,racion) values('1 plato de verdura',1)")
+    db.execute(u"insert into tiposalimentos(tipo,racion) values('carne o pescado',0)")
+    
     #Datos de ejemplo (se insertaran en la base de datos si la siguiente condicion se evalua como verdadera, y no si es falsa):
     if True:
         #fechaValues=[2009,9,18,0,0,0,0,0,1] #dia,mes,año de insersion de los datos
