@@ -52,7 +52,7 @@ dosisCena = 2
 #ratios de desayuno, almuerzo y cena; normalmente los ratios del desayuno a cena varian,
 #por eso es necesario guardar los 3 tipos
 ratioDesayuno = 0.75
-ratioAlmuerzo = 1
+ratioAlmuerzo = 1.34
 ratioCena = 2
 
 #1 racion de hidratos de carbono -> un vaso de leche o 2 yogures naturales
