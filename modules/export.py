@@ -113,7 +113,7 @@ def handle_redraw(rect):
     global canvasExport
     global imExport
     global actPos
-    colorTexto=[0 for x in range(8)]
+    colorTexto=[0 for x in range(3)]
     for i in range(3):
         colorTexto[i]=0x000000
     colorTexto[actPos]=0xff0000
