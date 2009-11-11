@@ -87,5 +87,9 @@ csds60={
     u"NUEVO":u"nuevo",
     u"CITA":u"Citas",
     u"NREG":u"Nuevo registro",
-    u"BREG":u"Registros eliminados"
+    u"BREG":u"Registros eliminados",
+    u"IDIOMA":u"Selección de idioma",
+    u"PERSONAL":u"Ajustes personales",
+    u"BD":u"Cambiar base de datos",
+    u"ALARMA":u"Ajustes de alarma"
     }
