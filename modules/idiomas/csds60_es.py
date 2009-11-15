@@ -91,5 +91,10 @@ csds60={
     u"IDIOMA":u"Selección de idioma",
     u"PERSONAL":u"Ajustes personales",
     u"BD":u"Cambiar base de datos",
-    u"ALARMA":u"Ajustes de alarma"
+    u"ALARMA":u"Ajustes de alarma",
+    u"SIDIOMA":u"Seleccione un idioma",
+    u"REINICIA":u"Debe reiniciar la consola",
+    u"REINICIA1":u"de Python para los nuevos ajustes",
+    u"INSU":u"Insertar insulinas",
+    u"SBD":u"Seleccione una base de datos"
     }

@@ -91,5 +91,10 @@ csds60={
     u"IDIOMA":u"Language selection",
     u"PERSONAL":u"Personal settings",
     u"BD":u"Database selection",
-    u"ALARMA":u"Alarm settings"
+    u"ALARMA":u"Alarm settings",
+    u"SIDIOMA":u"Select a language",
+    u"REINICIA":u"You have to reboot the Python",
+    u"REINICIA1":u"shell for the new settings",
+    u"INSU":u"Insert insuline",
+    u"SBD":u"Select a data base"
     }
