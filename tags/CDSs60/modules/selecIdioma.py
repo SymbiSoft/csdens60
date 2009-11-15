@@ -40,14 +40,27 @@ def handle_redraw(rect):
     global colorTexto
     global datos
     colorTexto = 0x000000
-    if actMod == True:
-        colorTexto = 0xff0000
+    flechaIzquierdaX=80
+    flechaIzquierdaY=190
+    flechaIzquierda=[(10,0),(0,5),(10,10)]
+    flechaDerechaX=260
+    flechaDerechaY=190
+    flechaDerecha=[(0,0),(10,5),(0,10)]
     canvasSelecIdioma.blit(imSelecIdioma)
     canvasSelecIdioma.text((240,410),getLang(u"VOLVER"),0xffffff,font=(u"legend",25,appuifw.STYLE_BOLD))
     canvasSelecIdioma.text((110,85),getLang(u"IDIOMA"),0xbbbbbb,font=(u"symbol",27))
     canvasSelecIdioma.text((109,84),getLang(u"IDIOMA"),0x000000,font=(u"symbol",27))
+    if actMod == True:
+        colorTexto = 0xff0000
+        canvasSelecIdioma.polygon([(flechaIzquierdaX+dx,flechaIzquierdaY+dy) for dx,dy in flechaIzquierda],0xff0000,0xff0000)
+        canvasSelecIdioma.polygon([(flechaDerechaX+dx,flechaDerechaY+dy) for dx,dy in flechaDerecha],0xff0000,0xff0000)    
+    
+    canvasSelecIdioma.text((75,140),getLang(u"SIDIOMA"),0x000000,font=(u"symbol",22))
+    
     # recuperamos la cadena de texto asociada al idioma
-    canvasSelecIdioma.text((145,200),base_de_datos.obtener_idioma_actual(),colorTexto,font=(u"legend",20))
+    canvasSelecIdioma.text((145,200),base_de_datos.obtener_idioma_actual(),colorTexto,font=(u"symbol",20))
+    canvasSelecIdioma.text((30,300),getLang(u"REINICIA"),0x000000,font=(u"symbol",18,appuifw.STYLE_BOLD))
+    canvasSelecIdioma.text((30,320),getLang(u"REINICIA1"),0x000000,font=(u"symbol",18,appuifw.STYLE_BOLD))
     print base_de_datos.obtener_idioma_actual()
     
 def press_select():

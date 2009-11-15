@@ -82,7 +82,6 @@ except:
         dbconf.execute(u"insert into idiomas(id,const,nombre) values(%d,'%s','%s')"%(i,idiomas[i],idionombre[i]))
     # guarda un registro con todas las bds que hemos creado
     dbconf.execute(u"create table dbs (id integer,nombre varchar)")
-    dbconf.execute(u"insert into dbs(id,nombre) values(1,'%s')"%(database))
     
 try:
     db.open(u'%s:\\Python\\resources\\db\\%s'%(unidad,database))
@@ -104,6 +103,8 @@ except:
     db.execute(u"insert into tiposalimentos(tipo,racion) values('1 pieza mediana de fruta',2)")
     db.execute(u"insert into tiposalimentos(tipo,racion) values('1 plato de verdura',1)")
     db.execute(u"insert into tiposalimentos(tipo,racion) values('carne o pescado',0)")
+    # hay que poner esto aqui, porque sino se queda vacia la tabla de dbs
+    dbconf.execute(u"insert into dbs(id,nombre) values(0,'%s')"%(database))
     
     #Datos de ejemplo (se insertaran en la base de datos si la siguiente condicion se evalua como verdadera, y no si es falsa):
     if True:
@@ -224,13 +225,17 @@ def obtener_numero_idiomas():
     dbvconf.prepare(dbconf,u"select * from idiomas")
     return dbvconf.count_line()-1
     
-def obtener_dbs():
-    dbvconf.prepare(dbconf,u"select * from dbs")
-    return dbvconf
+def obtener_dbs(posicion):
+    dbvconf.prepare(dbconf,u"select * from dbs where id = %d"%(posicion))
+    if dbvconf.count_line()!=0:
+        dbvconf.get_line()
+        print dbvconf.col(2)
+        return dbvconf.col(2)
+    return None
     
 def obtener_numero_dbs():
     dbvconf.prepare(dbconf,u"select * from dbs")
-    return dbvconf.count_line()-1
+    return dbvconf.count_line()
     
 def actualizar_idioma(idiom):
     dbconf.execute(u"update dbproperties set valor='%s' where nombre='idioma'"%(idiom))

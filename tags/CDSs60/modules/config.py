@@ -32,14 +32,14 @@ unidad=path[0]
 modulospropios = unidad+':\\Python\\modules'
 sys.path.append(modulospropios)
 from idioma import getLang
-import selecIdioma, personal, selecBD, selecAlarm
+import selecIdioma, personal, selecBD, selecAlarm, selecInsu
 
 def handle_redraw(rect):
     global canvasConf
     global imConf
     global actPos
-    colorTexto=[0 for x in range(4)]
-    for i in range(4):
+    colorTexto=[0 for x in range(5)]
+    for i in range(5):
         colorTexto[i]=0x000000
     colorTexto[actPos]=0xff0000
     canvasConf.blit(imConf)
@@ -56,6 +56,8 @@ def handle_redraw(rect):
     canvasConf.line((20,225,330,225),0)
     canvasConf.text((40,240),getLang(u"ALARMA"),colorTexto[3],font=(u"legend",17,appuifw.STYLE_BOLD))
     canvasConf.line((20,260,330,260),0)
+    canvasConf.text((40,275),getLang(u"INSU"),colorTexto[4],font=(u"legend",17,appuifw.STYLE_BOLD))
+    canvasConf.line((20,295,330,295),0)
     
 def config_idioma():
     global actPos
@@ -93,6 +95,15 @@ def config_alarma():
     gvAtrasEnvio[len(gvAtras)]=mostrarConfig
     selecAlarm.mostrar_selecAlarm(gvAtrasEnvio)
     
+def config_insulina():
+    global actPos
+    global gvAtras
+    gvAtrasEnvio=[0 for x in range(len(gvAtras)+1)]
+    for i in range(len(gvAtras)):
+        gvAtrasEnvio[i]=gvAtras[i]
+    gvAtrasEnvio[len(gvAtras)]=mostrarConfig
+    selecInsu.mostrar_selecInsu(gvAtrasEnvio)
+    
 def volverAtras():
     global gvAtras
     gvAtrasEnvio=[0 for x in range(len(gvAtras)-1)]
@@ -117,6 +128,8 @@ def press_select():
         config_bd()        
     elif(movimientos[actPos][3]) == u"ALARMA":
         config_alarma()
+    elif(movimientos[actPos][3]) == u"INSU":
+        config_insulina()
     
 def press_up():
     moverCursor(0)
@@ -136,7 +149,8 @@ def mostrarConfig(vAtras):
         [0,[0,0,1,0],u"--",u"IDIOMA"],
         [1,[-1,0,1,0],u"--",u"PERSONAL"],
         [2,[-1,0,1,0],u"--",u"BD"],
-        [3,[-1,0,0,0],u"--",u"ALARMA"],
+        [3,[-1,0,1,0],u"--",u"ALARMA"],
+        [4,[-1,0,0,0],u"--",u"INSU"]
         ]
     global actPos
     actPos=0
