@@ -19,14 +19,18 @@
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 from time import localtime
 
+
+
 #creacion de la base de datos del mes actual
 actMes = localtime()[1]
 actAno = localtime()[0]
 database = u"csds60"
 database = database +"_"+ str(actMes)+"_"+str(actAno) + ".db" 
 
+#tiene que estar en esta linea, sino falla por los parametros de arriba
+from base_de_datos import obtener_idioma_act_conf
 #idioma seleccionado
-cfgIdioma = u"es" 
+cfgIdioma = obtener_idioma_act_conf() 
 
 #numero de tiras reactivas minimo para activar la alarma
 alarmaTiras = 5 
