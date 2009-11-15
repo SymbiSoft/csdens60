@@ -37,7 +37,53 @@ from configuracion import *
 
 db = e32db.Dbms()
 dbv = e32db.Db_view()
-
+dbconf = e32db.Dbms()
+dbvconf = e32db.Db_view()
+idiomas = [u'es',
+           u'en',
+           u'it',
+           u'ca',
+           u'de',
+           u'eu',
+           u'fr',
+           u'gl',
+           u'jp',
+           u'pt',
+           u'ru',
+           u'zh'
+           ]
+idionombre = [u'Español',
+              u'Inglés',
+              u'Italiano',
+              u'Catalán',
+              u'Alemán',
+              u'Euskera',
+              u'Francés',
+              u'Gallego',
+              u'Japonés',
+              u'Portugués',
+              u'Ruso',
+              u'Chino'
+              ]
+# tenemos una bd independiente llamada conf.cfg para almacenar parametros invariables
+# que solo se van a modificar muy pocas veces
+try:
+    dbconf.open(u'%s:\\Python\\resources\\config\\conf.cfg'%(unidad))
+except:
+    dbconf.create(u'%s:\\Python\\resources\\config\\conf.cfg'%(unidad))
+    dbconf.open(u'%s:\\Python\\resources\\config\\conf.cfg'%(unidad))
+    # tabla dbproperties para almacenar el idioma(por defecto español) y la bd actual(la primera que genera)
+    dbconf.execute(u"create table dbproperties (nombre varchar,valor varchar)")
+    dbconf.execute(u"insert into dbproperties(nombre,valor) values('idioma','es')")
+    dbconf.execute(u"insert into dbproperties(nombre,valor) values('db','%s')"%(database))
+    # guarda los idiomas disponibles para cargar
+    dbconf.execute(u"create table idiomas (id integer,const varchar,nombre varchar)")
+    for i in range(12):
+        dbconf.execute(u"insert into idiomas(id,const,nombre) values(%d,'%s','%s')"%(i,idiomas[i],idionombre[i]))
+    # guarda un registro con todas las bds que hemos creado
+    dbconf.execute(u"create table dbs (id integer,nombre varchar)")
+    dbconf.execute(u"insert into dbs(id,nombre) values(1,'%s')"%(database))
+    
 try:
     db.open(u'%s:\\Python\\resources\\db\\%s'%(unidad,database))
 except:
@@ -165,4 +211,54 @@ def borrar_registros_citas(dia,mes,ano):
     dbv.prepare(db,u"select * from registroscitas where fecha=#%s#"%(e32db.format_time(fecha)))
     if dbv.count_line()!=0:
         db.execute(u"delete from registroscitas where fecha=#%s#"%(e32db.format_time(fecha)))
+        
+def obtener_idiomas(posicion):
+    dbvconf.prepare(dbconf,u"select * from idiomas where id = %d"%(posicion))
+    if dbvconf.count_line()!=0:
+        dbvconf.get_line()
+        idArray = [dbvconf.col(2),dbvconf.col(3)]
+        return idArray
+    return None
     
+def obtener_numero_idiomas():
+    dbvconf.prepare(dbconf,u"select * from idiomas")
+    return dbvconf.count_line()-1
+    
+def obtener_dbs():
+    dbvconf.prepare(dbconf,u"select * from dbs")
+    return dbvconf
+    
+def obtener_numero_dbs():
+    dbvconf.prepare(dbconf,u"select * from dbs")
+    return dbvconf.count_line()-1
+    
+def actualizar_idioma(idiom):
+    dbconf.execute(u"update dbproperties set valor='%s' where nombre='idioma'"%(idiom))
+    
+def obtener_idioma_actual():
+    dbvconf.prepare(dbconf,u"select * from dbproperties where nombre='idioma'")
+    if dbvconf.count_line()!=0:
+        dbvconf.get_line()
+        temp = dbvconf.col(2)
+        dbvconf.prepare(dbconf,u"select * from idiomas where const='%s'"%(temp))
+        if dbvconf.count_line()!=0:
+            dbvconf.get_line()            
+            return dbvconf.col(3)
+    return None
+    
+def obtener_idioma_act_conf():
+    dbvconf.prepare(dbconf,u"select valor from dbproperties where nombre='idioma'")
+    if dbvconf.count_line()!=0:
+        dbvconf.get_line()
+        return dbvconf.col(1)
+    return None
+    
+def actualizar_db(datab):
+    dbconf.execute(u"update dbproperties set valor='%s' where nombre='db'"%(datab))
+    
+def obtener_db_actual():
+    dbvconf.prepare(dbconf,u"select * from dbproperties where nombre='db'")
+    if dbvconf.count_line()!=0:
+        dbvconf.get_line()
+        return dbvconf.col(2)
+    return None

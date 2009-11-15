@@ -135,7 +135,7 @@ def mostrar_citas_dia_aux(vAtras):
     global actDia
     global actMes
     global actAno
-    mostrar_citas_dia(actDia,actMes,actAno,vAtras)
+    mostrar_citas_dia(actDia,actMes,actAno,vAtras) 
 
 def mostrar_citas_dia(dia,mes,ano,vAtras):
     global actDia

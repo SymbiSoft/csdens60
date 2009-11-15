@@ -33,6 +33,7 @@ sys.path.append(modulospropios)
 from configuracion import *
 
 idioma=cfgIdioma
+print u"el idioma es %s"%(idioma)
 
 def fijarIdioma(id):
     global idioma
