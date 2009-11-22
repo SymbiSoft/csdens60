@@ -83,6 +83,10 @@ except:
     # guarda un registro con todas las bds que hemos creado
     dbconf.execute(u"create table dbs (id integer,nombre varchar)")
     
+def obtener_numero_dbs():
+    dbvconf.prepare(dbconf,u"select * from dbs")
+    return dbvconf.count_line()
+    
 try:
     db.open(u'%s:\\Python\\resources\\db\\%s'%(unidad,database))
 except:
@@ -104,7 +108,9 @@ except:
     db.execute(u"insert into tiposalimentos(tipo,racion) values('1 plato de verdura',1)")
     db.execute(u"insert into tiposalimentos(tipo,racion) values('carne o pescado',0)")
     # hay que poner esto aqui, porque sino se queda vacia la tabla de dbs
-    dbconf.execute(u"insert into dbs(id,nombre) values(0,'%s')"%(database))
+    # ademas se controla el indice actual de la tabla de bds
+    contadorbds = obtener_numero_dbs()
+    dbconf.execute(u"insert into dbs(id,nombre) values(%d,'%s')"%(contadorbds,database))
     
     #Datos de ejemplo (se insertaran en la base de datos si la siguiente condicion se evalua como verdadera, y no si es falsa):
     if True:
@@ -232,10 +238,6 @@ def obtener_dbs(posicion):
         print dbvconf.col(2)
         return dbvconf.col(2)
     return None
-    
-def obtener_numero_dbs():
-    dbvconf.prepare(dbconf,u"select * from dbs")
-    return dbvconf.count_line()
     
 def actualizar_idioma(idiom):
     dbconf.execute(u"update dbproperties set valor='%s' where nombre='idioma'"%(idiom))
