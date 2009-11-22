@@ -66,7 +66,8 @@ def press_select():
     global valor
     global actDia
     global actMes
-    global actAno       
+    global actAno
+    global marcado
     if(movimientos[actPos][2]) == u"nuevo":
         valor = appuifw.query(getLang(u"ESCRIBE TEXTO:"), "text", base_de_datos.obtener_registros_citas(actDia,actMes,actAno))
         if valor == None:
@@ -121,6 +122,8 @@ def ajustar_texto(texto):
     ]
     total=float(0)
     numero=0
+    if texto == None:
+        texto = getLang(u"NADA")
     for i in texto:
         for j in grupos:
             if i in j[0] and total<maximo:
@@ -135,7 +138,7 @@ def mostrar_citas_dia_aux(vAtras):
     global actDia
     global actMes
     global actAno
-    mostrar_citas_dia(actDia,actMes,actAno,vAtras) 
+    mostrar_citas_dia(actDia,actMes,actAno,vAtras)
 
 def mostrar_citas_dia(dia,mes,ano,vAtras):
     global actDia
@@ -148,7 +151,7 @@ def mostrar_citas_dia(dia,mes,ano,vAtras):
     movimientos=[
         [0,[0,0,1,0],u"nuevo"],
         [1,[-1,0,0,0],u"borra"]        
-        ]
+        ]  
     global valor
     valor = base_de_datos.obtener_registros_citas(actDia,actMes,actAno)
     if valor == None:
@@ -156,7 +159,7 @@ def mostrar_citas_dia(dia,mes,ano,vAtras):
     global actPos
     actPos=0
     global actMod
-    actMod=False
+    actMod=False    
     ruta = unidad+':\\python\\resources\\ui\\'
     global imCitasDia
     imCitasDia = graphics.Image.open(ruta+'fondo01.png')

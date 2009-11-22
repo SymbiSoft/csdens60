@@ -35,8 +35,18 @@ unidad=path[0]
 modulospropios = unidad+':\\Python\\modules'
 sys.path.append(modulospropios)
 from idioma import getLang
-import citas_dia
+import citas_dia,base_de_datos
 
+def calculacitas(mes,ano):
+    global diasdecitas
+    diasdecitas = [0 for x in range(numDias(mes,ano))]
+    for i in range(len(diasdecitas)):
+        if base_de_datos.obtener_registros_citas(i+1,mes,ano) != None:
+            diasdecitas[i] = i + 1
+        else: 
+            diasdecitas[i] = 0
+    return diasdecitas
+    
 def esBisiesto(ano):
     return ano % 4 == 0 and ano % 100 != 0 or ano % 400 == 0
 
@@ -63,6 +73,8 @@ def dibujarCalendario():
     global actMes
     global actAno
     global actPos
+    global diasdecitas
+    diasdecitas = [0 for x in range(numDias(actMes,actAno))]
     actIni=diaInicio(actMes,actAno)
     global canvasCitas
     calInicioX=22
@@ -75,6 +87,7 @@ def dibujarCalendario():
     canvasCitas.rectangle((16,102,337,377),outline=0x000000,fill=0xffffff)
     canvasCitas.text((110,125),u"%s %d" % (meses[actMes-1],actAno),0x000000,font=(u"annotation",20))
     canvasCitas.text((40,155),getLang(u"DIAS"),0x555555,font=(u"annotation",20))
+    #diasdecitas = calculacitas(actMes,actAno)
     for i in range(6):
         for j in range(7):
             x = calInicioX+j*calAncho-j
@@ -85,6 +98,10 @@ def dibujarCalendario():
             if i==0 and j==actIni:
                 numerar=True
             rellenoLetra=0x000000
+            #if base_de_datos.obtener_registros_citas(contador+1,actMes,actAno) != None:
+             #   rellenoLetra=0x0000ff
+            #if diasdecitas[contador] != 0:
+             #   rellenoLetra=0x0000ff
             if contador==actDia and actMes==localtime()[1] and actAno==localtime()[0]:
                 rellenoLetra=0xff0000
                 if actPos==-1:
@@ -95,6 +112,7 @@ def dibujarCalendario():
             if numerar and numDias(actMes,actAno) > contador:
                 contador+=1
                 canvasCitas.text((x+7,y+28),u"%2d" % contador,rellenoLetra,font=(u"dense",30))
+                
 
 def press_up():
    global actPos
@@ -192,6 +210,14 @@ def mostrarCitas(vAtras):
     canvasCitas = appuifw.Canvas(redraw_callback = handle_redraw)
     canvasCitas.blit(imCitas)
     appuifw.app.body = canvasCitas
+    global diasdecitas
+    diasdecitas = [0 for x in range(numDias(actMes,actAno))]
+    #for i in range(len(diasdecitas)):
+     #   if base_de_datos.obtener_registros_citas(i+1,actMes,actAno) != None:
+      #      diasdecitas[i] = i + 1
+       # else: 
+        #    diasdecitas[i] = 0
+    diasdecitas = calculacitas(actMes,actAno)
     appuifw.app.screen = 'full'
     appuifw.app.title = u"Citas"
     canvasCitas.bind(key_codes.EKeySelect, press_select)
