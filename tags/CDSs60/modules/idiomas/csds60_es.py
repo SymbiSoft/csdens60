@@ -96,5 +96,6 @@ csds60={
     u"REINICIA":u"Debe reiniciar la consola",
     u"REINICIA1":u"de Python para los nuevos ajustes",
     u"INSU":u"Insertar insulinas",
-    u"SBD":u"Seleccione una base de datos"
+    u"SBD":u"Seleccione una base de datos",
+    u"VERCITAS":u"Ver Citas"
     }

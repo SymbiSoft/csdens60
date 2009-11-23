@@ -96,5 +96,6 @@ csds60={
     u"REINICIA":u"You have to reboot the Python",
     u"REINICIA1":u"shell for the new settings",
     u"INSU":u"Insert insuline",
-    u"SBD":u"Select a data base"
+    u"SBD":u"Select a data base",
+    u"VERCITAS":u"Show Dates"
     }
