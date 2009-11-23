@@ -32,7 +32,7 @@ from base_de_datos import obtener_idioma_act_conf
 from base_de_datos import obtener_db_actual
 #carga la bd seleccionada
 database = obtener_db_actual()
-#idioma seleccionado
+#idioma seleccionado, es especial por recuperar la constante del idioma, no el idioma en si
 cfgIdioma = obtener_idioma_act_conf() 
 
 #numero de tiras reactivas minimo para activar la alarma

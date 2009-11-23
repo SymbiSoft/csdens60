@@ -47,15 +47,14 @@ def handle_redraw(rect):
     flechaDerechaY=190
     flechaDerecha=[(0,0),(10,5),(0,10)]
     canvasSelecIdioma.blit(imSelecIdioma)
-    canvasSelecIdioma.text((240,410),getLang(u"VOLVER"),0xffffff,font=(u"legend",25,appuifw.STYLE_BOLD))
-    canvasSelecIdioma.text((110,85),getLang(u"IDIOMA"),0xbbbbbb,font=(u"symbol",27))
-    canvasSelecIdioma.text((109,84),getLang(u"IDIOMA"),0x000000,font=(u"symbol",27))
     if actMod == True:
         colorTexto = 0xff0000
         canvasSelecIdioma.polygon([(flechaIzquierdaX+dx,flechaIzquierdaY+dy) for dx,dy in flechaIzquierda],0xff0000,0xff0000)
-        canvasSelecIdioma.polygon([(flechaDerechaX+dx,flechaDerechaY+dy) for dx,dy in flechaDerecha],0xff0000,0xff0000)    
-    
+        canvasSelecIdioma.polygon([(flechaDerechaX+dx,flechaDerechaY+dy) for dx,dy in flechaDerecha],0xff0000,0xff0000)
     canvasSelecIdioma.text((75,140),getLang(u"SIDIOMA"),0x000000,font=(u"symbol",22))
+    canvasSelecIdioma.text((240,410),getLang(u"VOLVER"),0xffffff,font=(u"legend",25,appuifw.STYLE_BOLD))
+    canvasSelecIdioma.text((110,85),getLang(u"IDIOMA"),0xbbbbbb,font=(u"symbol",27))
+    canvasSelecIdioma.text((109,84),getLang(u"IDIOMA"),0x000000,font=(u"symbol",27))      
     
     # recuperamos la cadena de texto asociada al idioma
     canvasSelecIdioma.text((145,200),base_de_datos.obtener_idioma_actual(),colorTexto,font=(u"symbol",20))
@@ -69,7 +68,6 @@ def press_select():
     global datos
     if actMod == True:
         print u"pulsado"
-        base_de_datos.actualizar_idioma(datos[actPos][0]) # actualizamos con el valor de la constante
         actMod = False 
     else:
         print u"sin pulsar"        
@@ -87,8 +85,10 @@ def moverCursor(desp,pos):
             desp = 0
             print u"entra en elif"
         actPos += desp # avanza por los idiomas
-        datos[actPos] = base_de_datos.obtener_idiomas(actPos) # recupera el valor para dicha posicion
+        datos[actPos] = base_de_datos.obtener_idiomas(actPos) # recupera el valor para dicha posicion        
+        print u"el idioma es %s"%(datos[actPos][1])        
         print u"actpos es: %d"%(actPos)
+        base_de_datos.actualizar_idioma(datos[actPos][0])
 
     appuifw.app.body = canvasSelecIdioma
     

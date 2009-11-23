@@ -47,15 +47,14 @@ def handle_redraw(rect):
     flechaDerechaY=190
     flechaDerecha=[(0,0),(10,5),(0,10)]    
     canvasSelecBD.blit(imSelecBD)
-    canvasSelecBD.text((240,410),getLang(u"VOLVER"),0xffffff,font=(u"legend",25,appuifw.STYLE_BOLD))
-    canvasSelecBD.text((85,85),getLang(u"BD"),0xbbbbbb,font=(u"symbol",27))
-    canvasSelecBD.text((84,84),getLang(u"BD"),0x000000,font=(u"symbol",27))
     if actMod == True:
         colorTexto = 0xff0000
         canvasSelecBD.polygon([(flechaIzquierdaX+dx,flechaIzquierdaY+dy) for dx,dy in flechaIzquierda],0xff0000,0xff0000)
-        canvasSelecBD.polygon([(flechaDerechaX+dx,flechaDerechaY+dy) for dx,dy in flechaDerecha],0xff0000,0xff0000)    
-    
+        canvasSelecBD.polygon([(flechaDerechaX+dx,flechaDerechaY+dy) for dx,dy in flechaDerecha],0xff0000,0xff0000)
     canvasSelecBD.text((45,140),getLang(u"SBD"),0x000000,font=(u"symbol",22))
+    canvasSelecBD.text((240,410),getLang(u"VOLVER"),0xffffff,font=(u"legend",25,appuifw.STYLE_BOLD))
+    canvasSelecBD.text((85,85),getLang(u"BD"),0xbbbbbb,font=(u"symbol",27))
+    canvasSelecBD.text((84,84),getLang(u"BD"),0x000000,font=(u"symbol",27))  
     
     # recuperamos la cadena de texto asociada a la bd
     canvasSelecBD.text((95,200),base_de_datos.obtener_db_actual(),colorTexto,font=(u"symbol",20))
@@ -69,7 +68,6 @@ def press_select():
     global datos
     if actMod == True:
         print u"pulsado %d"%(actPos)
-        base_de_datos.actualizar_db(datos[actPos]) # actualizamos con el valor de la constante
         actMod = False 
     else:
         print u"sin pulsar"        
@@ -88,7 +86,9 @@ def moverCursor(desp,pos):
             print u"entra en elif"
         actPos += desp # avanza por las bds
         datos[actPos] = base_de_datos.obtener_dbs(actPos) # recupera el valor para dicha posicion
+        print u"la bd es %s"%(datos[actPos])
         print u"actpos es: %d"%(actPos)
+        base_de_datos.actualizar_db(datos[actPos])
 
     appuifw.app.body = canvasSelecBD
 
