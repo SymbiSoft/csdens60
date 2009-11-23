@@ -33,7 +33,7 @@ unidad=path[0]
 
 modulospropios = unidad+':\\Python\\modules'
 sys.path.append(modulospropios)
-from configuracion import *
+#from configuracion import *
 
 db = e32db.Dbms()
 dbv = e32db.Db_view()
@@ -65,6 +65,10 @@ idionombre = [u'Español',
               u'Ruso',
               u'Chino'
               ]
+actMes = localtime()[1]
+actAno = localtime()[0]
+database = u"csds60"
+database = database +"_"+ str(actMes)+"_"+str(actAno) + ".db"
 # tenemos una bd independiente llamada conf.cfg para almacenar parametros invariables
 # que solo se van a modificar muy pocas veces
 try:
