@@ -82,10 +82,32 @@ except:
     dbconf.execute(u"insert into dbproperties(nombre,valor) values('db','%s')"%(database))
     # guarda los idiomas disponibles para cargar
     dbconf.execute(u"create table idiomas (id integer,const varchar,nombre varchar)")
-    for i in range(12):
+    for i in range(len(idiomas)):
         dbconf.execute(u"insert into idiomas(id,const,nombre) values(%d,'%s','%s')"%(i,idiomas[i],idionombre[i]))
     # guarda un registro con todas las bds que hemos creado
     dbconf.execute(u"create table dbs (id integer,nombre varchar)")
+    dbconf.execute(u"create table tiposalimentos (tipo varchar, racion integer)")
+    dbconf.execute(u"insert into tiposalimentos(tipo,racion) values('vaso de leche o 2 yogures naturales',1)")
+    dbconf.execute(u"insert into tiposalimentos(tipo,racion) values('un pan o tazon de cereales o pasta',2)")
+    dbconf.execute(u"insert into tiposalimentos(tipo,racion) values('tazon de legumbres o patatas',2)")    
+    dbconf.execute(u"insert into tiposalimentos(tipo,racion) values('1 pieza mediana de fruta',2)")
+    dbconf.execute(u"insert into tiposalimentos(tipo,racion) values('1 plato de verdura',1)")
+    dbconf.execute(u"insert into tiposalimentos(tipo,racion) values('carne o pescado',0)")
+    dbconf.execute(u"create table tpersonal (nombre varchar, valor float)")
+    # por defecto ponemos estos formatos para evitar problemas
+    dbconf.execute(u"insert into tpersonal(nombre,valor) values('peso',0.00)")
+    dbconf.execute(u"insert into tpersonal(nombre,valor) values('altura',0)")
+    dbconf.execute(u"insert into tpersonal(nombre,valor) values('totalinsu',1)")
+    dbconf.execute(u"insert into tpersonal(nombre,valor) values('ratiodesayuno',0.01)")
+    dbconf.execute(u"insert into tpersonal(nombre,valor) values('ratioalmuerzo',0.01)")
+    dbconf.execute(u"insert into tpersonal(nombre,valor) values('ratiocena',0.01)")
+    dbconf.execute(u"insert into tpersonal(nombre,valor) values('alarmatiras',0)")
+    dbconf.execute(u"insert into tpersonal(nombre,valor) values('qtirasactual',0)")
+    dbconf.execute(u"insert into tpersonal(nombre,valor) values('qtirastotal',100)")
+    dbconf.execute(u"create table insulinas (tipo varchar,orden integer)")
+    # dos tipos de insulina
+    dbconf.execute(u"insert into insulinas (tipo,orden) values('%s',%d)"%('Rapida',0))
+    dbconf.execute(u"insert into insulinas (tipo,orden) values('%s',%d)"%('Lantus',1))    
     
 def obtener_numero_dbs():
     dbvconf.prepare(dbconf,u"select * from dbs")
@@ -97,55 +119,17 @@ except:
     db.create(u'%s:\\Python\\resources\\db\\%s'%(unidad,database))
     db.open(u'%s:\\Python\\resources\\db\\%s'%(unidad,database))
     db.execute(u"create table diario (fecha date,tipo varchar,valor bigint)")
-    db.execute(u"create table extra (fecha date,tipo varchar,valor varchar)")
-    db.execute(u"create table insulinas (tipo varchar,orden integer)")
+    db.execute(u"create table extra (fecha date,tipo varchar,valor varchar)")    
     db.execute(u"create table ordendiario (tipo varchar,orden integer)")
     db.execute(u"insert into ordendiario(tipo,orden) values('desa',1)")
     db.execute(u"insert into ordendiario(tipo,orden) values('almu',2)")
     db.execute(u"insert into ordendiario(tipo,orden) values('cena',3)")
     db.execute(u"create table registroscitas (fecha date,descripcion varchar)")
-    db.execute(u"create table tiposalimentos (tipo varchar, racion integer)")
-    db.execute(u"insert into tiposalimentos(tipo,racion) values('vaso de leche o 2 yogures naturales',1)")
-    db.execute(u"insert into tiposalimentos(tipo,racion) values('un pan o tazon de cereales o pasta',2)")
-    db.execute(u"insert into tiposalimentos(tipo,racion) values('tazon de legumbres o patatas',2)")    
-    db.execute(u"insert into tiposalimentos(tipo,racion) values('1 pieza mediana de fruta',2)")
-    db.execute(u"insert into tiposalimentos(tipo,racion) values('1 plato de verdura',1)")
-    db.execute(u"insert into tiposalimentos(tipo,racion) values('carne o pescado',0)")
+    
     # hay que poner esto aqui, porque sino se queda vacia la tabla de dbs
     # ademas se controla el indice actual de la tabla de bds
     contadorbds = obtener_numero_dbs()
-    dbconf.execute(u"insert into dbs(id,nombre) values(%d,'%s')"%(contadorbds,database))
-    
-    #Datos de ejemplo (se insertaran en la base de datos si la siguiente condicion se evalua como verdadera, y no si es falsa):
-    if True:
-        #fechaValues=[2009,9,18,0,0,0,0,0,1] #dia,mes,año de insersion de los datos
-        #fecha=time.mktime(time.struct_time(fechaValues))
-        #-1 es que esta introducida en la bd pero no se usa
-        db.execute(u"insert into insulinas (tipo,orden) values('%s',%d)"%('Rapida',0))
-        db.execute(u"insert into insulinas (tipo,orden) values('%s',%d)"%('Lantus',1))
-        #for i in range(1253916000,1297116000,86400):
-         #   rDesayunoAntes=randrange(70,240)
-         #   rDesayunoDespues=randrange(rDesayunoAntes-20,rDesayunoAntes+20)
-         #   rDesayunoRapida=randrange(2,7)
-         #   rDesayunoLantus=24
-         #   rAlmuerzoAntes=randrange(70,240)
-         #   rAlmuerzoDespues=randrange(rDesayunoAntes-20,rDesayunoAntes+20)
-         #   rAlmuerzoRapida=randrange(2,7)
-         #   rCenaAntes=randrange(70,240)
-         #   rCenaDespues=randrange(rDesayunoAntes-20,rDesayunoAntes+20)
-         #   rCenaRapida=randrange(2,7)
-         #   rCenaLantus=7
-         #   db.execute(u"insert into diario (fecha,tipo,valor) values(#%s#,'%s',%d)"%(e32db.format_time(i),'desayunoantes',rDesayunoAntes))
-         #   db.execute(u"insert into diario (fecha,tipo,valor) values(#%s#,'%s',%d)"%(e32db.format_time(i),'desayunodespues',rDesayunoDespues))
-         #   db.execute(u"insert into diario (fecha,tipo,valor) values(#%s#,'%s',%d)"%(e32db.format_time(i),'desayunoRapidaantes',rDesayunoRapida))
-         #   db.execute(u"insert into diario (fecha,tipo,valor) values(#%s#,'%s',%d)"%(e32db.format_time(i),'desayunoLantusantes',rDesayunoLantus))
-         #   db.execute(u"insert into diario (fecha,tipo,valor) values(#%s#,'%s',%d)"%(e32db.format_time(i),'almuerzoantes',rAlmuerzoAntes))
-         #   db.execute(u"insert into diario (fecha,tipo,valor) values(#%s#,'%s',%d)"%(e32db.format_time(i),'almuerzodespues',rAlmuerzoDespues))
-         #   db.execute(u"insert into diario (fecha,tipo,valor) values(#%s#,'%s',%d)"%(e32db.format_time(i),'almuerzoRapidaantes',rAlmuerzoRapida))
-         #   db.execute(u"insert into diario (fecha,tipo,valor) values(#%s#,'%s',%d)"%(e32db.format_time(i),'cenaantes',rCenaAntes))
-         #   db.execute(u"insert into diario (fecha,tipo,valor) values(#%s#,'%s',%d)"%(e32db.format_time(i),'cenadespues',rCenaDespues))
-         #   db.execute(u"insert into diario (fecha,tipo,valor) values(#%s#,'%s',%d)"%(e32db.format_time(i),'cenaRapidaantes',rCenaRapida))
-         #   db.execute(u"insert into diario (fecha,tipo,valor) values(#%s#,'%s',%d)"%(e32db.format_time(i),'cenaLantusantes',rCenaLantus))
+    dbconf.execute(u"insert into dbs(id,nombre) values(%d,'%s')"%(contadorbds,database))    
 
 def obtener_diario_dia(dia,mes,ano,tipo):
     fechaValues=[ano,mes,dia,0,0,0,0,0,1]
@@ -184,15 +168,19 @@ def actualizar_extra_diario(dia,mes,ano,tipo,valor):
         db.execute(u"insert into extra (fecha,tipo,valor) values(#%s#,'%s','%s')"%(e32db.format_time(fecha),tipo,valor))
 
 def obtener_insulina(posicion):
-    dbv.prepare(db,u"select * from insulinas where orden=%d"%(posicion));
-    if dbv.count_line()!=0:
-        dbv.get_line()
-        return dbv.col(1)
+    dbvconf.prepare(dbconf,u"select * from insulinas where orden=%d"%(posicion));
+    if dbvconf.count_line()!=0:
+        dbvconf.get_line()
+        return dbvconf.col(1)
     return None
 
 def obtener_numero_insulinas():
-    dbv.prepare(db,u"select * from insulinas where orden>=0")
-    return dbv.count_line()-1
+    dbvconf.prepare(dbconf,u"select * from insulinas where orden>=0")
+    return dbvconf.count_line()-1
+    
+contadorinsu = obtener_numero_insulinas() + 1
+def actualizar_insulina(insu):
+    dbvconf.execute(u"insert into insulinas (tipo,orden) values('%s',%d)"%(insu,contadorinsu))     
 
 def obtener_datos_diario():
     dbv.prepare(db,u"select * from diario order by fecha,tipo")
@@ -273,3 +261,104 @@ def obtener_db_actual():
         dbvconf.get_line()
         return dbvconf.col(2)
     return None
+
+def actualizar_peso(p):
+    dbvconf.execute(u"update tpersonal set valor=%d where nombre='peso'"%(p))    
+    
+def obtener_peso_actual():
+    dbvconf.prepare(dbconf,u"select * from tpersonal where nombre='peso'")
+    if dbvconf.count_line()!=0:
+        dbvconf.get_line()
+        return dbvconf.col(2)
+    return None
+    
+def actualizar_altura(a):
+    dbvconf.execute(u"update tpersonal set valor=%d where nombre='altura'"%(a))    
+    
+def obtener_altura_actual():
+    dbvconf.prepare(dbconf,u"select * from tpersonal where nombre='altura'")
+    if dbvconf.count_line()!=0:
+        dbvconf.get_line()
+        return dbvconf.col(2)
+    return None
+    
+def actualizar_totalinsu(ti):
+    dbvconf.execute(u"update tpersonal set valor=%d where nombre='totalinsu'"%(ti))    
+    
+def obtener_totalinsu_actual():
+    dbvconf.prepare(dbconf,u"select * from tpersonal where nombre='totalinsu'")
+    if dbvconf.count_line()!=0:
+        dbvconf.get_line()
+        return dbvconf.col(2)
+    return None
+
+def actualizar_ratiodesayuno(rd):
+    dbvconf.execute(u"update tpersonal set valor=%d where nombre='ratiodesayuno'"%(rd))    
+    
+def obtener_ratiodesayuno_actual():
+    dbvconf.prepare(dbconf,u"select * from tpersonal where nombre='ratiodesayuno'")
+    if dbvconf.count_line()!=0:
+        dbvconf.get_line()
+        return dbvconf.col(2)
+    return None
+    
+def actualizar_ratioalmuerzo(ra):
+    dbvconf.execute(u"update tpersonal set valor=%d where nombre='ratioalmuerzo'"%(ra))    
+    
+def obtener_ratioalmuerzo_actual():
+    dbvconf.prepare(dbconf,u"select * from tpersonal where nombre='ratioalmuerzo'")
+    if dbvconf.count_line()!=0:
+        dbvconf.get_line()
+        return dbvconf.col(2)
+    return None
+    
+def actualizar_ratiocena(rc):
+    dbvconf.execute(u"update tpersonal set valor=%d where nombre='ratiocena'"%(rc))    
+    
+def obtener_ratiocena_actual():
+    dbvconf.prepare(dbconf,u"select * from tpersonal where nombre='ratiocena'")
+    if dbvconf.count_line()!=0:
+        dbvconf.get_line()
+        return dbvconf.col(2)
+    return None
+
+def actualizar_alarmatiras(al):
+    dbvconf.execute(u"update tpersonal set valor=%d where nombre='alarmatiras'"%(al))    
+    
+def obtener_alarmatiras_actual():
+    dbvconf.prepare(dbconf,u"select * from tpersonal where nombre='alarmatiras'")
+    if dbvconf.count_line()!=0:
+        dbvconf.get_line()
+        return dbvconf.col(2)
+    return None   
+    
+def obtener_qtirasactual_actual():
+    dbvconf.prepare(dbconf,u"select * from tpersonal where nombre='qtirasactual'")
+    if dbvconf.count_line()!=0:
+        dbvconf.get_line()
+        return dbvconf.col(2)
+    return None
+
+qtemp = int(obtener_qtirasactual_actual())   
+# el fin de este metodo es por si malgastas alguna tira del bote, pones las que usaste y se restan a la cantidad actual   
+def actualizar_qtirasactual(q):
+    if q > qtemp:
+        qdiferencia = 0
+    else:
+        qdiferencia = qtemp - q
+    dbvconf.execute(u"update tpersonal set valor=%d where nombre='qtirasactual'"%(qdiferencia))
+
+def actualizar_qtirastotal(q):
+    dbvconf.execute(u"update tpersonal set valor=%d where nombre='qtirastotal'"%(q))    
+    
+def obtener_qtirastotal():
+    dbvconf.prepare(dbconf,u"select * from tpersonal where nombre='qtirastotal'")
+    if dbvconf.count_line()!=0:
+        dbvconf.get_line()
+        return dbvconf.col(2)
+    return None
+    
+# resetea al valor total de tiras la cantidad actual    
+qtotaltiras = int(obtener_qtirastotal())
+def reset_qtirasactual():    
+    dbvconf.execute(u"update tpersonal set valor=%d where nombre='qtirasactual'"%(qtotaltiras))

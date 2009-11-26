@@ -60,17 +60,14 @@ def handle_redraw(rect):
     canvasSelecIdioma.text((145,200),base_de_datos.obtener_idioma_actual(),colorTexto,font=(u"symbol",20))
     canvasSelecIdioma.text((30,300),getLang(u"REINICIA"),0x000000,font=(u"symbol",18,appuifw.STYLE_BOLD))
     canvasSelecIdioma.text((30,320),getLang(u"REINICIA1"),0x000000,font=(u"symbol",18,appuifw.STYLE_BOLD))
-    print base_de_datos.obtener_idioma_actual()
     
 def press_select():
     global actMod
     global actPos
     global datos
-    if actMod == True:
-        print u"pulsado"
+    if actMod == True:       
         actMod = False 
-    else:
-        print u"sin pulsar"        
+    else:              
         actMod = True
     appuifw.app.body = canvasSelecIdioma
     
@@ -79,15 +76,11 @@ def moverCursor(desp,pos):
     global datos
     if actMod == True:        
         if actPos == 0 and pos == 1: # si estamos en la posicion 0 y queremos ir a la izquierda, no avanza
-            desp = 0
-            print u"entra en if"
+            desp = 0            
         elif actPos == len(datos)-1 and pos == 0: # si estamos en la posicion ultima y queremos ir a la derecha, no avanza
-            desp = 0
-            print u"entra en elif"
+            desp = 0            
         actPos += desp # avanza por los idiomas
-        datos[actPos] = base_de_datos.obtener_idiomas(actPos) # recupera el valor para dicha posicion        
-        print u"el idioma es %s"%(datos[actPos][1])        
-        print u"actpos es: %d"%(actPos)
+        datos[actPos] = base_de_datos.obtener_idiomas(actPos) # recupera el valor para dicha posicion         
         base_de_datos.actualizar_idioma(datos[actPos][0])
 
     appuifw.app.body = canvasSelecIdioma

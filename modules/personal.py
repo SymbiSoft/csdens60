@@ -31,15 +31,42 @@ unidad=path[0]
 modulospropios = unidad+':\\Python\\modules'
 sys.path.append(modulospropios)
 from idioma import getLang
+from configuracion import *
+import base_de_datos
 
 def handle_redraw(rect):
     global canvasPersonal
     global imPersonal
-    
+    global datos
+    global actPos
+    colorTexto=[0 for x in range(6)]
     canvasPersonal.blit(imPersonal)
+    canvasPersonal.rectangle((20,120,220,330),outline=0xeeeeee,fill=0xeeeeee)
+    for i in range(6):
+        colorTexto[i]=0x000000
+    colorTexto[actPos]=0xff0000
     canvasPersonal.text((240,410),getLang(u"VOLVER"),0xffffff,font=(u"legend",25,appuifw.STYLE_BOLD))
     canvasPersonal.text((120,85),getLang(u"PERSONAL"),0xbbbbbb,font=(u"symbol",27))
     canvasPersonal.text((119,84),getLang(u"PERSONAL"),0x000000,font=(u"symbol",27))
+    canvasPersonal.line((20,120,330,120),0)
+    canvasPersonal.text((30,135),getLang(u"PESO"),0x000000,font=(u"legend",17,appuifw.STYLE_BOLD))
+    canvasPersonal.text((250,135),u"%02.2f kg"%datos[0],colorTexto[0],font=(u"legend",17))
+    canvasPersonal.line((20,155,330,155),0)
+    canvasPersonal.text((30,170),getLang(u"ALTURA"),0x000000,font=(u"legend",17,appuifw.STYLE_BOLD))
+    canvasPersonal.text((250,170),u"%03d cm"%datos[1],colorTexto[1],font=(u"legend",17))
+    canvasPersonal.line((20,190,330,190),0)
+    canvasPersonal.text((30,205),getLang(u"TOTALINSU"),0x000000,font=(u"legend",17,appuifw.STYLE_BOLD))
+    canvasPersonal.text((250,205),u"%03d u"%datos[2],colorTexto[2],font=(u"legend",17))
+    canvasPersonal.line((20,225,330,225),0)
+    canvasPersonal.text((30,240),getLang(u"RATD"),0x000000,font=(u"legend",17,appuifw.STYLE_BOLD))
+    canvasPersonal.text((250,240),u"%01.2f"%datos[3],colorTexto[3],font=(u"legend",17))
+    canvasPersonal.line((20,260,330,260),0)
+    canvasPersonal.text((30,275),getLang(u"RATA"),0x000000,font=(u"legend",17,appuifw.STYLE_BOLD))
+    canvasPersonal.text((250,275),u"%01.2f"%datos[4],colorTexto[4],font=(u"legend",17))
+    canvasPersonal.line((20,295,330,295),0)
+    canvasPersonal.text((30,310),getLang(u"RATC"),0x000000,font=(u"legend",17,appuifw.STYLE_BOLD))
+    canvasPersonal.text((250,310),u"%01.2f"%datos[5],colorTexto[5],font=(u"legend",17))
+    canvasPersonal.line((20,330,330,330),0)
 
 def volverAtras():
     global gvAtras
@@ -47,8 +74,55 @@ def volverAtras():
     for i in range(len(gvAtras)-1):
         gvAtrasEnvio[i]=gvAtras[i]
     gvAtras[len(gvAtras)-1](gvAtrasEnvio)
+    
+def moverCursor(pos):
+    global actPos
+    global movimientos
+    actPos+=movimientos[actPos][1][pos]
+    appuifw.app.body = canvasPersonal
+    
+def press_up():
+    moverCursor(0)
+
+def press_right():
+    moverCursor(1)
+
+def press_down():
+    moverCursor(2)
+
+def press_left():
+    moverCursor(3)
 
 def mostrar_personal(vAtras):
+    global movimientos
+    movimientos=[
+        [0,[0,0,1,0],u"peso"],
+        [1,[-1,0,1,0],u"altura"],
+        [2,[-1,0,1,0],u"totalinsu"],
+        [3,[-1,0,1,0],u"ratd"],
+        [4,[-1,0,1,0],u"rata"],
+        [5,[-1,0,0,0],u"ratc"]
+        ]
+    global datos
+    datos=[0 for x in range(6)]
+    # recupera los parametros de configuracion.py
+    for i in range(6):
+        if i == 0:
+            datos[i] = peso
+        elif i == 1:
+            datos[i] = altura
+        elif i == 2:
+            datos[i] = totalInsulina
+        elif i == 3:
+            datos[i] = ratioDesayuno
+        elif i == 4:
+            datos[i] = ratioAlmuerzo
+        else:
+            datos[i] = ratioCena
+    global actPos
+    actPos=0
+    global actMod
+    actMod=False
     ruta = unidad+':\\python\\resources\\ui\\'
     global imPersonal
     imPersonal = graphics.Image.open(ruta+'fondo01.png')
@@ -59,10 +133,10 @@ def mostrar_personal(vAtras):
     appuifw.app.screen = 'full'
     appuifw.app.title = u"personal"
     #canvasPersonal.bind(key_codes.EKeySelect, press_select)
-    #canvasPersonal.bind(key_codes.EKeyUpArrow, press_up)
-    #canvasPersonal.bind(key_codes.EKeyRightArrow, press_right)
-    #canvasPersonal.bind(key_codes.EKeyDownArrow, press_down)
-    #canvasPersonal.bind(key_codes.EKeyLeftArrow, press_left) 
+    canvasPersonal.bind(key_codes.EKeyUpArrow, press_up)
+    canvasPersonal.bind(key_codes.EKeyRightArrow, press_right)
+    canvasPersonal.bind(key_codes.EKeyDownArrow, press_down)
+    canvasPersonal.bind(key_codes.EKeyLeftArrow, press_left) 
     global gvAtras
     gvAtras=vAtras
     if len(vAtras)==1:
