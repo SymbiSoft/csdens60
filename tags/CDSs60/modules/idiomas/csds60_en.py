@@ -97,5 +97,11 @@ csds60={
     u"REINICIA1":u"shell for the new settings",
     u"INSU":u"Insert insuline",
     u"SBD":u"Select a data base",
-    u"VERCITAS":u"Show Dates"
+    u"VERCITAS":u"Show Dates",
+    u"PESO":u"Weight",
+    u"ALTURA":u"Height",
+    u"TOTALINSU":u"Total insuline quantity",
+    u"RATD":u"Breakfast ratio",
+    u"RATA":u"Lunch ratio",
+    u"RATC":u"Dinner ratio"
     }

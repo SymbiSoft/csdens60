@@ -60,17 +60,15 @@ def handle_redraw(rect):
     canvasSelecBD.text((95,200),base_de_datos.obtener_db_actual(),colorTexto,font=(u"symbol",20))
     canvasSelecBD.text((30,300),getLang(u"REINICIA"),0x000000,font=(u"symbol",18,appuifw.STYLE_BOLD))
     canvasSelecBD.text((30,320),getLang(u"REINICIA1"),0x000000,font=(u"symbol",18,appuifw.STYLE_BOLD))
-    print base_de_datos.obtener_db_actual()
+    #print base_de_datos.obtener_db_actual()
     
 def press_select():
     global actMod
     global actPos
     global datos
     if actMod == True:
-        print u"pulsado %d"%(actPos)
         actMod = False 
-    else:
-        print u"sin pulsar"        
+    else:      
         actMod = True
     appuifw.app.body = canvasSelecBD
     
@@ -80,14 +78,10 @@ def moverCursor(desp,pos):
     if actMod == True:        
         if actPos == 0 and pos == 1: # si estamos en la posicion 0 y queremos ir a la izquierda, no avanza
             desp = 0
-            print u"entra en if"
         elif actPos == len(datos)-1 and pos == 0: # si estamos en la posicion ultima y queremos ir a la derecha, no avanza
             desp = 0
-            print u"entra en elif"
         actPos += desp # avanza por las bds
         datos[actPos] = base_de_datos.obtener_dbs(actPos) # recupera el valor para dicha posicion
-        print u"la bd es %s"%(datos[actPos])
-        print u"actpos es: %d"%(actPos)
         base_de_datos.actualizar_db(datos[actPos])
 
     appuifw.app.body = canvasSelecBD

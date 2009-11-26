@@ -97,5 +97,11 @@ csds60={
     u"REINICIA1":u"de Python para los nuevos ajustes",
     u"INSU":u"Insertar insulinas",
     u"SBD":u"Seleccione una base de datos",
-    u"VERCITAS":u"Ver Citas"
+    u"VERCITAS":u"Ver Citas",
+    u"PESO":u"Peso",
+    u"ALTURA":u"Altura",
+    u"TOTALINSU":u"Cantidad total insulina",
+    u"RATD":u"Ratio desayuno",
+    u"RATA":u"Ratio almuerzo",
+    u"RATC":u"Ratio cena"
     }
