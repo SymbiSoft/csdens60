@@ -49,7 +49,7 @@ def handle_redraw(rect):
     canvasExtra.text((189,84),getLang(u"EXTRA"),0x000000,font=(u"symbol",27))
     canvasExtra.text((240,410),getLang(u"VOLVER"),0xffffff,font=(u"legend",25,appuifw.STYLE_BOLD))    
     canvasExtra.text((30,115),getLang(u"COMIDAS"),0x000000,font=(u"legend",17,appuifw.STYLE_BOLD))
-    canvasExtra.rectangle((20,120,150,340),outline=0xeeeeee,fill=0xeeeeee)
+    canvasExtra.rectangle((20,120,150,320),outline=0xeeeeee,fill=0xeeeeee)
     canvasExtra.line((20,120,330,120),0)
     canvasExtra.text((40,135),getLang(u"DESAYUNO"),0x000000,font=(u"legend",17,appuifw.STYLE_BOLD))
     canvasExtra.text((155,135),ajustar_texto(valor[0]),colorTexto[0],font=(u"legend",17))
@@ -69,6 +69,7 @@ def handle_redraw(rect):
     canvasExtra.line((20,280,330,280),0)
     canvasExtra.text((30,295),getLang(u"MEDICAMENTOS"),0x000000,font=(u"legend",17,appuifw.STYLE_BOLD))
     canvasExtra.text((155,295),ajustar_texto(valor[7]),colorTexto[7],font=(u"legend",17))
+    canvasExtra.line((20,320,330,320),0)
 
 def volverAtras():
     global gvAtras

@@ -55,7 +55,7 @@ def handle_redraw(rect):
     canvasDiarioDia.blit(imDiarioDia)
     colorTexto=[0 for x in range(24)]
     colorRelleno=[0 for x in range(24)]
-    canvasDiarioDia.rectangle((20,120,120,340),outline=0xeeeeee,fill=0xeeeeee)
+    canvasDiarioDia.rectangle((20,120,120,380),outline=0xeeeeee,fill=0xeeeeee)
     for i in range(11):
         if i!=2 and i!=5 and i!=8 and actMod==True:
             if movimientos[actPos][2]==u"%di"%i:

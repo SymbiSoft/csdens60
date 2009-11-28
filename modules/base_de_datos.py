@@ -39,6 +39,8 @@ db = e32db.Dbms()
 dbv = e32db.Db_view()
 dbconf = e32db.Dbms()
 dbvconf = e32db.Db_view()
+dbcitas = e32db.Dbms()
+dbvcitas = e32db.Db_view()
 idiomas = [u'es',
            u'en',
            u'it',
@@ -129,7 +131,15 @@ except:
     # hay que poner esto aqui, porque sino se queda vacia la tabla de dbs
     # ademas se controla el indice actual de la tabla de bds
     contadorbds = obtener_numero_dbs()
-    dbconf.execute(u"insert into dbs(id,nombre) values(%d,'%s')"%(contadorbds,database))    
+    dbconf.execute(u"insert into dbs(id,nombre) values(%d,'%s')"%(contadorbds,database))
+
+try:
+    dbcitas.open(u'%s:\\Python\\resources\\db\\citas.db'%(unidad))
+except:
+    # hay que crear una bd aparte para citas para que sea independiente de los meses
+    dbcitas.create(u'%s:\\Python\\resources\\db\\citas.db'%(unidad))
+    dbcitas.open(u'%s:\\Python\\resources\\db\\citas.db'%(unidad))
+    dbcitas.execute(u"create table registroscitas (fecha date,descripcion varchar)")
 
 def obtener_diario_dia(dia,mes,ano,tipo):
     fechaValues=[ano,mes,dia,0,0,0,0,0,1]
@@ -189,27 +199,27 @@ def obtener_datos_diario():
 def actualizar_registros_citas(dia,mes,ano,descripcion):
     fechaValues=[ano,mes,dia,0,0,0,0,0,1]
     fecha=time.mktime(time.struct_time(fechaValues))
-    dbv.prepare(db,u"select * from registroscitas where fecha=#%s#"%(e32db.format_time(fecha)))
-    if dbv.count_line()!=0:
-        db.execute(u"update registroscitas set descripcion='%s' where fecha=#%s#"%(descripcion,e32db.format_time(fecha)))
+    dbvcitas.prepare(dbcitas,u"select * from registroscitas where fecha=#%s#"%(e32db.format_time(fecha)))
+    if dbvcitas.count_line()!=0:
+        dbcitas.execute(u"update registroscitas set descripcion='%s' where fecha=#%s#"%(descripcion,e32db.format_time(fecha)))
     else:
-        db.execute(u"insert into registroscitas (fecha,descripcion) values(#%s#,'%s')"%(e32db.format_time(fecha),descripcion))
+        dbcitas.execute(u"insert into registroscitas (fecha,descripcion) values(#%s#,'%s')"%(e32db.format_time(fecha),descripcion))
     
 def obtener_registros_citas(dia,mes,ano):
     fechaValues=[ano,mes,dia,0,0,0,0,0,1]
     fecha=time.mktime(time.struct_time(fechaValues))
-    dbv.prepare(db,u"select * from registroscitas where fecha=#%s#"%(e32db.format_time(fecha)))
-    if dbv.count_line()!=0:
-        dbv.get_line()
-        return dbv.col(2)
+    dbvcitas.prepare(dbcitas,u"select * from registroscitas where fecha=#%s#"%(e32db.format_time(fecha)))
+    if dbvcitas.count_line()!=0:
+        dbvcitas.get_line()
+        return dbvcitas.col(2)
     return None
     
 def borrar_registros_citas(dia,mes,ano):
     fechaValues=[ano,mes,dia,0,0,0,0,0,1]
     fecha=time.mktime(time.struct_time(fechaValues))
-    dbv.prepare(db,u"select * from registroscitas where fecha=#%s#"%(e32db.format_time(fecha)))
-    if dbv.count_line()!=0:
-        db.execute(u"delete from registroscitas where fecha=#%s#"%(e32db.format_time(fecha)))
+    dbvcitas.prepare(dbcitas,u"select * from registroscitas where fecha=#%s#"%(e32db.format_time(fecha)))
+    if dbvcitas.count_line()!=0:
+        dbcitas.execute(u"delete from registroscitas where fecha=#%s#"%(e32db.format_time(fecha)))
         
 def obtener_idiomas(posicion):
     dbvconf.prepare(dbconf,u"select * from idiomas where id = %d"%(posicion))

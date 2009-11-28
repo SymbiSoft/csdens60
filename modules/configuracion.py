@@ -17,13 +17,13 @@
 
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#from time import localtime
+from time import localtime
 
 
 
 #creacion de la base de datos del mes actual
-#actMes = localtime()[1]
-#actAno = localtime()[0]
+actMes = localtime()[1]
+actAno = localtime()[0]
 #database = u"csds60"
 #database = database +"_"+ str(actMes)+"_"+str(actAno) + ".db" 
 

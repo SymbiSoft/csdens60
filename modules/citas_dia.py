@@ -48,6 +48,7 @@ def handle_redraw(rect):
         colorTexto[i]=0x000000
     colorTexto[actPos]=0xff0000
     canvasCitasDia.blit(imCitasDia)
+    canvasCitasDia.rectangle((20,120,220,225),outline=0xeeeeee,fill=0xeeeeee)
     canvasCitasDia.text((120,85),getLang(u"CITA")+" (%d-%d-%d)"%(actDia,actMes,actAno),0xbbbbbb,font=(u"symbol",27))
     canvasCitasDia.text((119,84),getLang(u"CITA")+" (%d-%d-%d)"%(actDia,actMes,actAno),0x000000,font=(u"symbol",27))
     canvasCitasDia.text((240,410),getLang(u"VOLVER"),0xffffff,font=(u"legend",25,appuifw.STYLE_BOLD))
