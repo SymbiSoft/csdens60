@@ -190,7 +190,7 @@ def obtener_numero_insulinas():
     
 contadorinsu = obtener_numero_insulinas() + 1
 def actualizar_insulina(insu):
-    dbvconf.execute(u"insert into insulinas (tipo,orden) values('%s',%d)"%(insu,contadorinsu))     
+    dbconf.execute(u"insert into insulinas (tipo,orden) values('%s',%d)"%(insu,contadorinsu))     
 
 def obtener_datos_diario():
     dbv.prepare(db,u"select * from diario order by fecha,tipo")
@@ -273,7 +273,7 @@ def obtener_db_actual():
     return None
 
 def actualizar_peso(p):
-    dbvconf.execute(u"update tpersonal set valor=%d where nombre='peso'"%(p))    
+    dbconf.execute(u"update tpersonal set valor=%03.2f where nombre='peso'"%(p))    
     
 def obtener_peso_actual():
     dbvconf.prepare(dbconf,u"select * from tpersonal where nombre='peso'")
@@ -283,7 +283,7 @@ def obtener_peso_actual():
     return None
     
 def actualizar_altura(a):
-    dbvconf.execute(u"update tpersonal set valor=%d where nombre='altura'"%(a))    
+    dbconf.execute(u"update tpersonal set valor=%03d where nombre='altura'"%(a))    
     
 def obtener_altura_actual():
     dbvconf.prepare(dbconf,u"select * from tpersonal where nombre='altura'")
@@ -293,7 +293,7 @@ def obtener_altura_actual():
     return None
     
 def actualizar_totalinsu(ti):
-    dbvconf.execute(u"update tpersonal set valor=%d where nombre='totalinsu'"%(ti))    
+    dbconf.execute(u"update tpersonal set valor=%03d where nombre='totalinsu'"%(ti))    
     
 def obtener_totalinsu_actual():
     dbvconf.prepare(dbconf,u"select * from tpersonal where nombre='totalinsu'")
@@ -303,7 +303,7 @@ def obtener_totalinsu_actual():
     return None
 
 def actualizar_ratiodesayuno(rd):
-    dbvconf.execute(u"update tpersonal set valor=%d where nombre='ratiodesayuno'"%(rd))    
+    dbconf.execute(u"update tpersonal set valor=%02.2f where nombre='ratiodesayuno'"%(rd))    
     
 def obtener_ratiodesayuno_actual():
     dbvconf.prepare(dbconf,u"select * from tpersonal where nombre='ratiodesayuno'")
@@ -313,7 +313,7 @@ def obtener_ratiodesayuno_actual():
     return None
     
 def actualizar_ratioalmuerzo(ra):
-    dbvconf.execute(u"update tpersonal set valor=%d where nombre='ratioalmuerzo'"%(ra))    
+    dbconf.execute(u"update tpersonal set valor=%02.2f where nombre='ratioalmuerzo'"%(ra))    
     
 def obtener_ratioalmuerzo_actual():
     dbvconf.prepare(dbconf,u"select * from tpersonal where nombre='ratioalmuerzo'")
@@ -323,7 +323,7 @@ def obtener_ratioalmuerzo_actual():
     return None
     
 def actualizar_ratiocena(rc):
-    dbvconf.execute(u"update tpersonal set valor=%d where nombre='ratiocena'"%(rc))    
+    dbconf.execute(u"update tpersonal set valor=%02.2f where nombre='ratiocena'"%(rc))    
     
 def obtener_ratiocena_actual():
     dbvconf.prepare(dbconf,u"select * from tpersonal where nombre='ratiocena'")
@@ -333,7 +333,7 @@ def obtener_ratiocena_actual():
     return None
 
 def actualizar_alarmatiras(al):
-    dbvconf.execute(u"update tpersonal set valor=%d where nombre='alarmatiras'"%(al))    
+    dbconf.execute(u"update tpersonal set valor=%d where nombre='alarmatiras'"%(al))    
     
 def obtener_alarmatiras_actual():
     dbvconf.prepare(dbconf,u"select * from tpersonal where nombre='alarmatiras'")
@@ -356,10 +356,10 @@ def actualizar_qtirasactual(q):
         qdiferencia = 0
     else:
         qdiferencia = qtemp - q
-    dbvconf.execute(u"update tpersonal set valor=%d where nombre='qtirasactual'"%(qdiferencia))
+    dbconf.execute(u"update tpersonal set valor=%d where nombre='qtirasactual'"%(qdiferencia))
 
 def actualizar_qtirastotal(q):
-    dbvconf.execute(u"update tpersonal set valor=%d where nombre='qtirastotal'"%(q))    
+    dbconf.execute(u"update tpersonal set valor=%d where nombre='qtirastotal'"%(q))    
     
 def obtener_qtirastotal():
     dbvconf.prepare(dbconf,u"select * from tpersonal where nombre='qtirastotal'")
@@ -371,4 +371,4 @@ def obtener_qtirastotal():
 # resetea al valor total de tiras la cantidad actual    
 qtotaltiras = int(obtener_qtirastotal())
 def reset_qtirasactual():    
-    dbvconf.execute(u"update tpersonal set valor=%d where nombre='qtirasactual'"%(qtotaltiras))
+    dbconf.execute(u"update tpersonal set valor=%d where nombre='qtirasactual'"%(qtotaltiras))
