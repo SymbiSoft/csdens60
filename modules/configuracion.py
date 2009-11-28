@@ -30,12 +30,6 @@ actAno = localtime()[0]
 #tiene que estar en esta linea, sino falla por los parametros de arriba
 from base_de_datos import obtener_idioma_act_conf
 from base_de_datos import obtener_db_actual
-from base_de_datos import obtener_peso_actual
-from base_de_datos import obtener_altura_actual
-from base_de_datos import obtener_totalinsu_actual
-from base_de_datos import obtener_ratiodesayuno_actual
-from base_de_datos import obtener_ratioalmuerzo_actual
-from base_de_datos import obtener_ratiocena_actual
 from base_de_datos import obtener_alarmatiras_actual
 #carga la bd seleccionada
 database = obtener_db_actual()
@@ -46,35 +40,15 @@ cfgIdioma = obtener_idioma_act_conf()
 #alarmaTiras = 5
 alarmaTiras = int(obtener_alarmatiras_actual()) 
 #numero de dias con antelacion antes de la fecha de la cita 
-#alarmaCitas = 3 
+#alarmaCitas = 3
 
-#peso de la persona en kg
-#peso = 76.00
-peso = obtener_peso_actual()
-#altura de la persona en cm
-#estatura = 175
-altura = obtener_altura_actual()
-
-#total de insulinas que se administra diariamente
-#totalInsulina = 38 
-totalInsulina = obtener_totalinsu_actual()
-#cantidad de glucosa que baja una unidad de insulina(parte entera)
-factorSensibilidad = int(1800//totalInsulina)
+#cantidad de glucosa que baja una unidad de insulina(parte entera), habria que ponerlo en dieta
+#factorSensibilidad = int(1800//totalInsulina)
 
 #dosis de insulina recomendada por el medico, ayudara a calcular los ratios
 #dosisDesayuno = 4
 #dosisAlmuerzo = 3
 #dosisCena = 2
-
-#ratio es la necesidad de insulina por racion de hidratos de carbono
-#ratios de desayuno, almuerzo y cena; normalmente los ratios del desayuno a cena varian,
-#por eso es necesario guardar los 3 tipos
-#ratioDesayuno = 0.75
-#ratioAlmuerzo = 1.34
-#ratioCena = 2
-ratioDesayuno = obtener_ratiodesayuno_actual()
-ratioAlmuerzo = obtener_ratioalmuerzo_actual()
-ratioCena = obtener_ratiocena_actual()
 
 #1 racion de hidratos de carbono -> un vaso de leche o 2 yogures naturales
 #2              "                -> un pan o tazon de cereales, legumbres, patatas, pasta
