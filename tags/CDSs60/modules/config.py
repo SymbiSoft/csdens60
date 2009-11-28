@@ -43,6 +43,7 @@ def handle_redraw(rect):
         colorTexto[i]=0x000000
     colorTexto[actPos]=0xff0000
     canvasConf.blit(imConf)
+    canvasConf.rectangle((20,120,230,295),outline=0xeeeeee,fill=0xeeeeee)
     canvasConf.text((150,85),getLang(u"CONFIGURACION"),0xbbbbbb,font=(u"symbol",27))
     canvasConf.text((149,84),getLang(u"CONFIGURACION"),0x000000,font=(u"symbol",27))
     canvasConf.text((240,410),getLang(u"VOLVER"),0xffffff,font=(u"legend",25,appuifw.STYLE_BOLD))

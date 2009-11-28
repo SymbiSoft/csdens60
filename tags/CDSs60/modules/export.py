@@ -118,6 +118,7 @@ def handle_redraw(rect):
         colorTexto[i]=0x000000
     colorTexto[actPos]=0xff0000
     canvasExport.blit(imExport)
+    canvasExport.rectangle((20,120,250,225),outline=0xeeeeee,fill=0xeeeeee)
     canvasExport.text((178,85),getLang(u"EXPORTAR"),0xbbbbbb,font=(u"symbol",27))
     canvasExport.text((177,84),getLang(u"EXPORTAR"),0x000000,font=(u"symbol",27))
     canvasExport.text((240,410),getLang(u"VOLVER"),0xffffff,font=(u"legend",25,appuifw.STYLE_BOLD))
