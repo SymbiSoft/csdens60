@@ -103,5 +103,10 @@ csds60={
     u"TOTALINSU":u"Cantidad total insulina",
     u"RATD":u"Ratio desayuno",
     u"RATA":u"Ratio almuerzo",
-    u"RATC":u"Ratio cena"
+    u"RATC":u"Ratio cena",
+    u"ADDINSULINA":u"Añadir nueva insulina",
+    u"ELIMINSULINA":u"Borrar insulina seleccionada",
+    u"BORRAINSU":u"Para borrar la insulina seleccionada,",
+    u"BORRAINSU1":u"tienes que pulsar el botón",
+    u"BORRAINSU2":u"select del teclado"
     }

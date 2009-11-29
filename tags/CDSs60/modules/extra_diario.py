@@ -155,7 +155,7 @@ def mostrar_extra(dia,mes,ano,vAtras):
         [4,[-1,0,1,0],u"--",u"cena"],
         [5,[-1,0,1,0],u"--",u"resopon"],
         [6,[-1,0,1,0],u"--",u"enfermedades"],
-        [7,[-1,0,0,0],u"--",u"medicamentos"],
+        [7,[-1,0,0,0],u"--",u"medicamentos"]
         ]
     global valor
     valor=[0 for x in range(8)]
