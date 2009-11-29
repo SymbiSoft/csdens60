@@ -106,10 +106,11 @@ except:
     dbconf.execute(u"insert into tpersonal(nombre,valor) values('alarmatiras',0)")
     dbconf.execute(u"insert into tpersonal(nombre,valor) values('qtirasactual',0)")
     dbconf.execute(u"insert into tpersonal(nombre,valor) values('qtirastotal',100)")
-    dbconf.execute(u"create table insulinas (tipo varchar,orden integer)")
+    # ult indica la ultima posicion de insulina metida, sirve para recuperar el orden maximo
+    dbconf.execute(u"create table insulinas (tipo varchar,orden integer,ult integer)")
     # dos tipos de insulina
-    dbconf.execute(u"insert into insulinas (tipo,orden) values('%s',%d)"%('Rapida',0))
-    dbconf.execute(u"insert into insulinas (tipo,orden) values('%s',%d)"%('Lantus',1))    
+    dbconf.execute(u"insert into insulinas (tipo,orden,ult) values('%s',%d,%d)"%('Rapida',0,0))
+    dbconf.execute(u"insert into insulinas (tipo,orden,ult) values('%s',%d,%d)"%('Lantus',1,1))    
     
 def obtener_numero_dbs():
     dbvconf.prepare(dbconf,u"select * from dbs")
@@ -181,16 +182,27 @@ def obtener_insulina(posicion):
     dbvconf.prepare(dbconf,u"select * from insulinas where orden=%d"%(posicion));
     if dbvconf.count_line()!=0:
         dbvconf.get_line()
-        return dbvconf.col(1)
+        if dbvconf.col(2) >= 0:
+            return dbvconf.col(1)
+        else:
+            return u"Nada"
     return None
 
 def obtener_numero_insulinas():
     dbvconf.prepare(dbconf,u"select * from insulinas where orden>=0")
     return dbvconf.count_line()-1
     
-contadorinsu = obtener_numero_insulinas() + 1
 def actualizar_insulina(insu):
-    dbconf.execute(u"insert into insulinas (tipo,orden) values('%s',%d)"%(insu,contadorinsu))     
+    contadorinsu = obtener_numero_insulinas() + 1
+    dbconf.execute(u"insert into insulinas (tipo,orden,ult) values('%s',%d,%d)"%(insu,contadorinsu,contadorinsu))
+
+def deshabilita_insulina(posicion):
+    #dbvconf.prepare(dbconf,u"select orden from insulinas where orden>=0")
+    #if dbvconf.count_line()!=0:
+     #   dbvconf.get_line()
+        # para evitar un bug por no haber insulinas
+        #if dbvconf.col(1) > 0:    
+            dbconf.execute(u"update insulinas set orden=-1 where ult=%d"%(posicion))
 
 def obtener_datos_diario():
     dbv.prepare(db,u"select * from diario order by fecha,tipo")
@@ -348,10 +360,10 @@ def obtener_qtirasactual_actual():
         dbvconf.get_line()
         return dbvconf.col(2)
     return None
-
-qtemp = int(obtener_qtirasactual_actual())   
+  
 # el fin de este metodo es por si malgastas alguna tira del bote, pones las que usaste y se restan a la cantidad actual   
 def actualizar_qtirasactual(q):
+    qtemp = int(obtener_qtirasactual_actual()) 
     if q > qtemp:
         qdiferencia = 0
     else:
@@ -368,7 +380,7 @@ def obtener_qtirastotal():
         return dbvconf.col(2)
     return None
     
-# resetea al valor total de tiras la cantidad actual    
-qtotaltiras = int(obtener_qtirastotal())
-def reset_qtirasactual():    
+# resetea al valor total de tiras la cantidad actual
+def reset_qtirasactual():
+    qtotaltiras = int(obtener_qtirastotal())
     dbconf.execute(u"update tpersonal set valor=%d where nombre='qtirasactual'"%(qtotaltiras))
