@@ -46,12 +46,12 @@ def handle_redraw(rect):
     flechaDerechaX=290
     flechaDerechaY=216
     flechaDerecha=[(0,0),(10,5),(0,10)]
-    colorTexto=[0 for x in range(2)]
-    for i in range(2):
+    colorTexto=[0 for x in range(3)]
+    for i in range(3):
         colorTexto[i]=0x000000
     colorTexto[actPos]=0xff0000
     canvasSelecInsu.blit(imSelecInsu)
-    canvasSelecInsu.rectangle((20,120,330,245),outline=0xeeeeee,fill=0xeeeeee)
+    canvasSelecInsu.rectangle((20,120,330,280),outline=0xeeeeee,fill=0xeeeeee)
     canvasSelecInsu.line((20,120,330,120),0)
     canvasSelecInsu.text((40,135),getLang(u"ADDINSULINA"),colorTexto[0],font=(u"legend",17,appuifw.STYLE_BOLD))
     canvasSelecInsu.line((20,155,330,155),0)
@@ -62,6 +62,8 @@ def handle_redraw(rect):
     canvasSelecInsu.text((150,225),datos[ind],colorTexto[1],font=(u"legend",17))
     #canvasSelecInsu.text((150,225),base_de_datos.obtener_insulina(ind),colorTexto[1],font=(u"legend",17))
     canvasSelecInsu.line((20,245,330,245),0)
+    canvasSelecInsu.text((40,260),getLang(u"RESETINSU"),colorTexto[2],font=(u"legend",17,appuifw.STYLE_BOLD))
+    canvasSelecInsu.line((20,280,330,280),0)
     #canvasSelecInsu.text((30,285),getLang(u"BORRAINSU"),0x000000,font=(u"symbol",18,appuifw.STYLE_BOLD))
     #canvasSelecInsu.text((30,305),getLang(u"BORRAINSU1"),0x000000,font=(u"symbol",18,appuifw.STYLE_BOLD))
     #canvasSelecInsu.text((30,325),getLang(u"BORRAINSU2"),0x000000,font=(u"symbol",18,appuifw.STYLE_BOLD))
@@ -99,6 +101,16 @@ def press_select():
         else:
             actMod = False
             appuifw.app.body = canvasSelecInsu
+    elif movimientos[actPos][2] == u"reset":
+        if actMod == False:
+            base_de_datos.reset_insulina()
+            appuifw.note(getLang(u"RESETINSU"),"info")
+            actMod = True
+            volverAtras()
+            #appuifw.app.body = canvasSelecInsu
+        else:
+            actMod = False
+            appuifw.app.body = canvasSelecInsu
     
 def moverCursor(desp,pos):
     global actPos
@@ -131,7 +143,8 @@ def mostrar_selecInsu(vAtras):
     global movimientos
     movimientos=[
         [0,[0,0,1,0],u"inserta"],
-        [1,[-1,0,0,0],u"desahb"]
+        [1,[-1,0,1,0],u"desahb"],
+        [2,[-1,0,0,0],u"reset"]
         ]
     global actMod
     actMod=False
