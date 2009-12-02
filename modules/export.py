@@ -52,7 +52,7 @@ def generar_xml():
         xml=xml+u"\t<"+str(datos.col(2))+u">"+str(datos.col(3))+u"</"+str(datos.col(2))+u">\n"
         datos.next_line()
     xmlFinal=u"<?xml version=\"1.0\" encoding=\"UTF-8\"?><root>"+xml[6:]+u"</dia></root>"
-    fichero=codecs.open(unidad+':\\Python\\resources\db\db_'+str(actMes)+"_"+str(actAno)+'.xml','w','utf8')
+    fichero=codecs.open(unidad+':\\Python\\resources\\xml\db_'+base_de_datos.obtener_db_actual()+'.xml','w','utf8')
     fichero.write(xmlFinal)
 
 def generar_html():
@@ -83,7 +83,7 @@ childNodes[j].className==\"datosDiaTitulo\"){var diaValor=dias[i].childNodes[j];
         html=html+u"<div class=\"datosDiaContAtr\">"+str(datos.col(2))+u"</div><div class=\"datosDiaContVal\">"+str(datos.col(3))+u"</div>"
         datos.next_line()
     htmlFinal=cabecerahtml+css+javascript+u"</head><body><div id=\"datosCont\">"+html[12:]+u"</div></body></html>"
-    fichero=codecs.open(unidad+':\\Python\\resources\db\datos_'+str(actMes)+"_"+str(actAno)+'.html','w','utf8')
+    fichero=codecs.open(unidad+':\\Python\\resources\\html\datos_'+base_de_datos.obtener_db_actual()+'.html','w','utf8')
     fichero.write(htmlFinal)
     
 def enviarBluetooth():
@@ -93,8 +93,8 @@ def enviarBluetooth():
     try:
         xmlpath = u''
         htmlpath = u''
-        xmlpath = xmlpath + unidad+':\\Python\\resources\db\db_'+str(actMes)+'_'+str(actAno)+'.xml'
-        htmlpath = htmlpath + unidad+':\\Python\\resources\db\datos_'+str(actMes)+'_'+str(actAno)+'.html'
+        xmlpath = xmlpath + unidad+':\\Python\\resources\\xml\db_'+base_de_datos.obtener_db_actual()+'.xml'
+        htmlpath = htmlpath + unidad+':\\Python\\resources\\html\datos_'+base_de_datos.obtener_db_actual()+'.html'
         #encuentra dispositivos con Bluetooth
         phone = bt_obex_discover()
         #direccion mac del dispositivo

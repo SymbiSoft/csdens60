@@ -40,6 +40,7 @@ sys.path.append(modulospropios)
 import dieta, est, citas, config, export, diario, licencia
 from idioma import getLang
 from configuracion import *
+from base_de_datos import cerrar_bds
 
 # ------------------------------------------
 # FIN: IMPORTAR
@@ -130,14 +131,16 @@ def handle_redraw(rect):
 
 def confirma():
     #TODO: ESTO HAY QUE QUITARLO!
+    cerrar_bds()
     app_lock.signal()
     #TODO: ESTO HAY QUE QUITARLO!
     return
     opcion = [getLang(u"SÍ"),getLang(u"NO")]
     test = appuifw.popup_menu(opcion,getLang(u"¿ESTÁ SEGURO?"))
     if test == 0 :
-	    appuifw.note(getLang(u"HASTA LUEGO"), "conf")
-	    app_lock.signal()
+        cerrar_bds()
+        appuifw.note(getLang(u"HASTA LUEGO"), "conf")
+        app_lock.signal()
         
 def teclaPresionada(key):
     if key['type']==3:
