@@ -105,8 +105,14 @@ csds60={
     u"RATA":u"Ratio almuerzo",
     u"RATC":u"Ratio cena",
     u"ADDINSULINA":u"Añadir nueva insulina",
-    u"ELIMINSULINA":u"Borrar insulina seleccionada",
+    u"ELIMINSULINA":u"Ver insulinas disponibles",
     u"BORRAINSU":u"Para borrar la insulina seleccionada,",
     u"BORRAINSU1":u"tienes que pulsar el botón",
-    u"BORRAINSU2":u"select del teclado"
+    u"BORRAINSU2":u"select del teclado",
+    u"RESETINSU":u"Valores insulina reseteados",
+    u"ALARMATIRAS":u"Tiras para alarma",
+    u"QTIRASACT":u"Cantidad de tiras actual",
+    u"QTIRASTOTAL":u"Cantidad de tiras total",
+    u"RESETTIRAS":u"Resetear cantidad tiras",
+    u"QTIRASRESTA":u"Tiras a restar"
     }

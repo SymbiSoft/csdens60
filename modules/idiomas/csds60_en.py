@@ -105,8 +105,14 @@ csds60={
     u"RATA":u"Lunch ratio",
     u"RATC":u"Dinner ratio",
     u"ADDINSULINA":u"Add new insuline",
-    u"ELIMINSULINA":u"Remove selected insuline",
+    u"ELIMINSULINA":u"View availables insulines",
     u"BORRAINSU":u"You have to push the keyboard",
     u"BORRAINSU1":u"select button for remove",
-    u"BORRAINSU2":u"the selected insuline"
+    u"BORRAINSU2":u"the selected insuline",
+    u"RESETINSU":u"Reset insuline values",
+    u"ALARMATIRAS":u"Tiras for alarm",
+    u"QTIRASACT":u"Current amount of tiras",
+    u"QTIRASTOTAL":u"Full amount of tiras",
+    u"RESETTIRAS":u"Reset amount of tiras",
+    u"QTIRASRESTA":u"Tiras for rest"
     }

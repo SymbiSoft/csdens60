@@ -196,6 +196,7 @@ def actualizar_insulina(insu):
     contadorinsu = obtener_numero_insulinas() + 1
     dbconf.execute(u"insert into insulinas (tipo,orden,ult) values('%s',%d,%d)"%(insu,contadorinsu,contadorinsu))
 
+# no se usa actualmente    
 def deshabilita_insulina(posicion):
     #dbvconf.prepare(dbconf,u"select orden from insulinas where orden>=0")
     #if dbvconf.count_line()!=0:
@@ -203,6 +204,17 @@ def deshabilita_insulina(posicion):
         # para evitar un bug por no haber insulinas
         #if dbvconf.col(1) > 0:    
             dbconf.execute(u"update insulinas set orden=-1 where ult=%d"%(posicion))
+            
+def reset_insulina():
+    # esta consulta sirve para borrar los registros de las insulinas nuevas
+    sqllarga1 = u"delete from diario where tipo<>'desayunoRapidaantes' and tipo<>'desayunoRapidadespues' and tipo<>'almuerzoRapidaantes' \
+    and tipo<>'almuerzoRapidadespues' and tipo<>'cenaRapidaantes' and tipo<>'cenaRapidadespues' and tipo<>'desayunoLantusantes' and tipo<>'desayunoLantusdespues' \
+    and tipo<>'almuerzoLantusantes' and tipo<>'almuerzoLantusdespues' and tipo<>'cenaLantusantes' and tipo<>'cenaLantusdespues'"    
+    db.execute(sqllarga1)
+    dbconf.execute(u"delete from insulinas")
+    dbconf.execute(u"insert into insulinas (tipo,orden,ult) values('%s',%d,%d)"%('Rapida',0,0))
+    dbconf.execute(u"insert into insulinas (tipo,orden,ult) values('%s',%d,%d)"%('Lantus',1,1))
+    
 
 def obtener_datos_diario():
     dbv.prepare(db,u"select * from diario order by fecha,tipo")
@@ -363,11 +375,12 @@ def obtener_qtirasactual_actual():
   
 # el fin de este metodo es por si malgastas alguna tira del bote, pones las que usaste y se restan a la cantidad actual   
 def actualizar_qtirasactual(q):
-    qtemp = int(obtener_qtirasactual_actual()) 
-    if q > qtemp:
+    qtemp = int(obtener_qtirasactual_actual())
+    print u"qtemp es %d"%qtemp
+    print u"q es %d"%q
+    qdiferencia = qtemp - q
+    if qdiferencia < 0:
         qdiferencia = 0
-    else:
-        qdiferencia = qtemp - q
     dbconf.execute(u"update tpersonal set valor=%d where nombre='qtirasactual'"%(qdiferencia))
 
 def actualizar_qtirastotal(q):
@@ -380,7 +393,7 @@ def obtener_qtirastotal():
         return dbvconf.col(2)
     return None
     
-# resetea al valor total de tiras la cantidad actual
+# resetea la cantidad actual con el valor total de tiras
 def reset_qtirasactual():
     qtotaltiras = int(obtener_qtirastotal())
     dbconf.execute(u"update tpersonal set valor=%d where nombre='qtirasactual'"%(qtotaltiras))
