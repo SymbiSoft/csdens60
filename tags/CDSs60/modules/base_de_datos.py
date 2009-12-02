@@ -116,6 +116,13 @@ def obtener_numero_dbs():
     dbvconf.prepare(dbconf,u"select * from dbs")
     return dbvconf.count_line()
     
+def obtener_db_actual():
+    dbvconf.prepare(dbconf,u"select * from dbproperties where nombre='db'")
+    if dbvconf.count_line()!=0:
+        dbvconf.get_line()
+        return dbvconf.col(2)
+    return None
+    
 try:
     db.open(u'%s:\\Python\\resources\\db\\%s'%(unidad,database))
 except:
@@ -288,13 +295,6 @@ def obtener_idioma_act_conf():
     
 def actualizar_db(datab):
     dbconf.execute(u"update dbproperties set valor='%s' where nombre='db'"%(datab))
-    
-def obtener_db_actual():
-    dbvconf.prepare(dbconf,u"select * from dbproperties where nombre='db'")
-    if dbvconf.count_line()!=0:
-        dbvconf.get_line()
-        return dbvconf.col(2)
-    return None
 
 def actualizar_peso(p):
     dbconf.execute(u"update tpersonal set valor=%03.2f where nombre='peso'"%(p))    
@@ -397,3 +397,15 @@ def obtener_qtirastotal():
 def reset_qtirasactual():
     qtotaltiras = int(obtener_qtirastotal())
     dbconf.execute(u"update tpersonal set valor=%d where nombre='qtirasactual'"%(qtotaltiras))
+    
+def cerrar_bds():
+    actualizar_db(database)
+    dbconf.close()
+    dbcitas.close()
+    db.close()
+    
+def cerrar_bd_actual():
+    db.close()
+    
+def abrir_bd(bd):
+    db.open(u'%s:\\Python\\resources\\db\\%s'%(unidad,bd))

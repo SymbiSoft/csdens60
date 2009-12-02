@@ -83,6 +83,8 @@ def moverCursor(desp,pos):
         actPos += desp # avanza por las bds
         datos[actPos] = base_de_datos.obtener_dbs(actPos) # recupera el valor para dicha posicion
         base_de_datos.actualizar_db(datos[actPos])
+        base_de_datos.cerrar_bd_actual()
+        base_de_datos.abrir_bd(datos[actPos])
 
     appuifw.app.body = canvasSelecBD
 
