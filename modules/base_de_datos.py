@@ -406,3 +406,45 @@ def cerrar_bd_actual():
     
 def abrir_bd(bd):
     db.open(u'%s:\\Python\\resources\\db\\%s'%(unidad,bd))
+    
+def obtener_lacteos():
+    dbvconf.prepare(dbconf,u"select * from tiposalimentos where tipo='vaso de leche o 2 yogures naturales'")
+    if dbvconf.count_line()!=0:
+        dbvconf.get_line()
+        return dbvconf.col(2)
+    return None
+    
+def obtener_farinaceos():
+    dbvconf.prepare(dbconf,u"select * from tiposalimentos where tipo='un pan o tazon de cereales o pasta'")
+    if dbvconf.count_line()!=0:
+        dbvconf.get_line()
+        return dbvconf.col(2)
+    return None
+    
+def obtener_legumbres():
+    dbvconf.prepare(dbconf,u"select * from tiposalimentos where tipo='tazon de legumbres o patatas'")
+    if dbvconf.count_line()!=0:
+        dbvconf.get_line()
+        return dbvconf.col(2)
+    return None
+    
+def obtener_frutas():
+    dbvconf.prepare(dbconf,u"select * from tiposalimentos where tipo='1 pieza mediana de fruta'")
+    if dbvconf.count_line()!=0:
+        dbvconf.get_line()
+        return dbvconf.col(2)
+    return None
+    
+def obtener_verduras():
+    dbvconf.prepare(dbconf,u"select * from tiposalimentos where tipo='1 plato de verdura'")
+    if dbvconf.count_line()!=0:
+        dbvconf.get_line()
+        return dbvconf.col(2)
+    return None
+
+def obtener_proteinicos():
+    dbvconf.prepare(dbconf,u"select * from tiposalimentos where tipo='carne o pescado'")
+    if dbvconf.count_line()!=0:
+        dbvconf.get_line()
+        return dbvconf.col(2)
+    return None

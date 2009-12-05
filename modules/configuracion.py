@@ -18,44 +18,17 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 from time import localtime
-
-
-
-#creacion de la base de datos del mes actual
 actMes = localtime()[1]
 actAno = localtime()[0]
-#database = u"csds60"
-#database = database +"_"+ str(actMes)+"_"+str(actAno) + ".db" 
 
 #tiene que estar en esta linea, sino falla por los parametros de arriba
 from base_de_datos import obtener_idioma_act_conf
 from base_de_datos import obtener_db_actual
-from base_de_datos import obtener_alarmatiras_actual
 #carga la bd seleccionada
 database = obtener_db_actual()
 #idioma seleccionado, es especial por recuperar la constante del idioma, no el idioma en si
-cfgIdioma = obtener_idioma_act_conf() 
+cfgIdioma = obtener_idioma_act_conf()
 
-#numero de tiras reactivas minimo para activar la alarma
-#alarmaTiras = 5
-alarmaTiras = int(obtener_alarmatiras_actual()) 
-#numero de dias con antelacion antes de la fecha de la cita 
-#alarmaCitas = 3
-
-#cantidad de glucosa que baja una unidad de insulina(parte entera), habria que ponerlo en dieta
-#factorSensibilidad = int(1800//totalInsulina)
-
-#dosis de insulina recomendada por el medico, ayudara a calcular los ratios
-#dosisDesayuno = 4
-#dosisAlmuerzo = 3
-#dosisCena = 2
-
-#1 racion de hidratos de carbono -> un vaso de leche o 2 yogures naturales
-#2              "                -> un pan o tazon de cereales, legumbres, patatas, pasta
-#2              "                -> 1 pieza mediana de fruta
-#1              "                -> 1 plato de verdura
-#0              "                -> carne o pescado
-#para calcular la dosis de insulina, la formula es (cantidad de raciones de hc)/(ratio pertinente) +
-#correcion de glucosa si superamos 250 mg, cuya formula es (glucosa actual - 100) / (factor sensibilidad)     
+    
 
 
