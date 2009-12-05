@@ -131,7 +131,7 @@ def handle_redraw(rect):
 
 def confirma():
     #TODO: ESTO HAY QUE QUITARLO!
-    cerrar_bds()
+    #cerrar_bds()
     app_lock.signal()
     #TODO: ESTO HAY QUE QUITARLO!
     return
