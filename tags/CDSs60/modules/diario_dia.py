@@ -132,7 +132,38 @@ def press_select():
         global actDia
         global actMes
         global actAno
+        noalarma = False
         base_de_datos.actualizar_diario_dia(actDia,actMes,actAno,movimientos[actPos][4],datos[actPos])
+        if movimientos[actPos][2]==u"0i" or movimientos[actPos][2]==u"0d" or movimientos[actPos][2]==u"3i" or movimientos[actPos][2]==u"3d" or movimientos[actPos][2]==u"6i" or movimientos[actPos][2]==u"6d":
+            qalarmatiras=base_de_datos.obtener_alarmatiras_actual()
+            qactual=base_de_datos.obtener_qtirasactual_actual()
+            # alarma desactivada
+            if qalarmatiras==0:
+                noalarma = True
+            # avisar por alarma y restar 1 tira
+            if noalarma == False:                
+                if qactual > 0:                    
+                    base_de_datos.actualizar_qtirasactual(1)
+                    qactual -= 1
+                    cadena = getLang(u"TEQUEDAN")+"%d"%qactual
+                    if qactual == 1:
+                        cadena += u" tira"
+                    else:
+                        cadena += u" tiras"
+                    if qactual <= qalarmatiras:                    
+                        appuifw.note(cadena,"info")
+                    if qactual+1 == 1:
+                        base_de_datos.reset_qtirasactual()
+                # resetea cuando llega a 0
+                elif qactual == 0:
+                    base_de_datos.reset_qtirasactual()
+            else:
+                if qactual > 0:
+                    base_de_datos.actualizar_qtirasactual(1)
+                    if qactual == 1:
+                        base_de_datos.reset_qtirasactual()
+                elif qactual == 0:
+                    base_de_datos.reset_qtirasactual()
         actMod=False
     else:
         if movimientos[actPos][2]==u"sb":
