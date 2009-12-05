@@ -114,5 +114,6 @@ csds60={
     u"QTIRASACT":u"Current amount of tiras",
     u"QTIRASTOTAL":u"Full amount of tiras",
     u"RESETTIRAS":u"Reset amount of tiras",
-    u"QTIRASRESTA":u"Tiras for rest"
+    u"QTIRASRESTA":u"Tiras for rest",
+    u"TEQUEDAN":u"You have got "
     }

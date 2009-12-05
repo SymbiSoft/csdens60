@@ -268,7 +268,6 @@ def obtener_dbs(posicion):
     dbvconf.prepare(dbconf,u"select * from dbs where id = %d"%(posicion))
     if dbvconf.count_line()!=0:
         dbvconf.get_line()
-        print dbvconf.col(2)
         return dbvconf.col(2)
     return None
     
@@ -376,8 +375,6 @@ def obtener_qtirasactual_actual():
 # el fin de este metodo es por si malgastas alguna tira del bote, pones las que usaste y se restan a la cantidad actual   
 def actualizar_qtirasactual(q):
     qtemp = int(obtener_qtirasactual_actual())
-    print u"qtemp es %d"%qtemp
-    print u"q es %d"%q
     qdiferencia = qtemp - q
     if qdiferencia < 0:
         qdiferencia = 0

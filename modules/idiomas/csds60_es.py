@@ -114,5 +114,6 @@ csds60={
     u"QTIRASACT":u"Cantidad de tiras actual",
     u"QTIRASTOTAL":u"Cantidad de tiras total",
     u"RESETTIRAS":u"Resetear cantidad tiras",
-    u"QTIRASRESTA":u"Tiras a restar"
+    u"QTIRASRESTA":u"Tiras a restar",
+    u"TEQUEDAN":u"Te quedan "
     }
