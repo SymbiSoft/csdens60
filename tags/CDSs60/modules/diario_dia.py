@@ -73,7 +73,7 @@ def handle_redraw(rect):
         colorTexto[i]=0x000000
     for i in range(24):
         if movimientos[i][2]==u"sb":
-            if datos[i]==1:
+            if datos[i]==u"S":
                 colorRelleno[i]=0xdddddd
             else:
                 colorRelleno[i]=0xffffff
@@ -133,7 +133,7 @@ def press_select():
         global actMes
         global actAno
         noalarma = False
-        base_de_datos.actualizar_diario_dia(actDia,actMes,actAno,movimientos[actPos][4],datos[actPos],actPos)
+        base_de_datos.actualizar_diario_dia(actDia,actMes,actAno,movimientos[actPos][4],datos[actPos],u"",actPos)
         if movimientos[actPos][2]==u"0i" or movimientos[actPos][2]==u"0d" or movimientos[actPos][2]==u"3i" or movimientos[actPos][2]==u"3d" or movimientos[actPos][2]==u"6i" or movimientos[actPos][2]==u"6d":
             qalarmatiras=base_de_datos.obtener_alarmatiras_actual()
             qactual=base_de_datos.obtener_qtirasactual_actual()
@@ -167,11 +167,11 @@ def press_select():
         actMod=False
     else:
         if movimientos[actPos][2]==u"sb":
-            if datos[actPos]==0:
-                datos[actPos]=1
+            if datos[actPos]==u"N" or datos[actPos] == 0:
+                datos[actPos]=u"S"
             else:
-                datos[actPos]=0
-            base_de_datos.actualizar_diario_dia(actDia,actMes,actAno,movimientos[actPos][4],datos[actPos],actPos)
+                datos[actPos]=u"N"
+            base_de_datos.actualizar_diario_dia(actDia,actMes,actAno,movimientos[actPos][4],0,datos[actPos],actPos)
         else:
             actMod=True
     appuifw.app.body = canvasDiarioDia
@@ -260,28 +260,35 @@ def mostrar_diario_dia(dia,mes,ano,vAtras):
         [2,[0,1,7,0],u"1t",base_de_datos.obtener_numero_insulinas(),u"Dosis del desayuno"],
         [3,[-3,1,2,-1],u"1i",99,u"Dosis antes del desayuno "+base_de_datos.obtener_insulina(0)],
         [4,[-3,0,2,-1],u"1d",99,u"Dosis despues del desayuno "+base_de_datos.obtener_insulina(0)],
-        [5,[-2,1,2,0],u"sb",0,u"Deporte antes del desayuno"],
-        [6,[-2,0,2,-1],u"sb",0,u"Deporte despues del desayuno"],
+        [5,[-2,1,2,0],u"sb",u"N",u"Deporte antes del desayuno"],
+        [6,[-2,0,2,-1],u"sb",u"N",u"Deporte despues del desayuno"],
         [7,[-2,1,3,0],u"3i",500,u"Antes del almuerzo"],
         [8,[-2,0,3,-1],u"3d",500,u"Despues del almuerzo"],
         [9,[-7,1,7,0],u"4t",base_de_datos.obtener_numero_insulinas(),u"Dosis del almuerzo"],
         [10,[-3,1,2,-1],u"4i",99,u"Dosis antes del almuerzo "+base_de_datos.obtener_insulina(0)],
         [11,[-3,0,2,-1],u"4d",99,u"Dosis despues del almuerzo "+base_de_datos.obtener_insulina(0)],
-        [12,[-2,1,2,0],u"sb",0,u"Deporte antes del almuerzo"],
-        [13,[-2,0,2,-1],u"sb",0,u"Deporte despues del almuerzo"],
+        [12,[-2,1,2,0],u"sb",u"N",u"Deporte antes del almuerzo"],
+        [13,[-2,0,2,-1],u"sb",u"N",u"Deporte despues del almuerzo"],
         [14,[-2,1,3,0],u"6i",500,u"Antes de la cena"],
         [15,[-2,0,3,-1],u"6d",500,u"Despues de la cena"],
         [16,[-7,1,0,0],u"7t",base_de_datos.obtener_numero_insulinas(),u"Dosis de la cena"],
         [17,[-3,1,2,-1],u"7i",99,u"Dosis antes de la cena "+base_de_datos.obtener_insulina(0)],
         [18,[-3,0,2,-1],u"7d",99,u"Dosis despues de la cena "+base_de_datos.obtener_insulina(0)],
-        [19,[-2,1,2,0],u"sb",0,u"Deporte antes de la cena"],
-        [20,[-2,0,2,-1],u"sb",0,u"Deporte despues de la cena"],
+        [19,[-2,1,2,0],u"sb",u"N",u"Deporte antes de la cena"],
+        [20,[-2,0,2,-1],u"sb",u"N",u"Deporte despues de la cena"],
         [21,[-2,0,1,0],u"9i",500,u"Orina"],
         [22,[-1,0,1,0],u"10i",4,u" Nivel acetona"],
-        [23,[-1,0,0,0],u"sb",0,u"Glucagon utilizado"]
-        ]
+        [23,[-1,0,0,0],u"sb",u"N",u"Glucagon utilizado"]
+        ]  
     global datos
     datos=[0 for x in range(24)]
+    datos[5] = u"N"
+    datos[6] = u"N"
+    datos[12] = u"N"
+    datos[13] = u"N"
+    datos[19] = u"N"
+    datos[20] = u"N"
+    datos[23] = u"N"
     for i in range(24):
         datos[i]=base_de_datos.obtener_diario_dia(actDia,actMes,actAno,movimientos[i][4])
     global actPos

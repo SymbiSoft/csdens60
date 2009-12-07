@@ -73,26 +73,20 @@ dNodes;for(var i=0;i<dias.length;i++){if(dias[i].tagName==\"DIV\"&&dias[i].class
 childNodes[j].className==\"datosDiaTitulo\"){var diaValor=dias[i].childNodes[j];var fecha=new Date\
 ();fecha.setTime(diaValor.innerHTML*1000);diaValor.innerHTML=fecha.getDate()+\"/\"+(fecha.getMonth(\
 )+1)+\"/\"+fecha.getFullYear();dias[i].childNodes[j].onclick=function(){mostrar(this)}}}}}}</script>"
-    datos=base_de_datos.obtener_datos_diario()    
+    datos=base_de_datos.obtener_datos_diario()   
     fecha=0
+    comida = False
     for i in range(datos.count_line()):        
         datos.get_line()
-        cont = 0
         if fecha!=datos.col(1):
             fecha=datos.col(1)
             html=html+u"</div></div><div class=\"datosDia\"><div class=\"datosDiaTitulo\">"+str(fecha)+"</div><div class=\"datosDiaCont\">"
-            comidas=base_de_datos.obtener_datos_extra(fecha)
-            #html=html+u"</div></div><div class=\"datosDia\"><div class=\"datosDiaTitulo\">Datos extra</div><div class=\"datosDiaCont\">"                    
-            for j in range(comidas.count_line()):
-                comidas.get_line()
-                if fecha == comidas.col(1):
-                    html=html+u"<div class=\"datosDiaContAtr\">"+str(comidas.col(2))+u"</div><div class=\"datosDiaContVal\">"+str(comidas.col(3))+u"</div>"
-                comidas.next_line() 
-        ord = int(datos.col(4))
+            #html=html+u"</div></div><div class=\"datosDia\"><div class=\"datosDiaTitulo\">Datos extra</div><div class=\"datosDiaCont\">"           
+        ord = int(datos.col(5))
         chk = u""
         term = u""
         if ord == 5 or ord == 6 or ord == 12 or ord == 13 or ord == 19 or ord == 20 or ord == 23:
-            if int(datos.col(3)) == 1:
+            if str(datos.col(4)) == u"S":
                 chk = u"Si"
             else:
                 chk = u"No"
@@ -102,11 +96,18 @@ childNodes[j].className==\"datosDiaTitulo\"){var diaValor=dias[i].childNodes[j];
             term = u" ml"
         elif ord == 22:
             term = u" +"
+        elif ord == 24 or ord == 25 or ord == 26 or ord == 27 or ord == 28 or ord == 29 or ord == 30 or ord == 31:   
+            comida = True
         if ord != 2 and ord != 9 and ord != 16:
-            if chk == u"":
+            if chk == u"" and comida == False:
                 html=html+u"<div class=\"datosDiaContAtr\">"+str(datos.col(2))+u"</div><div class=\"datosDiaContVal\">"+str(datos.col(3))+term+u"</div>"
-            else:
+            elif chk == u"" and comida == True:
+                # falla si metemos una ñ
+                comd = u""+str(datos.col(4)) 
+                html=html+u"<div class=\"datosDiaContAtr\">"+str(datos.col(2))+u"</div><div class=\"datosDiaContVal\">"+comd+u"</div>"
+            elif chk != u"":
                 html=html+u"<div class=\"datosDiaContAtr\">"+str(datos.col(2))+u"</div><div class=\"datosDiaContVal\">"+chk+u"</div>"       
+        comida = False
         datos.next_line()
     htmlFinal=cabecerahtml+css+javascript+u"</head><body><div id=\"datosCont\">"+html[12:]+u"</div></body></html>"
     fichero=codecs.open(unidad+':\\Python\\resources\\html\datos_'+base_de_datos.obtener_db_actual()+'.html','w','utf8')

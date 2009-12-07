@@ -85,15 +85,16 @@ def press_select():
     global actDia
     global actMes
     global actAno
-    valor[actPos]=appuifw.query(getLang(u"ESCRIBE TEXTO:"), "text", base_de_datos.obtener_extra_diario(actDia,actMes,actAno,movimientos[actPos][3]))
+    valor[actPos]=appuifw.query(getLang(u"ESCRIBE TEXTO:"), "text", base_de_datos.obtener_diario_dia(actDia,actMes,actAno,movimientos[actPos][3]))
     if valor[actPos]==None:
-        contenidoDB=base_de_datos.obtener_extra_diario(actDia,actMes,actAno,movimientos[actPos][3])
+        contenidoDB=base_de_datos.obtener_diario_dia(actDia,actMes,actAno,movimientos[actPos][3])
         if contenidoDB==0:
             valor[actPos]=getLang(u"NADA")
         else:
             valor[actPos]=contenidoDB
     else:
-        base_de_datos.actualizar_extra_diario(actDia,actMes,actAno,movimientos[actPos][3],valor[actPos],actPos)
+        orden = int(movimientos[actPos][2])
+        base_de_datos.actualizar_diario_dia(actDia,actMes,actAno,movimientos[actPos][3],0,valor[actPos],orden)
     appuifw.app.body = canvasExtra
     
 def moverCursor(pos):
@@ -148,19 +149,19 @@ def mostrar_extra(dia,mes,ano,vAtras):
     actAno=ano    
     global movimientos
     movimientos=[
-        [0,[0,0,1,0],u"--",u"Desayuno"],
-        [1,[-1,0,1,0],u"--",u"Mediamana&ntilde;a"],
-        [2,[-1,0,1,0],u"--",u"Almuerzo"],
-        [3,[-1,0,1,0],u"--",u"Merienda"],
-        [4,[-1,0,1,0],u"--",u"Cena"],
-        [5,[-1,0,1,0],u"--",u"Resopon"],
-        [6,[-1,0,1,0],u"--",u"Informacion adicional"],
-        [7,[-1,0,0,0],u"--",u"Medicamentos"]
+        [0,[0,0,1,0],24,u"Desayuno"],
+        [1,[-1,0,1,0],25,u"Mediamana&ntilde;a"],
+        [2,[-1,0,1,0],26,u"Almuerzo"],
+        [3,[-1,0,1,0],27,u"Merienda"],
+        [4,[-1,0,1,0],28,u"Cena"],
+        [5,[-1,0,1,0],29,u"Resopon"],
+        [6,[-1,0,1,0],30,u"Informacion adicional"],
+        [7,[-1,0,0,0],31,u"Medicamentos"]
         ]
     global valor
     valor=[0 for x in range(8)]
     for i in range(8):
-        valor[i]=base_de_datos.obtener_extra_diario(actDia,actMes,actAno,movimientos[i][3])
+        valor[i]=base_de_datos.obtener_diario_dia(actDia,actMes,actAno,movimientos[i][3])
         if valor[i]==0:
             valor[i]=getLang(u"NADA")
     global actPos
