@@ -41,6 +41,8 @@ dbconf = e32db.Dbms()
 dbvconf = e32db.Db_view()
 dbcitas = e32db.Dbms()
 dbvcitas = e32db.Db_view()
+dbcomidas = e32db.Dbms()
+dbvcomidas = e32db.Db_view()
 idiomas = [u'es',
            u'en',
            u'it',
@@ -128,13 +130,11 @@ try:
 except:
     db.create(u'%s:\\Python\\resources\\db\\%s'%(unidad,database))
     db.open(u'%s:\\Python\\resources\\db\\%s'%(unidad,database))
-    db.execute(u"create table diario (fecha date,tipo varchar,valor bigint,orden integer)")
-    db.execute(u"create table extra (fecha date,tipo varchar,valor varchar,orden integer)")    
+    db.execute(u"create table diario (fecha date,tipo varchar,valor bigint,orden integer)")   
     db.execute(u"create table ordendiario (tipo varchar,orden integer)")
     db.execute(u"insert into ordendiario(tipo,orden) values('desa',1)")
     db.execute(u"insert into ordendiario(tipo,orden) values('almu',2)")
     db.execute(u"insert into ordendiario(tipo,orden) values('cena',3)")
-    db.execute(u"create table registroscitas (fecha date,descripcion varchar)")
     
     # hay que poner esto aqui, porque sino se queda vacia la tabla de dbs
     # ademas se controla el indice actual de la tabla de bds
@@ -148,7 +148,14 @@ except:
     dbcitas.create(u'%s:\\Python\\resources\\db\\citas.db'%(unidad))
     dbcitas.open(u'%s:\\Python\\resources\\db\\citas.db'%(unidad))
     dbcitas.execute(u"create table registroscitas (fecha date,descripcion varchar)")
-
+    
+try:
+    dbcomidas.open(u'%s:\\Python\\resources\\db\\extrabd.db'%(unidad))
+except:
+    dbcomidas.create(u'%s:\\Python\\resources\\db\\extrabd.db'%(unidad))
+    dbcomidas.open(u'%s:\\Python\\resources\\db\\extrabd.db'%(unidad))
+    dbcomidas.execute(u"create table extra (fecha date,tipo varchar,valor varchar,orden integer)")
+    
 def obtener_diario_dia(dia,mes,ano,tipo):
     fechaValues=[ano,mes,dia,0,0,0,0,0,1]
     fecha=time.mktime(time.struct_time(fechaValues))
@@ -170,20 +177,20 @@ def actualizar_diario_dia(dia,mes,ano,tipo,valor,orden):
 def obtener_extra_diario(dia,mes,ano,tipo):
     fechaValues=[ano,mes,dia,0,0,0,0,0,1]
     fecha=time.mktime(time.struct_time(fechaValues))
-    dbv.prepare(db,u"select * from extra where fecha=#%s# and tipo='%s'"%(e32db.format_time(fecha),tipo))
-    if dbv.count_line()!=0:
-        dbv.get_line()
-        return dbv.col(3)
+    dbvcomidas.prepare(dbcomidas,u"select * from extra where fecha=#%s# and tipo='%s'"%(e32db.format_time(fecha),tipo))
+    if dbvcomidas.count_line()!=0:
+        dbvcomidas.get_line()
+        return dbvcomidas.col(3)
     return 0
     
 def actualizar_extra_diario(dia,mes,ano,tipo,valor,orden):
     fechaValues=[ano,mes,dia,0,0,0,0,0,1]
     fecha=time.mktime(time.struct_time(fechaValues))
-    dbv.prepare(db,u"select * from extra where fecha=#%s# and tipo='%s'"%(e32db.format_time(fecha),tipo))
-    if dbv.count_line()!=0:
-        db.execute(u"update extra set valor='%s' where fecha=#%s# and tipo='%s'"%(valor,e32db.format_time(fecha),tipo))
+    dbvcomidas.prepare(dbcomidas,u"select * from extra where fecha=#%s# and tipo='%s'"%(e32db.format_time(fecha),tipo))
+    if dbvcomidas.count_line()!=0:
+        dbcomidas.execute(u"update extra set valor='%s' where fecha=#%s# and tipo='%s'"%(valor,e32db.format_time(fecha),tipo))
     else:
-        db.execute(u"insert into extra (fecha,tipo,valor,orden) values(#%s#,'%s','%s',%d)"%(e32db.format_time(fecha),tipo,valor,orden))
+        dbcomidas.execute(u"insert into extra (fecha,tipo,valor,orden) values(#%s#,'%s','%s',%d)"%(e32db.format_time(fecha),tipo,valor,orden))
 
 def obtener_insulina(posicion):
     dbvconf.prepare(dbconf,u"select * from insulinas where orden=%d"%(posicion));
@@ -227,9 +234,9 @@ def obtener_datos_diario():
     dbv.prepare(db,u"select * from diario order by orden")
     return dbv
     
-def obtener_datos_extra():
-    dbv.prepare(db,u"select * from extra order by orden")
-    return dbv
+def obtener_datos_extra(fecha):
+    dbvcomidas.prepare(dbcomidas,u"select * from extra where fecha=#%s# order by orden"%(e32db.format_time(fecha)))
+    return dbvcomidas
     
 def actualizar_registros_citas(dia,mes,ano,descripcion):
     fechaValues=[ano,mes,dia,0,0,0,0,0,1]

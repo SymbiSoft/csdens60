@@ -93,7 +93,7 @@ def press_select():
         else:
             valor[actPos]=contenidoDB
     else:
-        base_de_datos.actualizar_extra_diario(actDia,actMes,actAno,movimientos[actPos][3],valor[actPos])
+        base_de_datos.actualizar_extra_diario(actDia,actMes,actAno,movimientos[actPos][3],valor[actPos],actPos)
     appuifw.app.body = canvasExtra
     
 def moverCursor(pos):
@@ -149,7 +149,7 @@ def mostrar_extra(dia,mes,ano,vAtras):
     global movimientos
     movimientos=[
         [0,[0,0,1,0],u"--",u"Desayuno"],
-        [1,[-1,0,1,0],u"--",u"Mediamanana"],
+        [1,[-1,0,1,0],u"--",u"Mediamana&ntilde;a"],
         [2,[-1,0,1,0],u"--",u"Almuerzo"],
         [3,[-1,0,1,0],u"--",u"Merienda"],
         [4,[-1,0,1,0],u"--",u"Cena"],
