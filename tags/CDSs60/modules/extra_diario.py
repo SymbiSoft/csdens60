@@ -148,14 +148,14 @@ def mostrar_extra(dia,mes,ano,vAtras):
     actAno=ano    
     global movimientos
     movimientos=[
-        [0,[0,0,1,0],u"--",u"desayuno"],
-        [1,[-1,0,1,0],u"--",u"mediamanana"],
-        [2,[-1,0,1,0],u"--",u"almuerzo"],
-        [3,[-1,0,1,0],u"--",u"merienda"],
-        [4,[-1,0,1,0],u"--",u"cena"],
-        [5,[-1,0,1,0],u"--",u"resopon"],
-        [6,[-1,0,1,0],u"--",u"enfermedades"],
-        [7,[-1,0,0,0],u"--",u"medicamentos"]
+        [0,[0,0,1,0],u"--",u"Desayuno"],
+        [1,[-1,0,1,0],u"--",u"Mediamanana"],
+        [2,[-1,0,1,0],u"--",u"Almuerzo"],
+        [3,[-1,0,1,0],u"--",u"Merienda"],
+        [4,[-1,0,1,0],u"--",u"Cena"],
+        [5,[-1,0,1,0],u"--",u"Resopon"],
+        [6,[-1,0,1,0],u"--",u"Informacion adicional"],
+        [7,[-1,0,0,0],u"--",u"Medicamentos"]
         ]
     global valor
     valor=[0 for x in range(8)]
