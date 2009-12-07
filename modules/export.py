@@ -74,13 +74,37 @@ childNodes[j].className==\"datosDiaTitulo\"){var diaValor=dias[i].childNodes[j];
 ();fecha.setTime(diaValor.innerHTML*1000);diaValor.innerHTML=fecha.getDate()+\"/\"+(fecha.getMonth(\
 )+1)+\"/\"+fecha.getFullYear();dias[i].childNodes[j].onclick=function(){mostrar(this)}}}}}}</script>"
     datos=base_de_datos.obtener_datos_diario()
+    #comidas=base_de_datos.obtener_datos_extra()
     fecha=0
-    for i in range(datos.count_line()):
+    for i in range(datos.count_line()):        
         datos.get_line()
         if fecha!=datos.col(1):
             fecha=datos.col(1)
             html=html+u"</div></div><div class=\"datosDia\"><div class=\"datosDiaTitulo\">"+str(fecha)+"</div><div class=\"datosDiaCont\">"
-        html=html+u"<div class=\"datosDiaContAtr\">"+str(datos.col(2))+u"</div><div class=\"datosDiaContVal\">"+str(datos.col(3))+u"</div>"
+        ord = int(datos.col(4))
+        chk = u""
+        term = u""
+        if ord == 5 or ord == 6 or ord == 12 or ord == 13 or ord == 19 or ord == 20 or ord == 23:
+            if int(datos.col(3)) == 1:
+                chk = u"Si"
+            else:
+                chk = u"No"
+        elif ord == 0 or ord == 1 or ord == 7 or ord == 8 or ord == 14 or ord == 15 or ord == 21:
+            term = u" mg"
+        elif ord == 3 or ord == 4 or ord == 10 or ord == 11 or ord == 17 or ord == 18:
+            term = u" ml"
+        elif ord == 22:
+            term = u" +"
+        if ord != 2 and ord != 9 and ord != 16:
+            if chk == u"":
+                html=html+u"<div class=\"datosDiaContAtr\">"+str(datos.col(2))+u"</div><div class=\"datosDiaContVal\">"+str(datos.col(3))+term+u"</div>"
+            else:
+                html=html+u"<div class=\"datosDiaContAtr\">"+str(datos.col(2))+u"</div><div class=\"datosDiaContVal\">"+chk+u"</div>"        
+        #html=html+u"</div></div><div class=\"datosDia\"><div class=\"datosDiaTitulo\">Datos extra</div><div class=\"datosDiaCont\">"
+        #comidas.get_line()        
+        #for j in range(comidas.count_line()):
+         #   html=html+u"<div class=\"datosDiaContAtr\">"+str(comidas.col(2))+u"</div><div class=\"datosDiaContVal\">"+str(comidas.col(3))+u"</div>"
+          #  comidas.next_line()        
         datos.next_line()
     htmlFinal=cabecerahtml+css+javascript+u"</head><body><div id=\"datosCont\">"+html[12:]+u"</div></body></html>"
     fichero=codecs.open(unidad+':\\Python\\resources\\html\datos_'+base_de_datos.obtener_db_actual()+'.html','w','utf8')

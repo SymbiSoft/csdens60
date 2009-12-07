@@ -128,8 +128,8 @@ try:
 except:
     db.create(u'%s:\\Python\\resources\\db\\%s'%(unidad,database))
     db.open(u'%s:\\Python\\resources\\db\\%s'%(unidad,database))
-    db.execute(u"create table diario (fecha date,tipo varchar,valor bigint)")
-    db.execute(u"create table extra (fecha date,tipo varchar,valor varchar)")    
+    db.execute(u"create table diario (fecha date,tipo varchar,valor bigint,orden integer)")
+    db.execute(u"create table extra (fecha date,tipo varchar,valor varchar,orden integer)")    
     db.execute(u"create table ordendiario (tipo varchar,orden integer)")
     db.execute(u"insert into ordendiario(tipo,orden) values('desa',1)")
     db.execute(u"insert into ordendiario(tipo,orden) values('almu',2)")
@@ -158,14 +158,14 @@ def obtener_diario_dia(dia,mes,ano,tipo):
         return dbv.col(3)
     return 0
 
-def actualizar_diario_dia(dia,mes,ano,tipo,valor):
+def actualizar_diario_dia(dia,mes,ano,tipo,valor,orden):
     fechaValues=[ano,mes,dia,0,0,0,0,0,1]
     fecha=time.mktime(time.struct_time(fechaValues))
     dbv.prepare(db,u"select * from diario where fecha=#%s# and tipo='%s'"%(e32db.format_time(fecha),tipo))
     if dbv.count_line()!=0:
         db.execute(u"update diario set valor=%d where fecha=#%s# and tipo='%s'"%(valor,e32db.format_time(fecha),tipo))
     else:
-        db.execute(u"insert into diario (fecha,tipo,valor) values(#%s#,'%s',%d)"%(e32db.format_time(fecha),tipo,valor))
+        db.execute(u"insert into diario (fecha,tipo,valor,orden) values(#%s#,'%s',%d,%d)"%(e32db.format_time(fecha),tipo,valor,orden))
 
 def obtener_extra_diario(dia,mes,ano,tipo):
     fechaValues=[ano,mes,dia,0,0,0,0,0,1]
@@ -176,14 +176,14 @@ def obtener_extra_diario(dia,mes,ano,tipo):
         return dbv.col(3)
     return 0
     
-def actualizar_extra_diario(dia,mes,ano,tipo,valor):
+def actualizar_extra_diario(dia,mes,ano,tipo,valor,orden):
     fechaValues=[ano,mes,dia,0,0,0,0,0,1]
     fecha=time.mktime(time.struct_time(fechaValues))
     dbv.prepare(db,u"select * from extra where fecha=#%s# and tipo='%s'"%(e32db.format_time(fecha),tipo))
     if dbv.count_line()!=0:
         db.execute(u"update extra set valor='%s' where fecha=#%s# and tipo='%s'"%(valor,e32db.format_time(fecha),tipo))
     else:
-        db.execute(u"insert into extra (fecha,tipo,valor) values(#%s#,'%s','%s')"%(e32db.format_time(fecha),tipo,valor))
+        db.execute(u"insert into extra (fecha,tipo,valor,orden) values(#%s#,'%s','%s',%d)"%(e32db.format_time(fecha),tipo,valor,orden))
 
 def obtener_insulina(posicion):
     dbvconf.prepare(dbconf,u"select * from insulinas where orden=%d"%(posicion));
@@ -224,7 +224,11 @@ def reset_insulina():
     
 
 def obtener_datos_diario():
-    dbv.prepare(db,u"select * from diario order by fecha,tipo")
+    dbv.prepare(db,u"select * from diario order by orden")
+    return dbv
+    
+def obtener_datos_extra():
+    dbv.prepare(db,u"select * from extra order by orden")
     return dbv
     
 def actualizar_registros_citas(dia,mes,ano,descripcion):
