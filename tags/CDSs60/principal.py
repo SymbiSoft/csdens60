@@ -41,6 +41,7 @@ import dieta, est, citas, config, export, diario, licencia
 from idioma import getLang
 from configuracion import *
 from base_de_datos import cerrar_bds
+from base_de_datos import obtener_db_actual
 
 # ------------------------------------------
 # FIN: IMPORTAR
@@ -105,7 +106,11 @@ def press_select():
     canvas.blit(im[photo])
 
 def press_diario():
-    diario.mostrarDiario([mostrarPrincipal])
+    global soloLectura
+    if soloLectura == False:
+        diario.mostrarDiario([mostrarPrincipal])
+    else:
+        appuifw.note(u"Con la base de datos actual solo puedes exportar","info")
 
 def press_dieta():
     dieta.mostrarDieta([mostrarPrincipal])
@@ -131,7 +136,7 @@ def handle_redraw(rect):
 
 def confirma():
     #TODO: ESTO HAY QUE QUITARLO!
-    #cerrar_bds()
+    cerrar_bds()
     app_lock.signal()
     #TODO: ESTO HAY QUE QUITARLO!
     return
@@ -151,8 +156,15 @@ def verLicencia():
     licencia.mostrar_licencia([mostrarPrincipal])
 
 def mostrarPrincipal():
+    global soloLectura
+    soloLectura = False
+    dbAct = obtener_db_actual()
+    if dbAct != u"csds60_"+str(actMes)+"_"+str(actAno)+".db":
+        soloLectura = True
+    else:
+        soloLectura = False
     global canvas
-    canvas=appuifw.Canvas(redraw_callback=handle_redraw, event_callback=teclaPresionada)
+    canvas=appuifw.Canvas(redraw_callback=handle_redraw, event_callback=teclaPresionada)    
     appuifw.app.body=canvas
     canvas.bind(key_codes.EKeySelect, press_select)
     canvas.bind(key_codes.EKeyRightArrow, press_right)
