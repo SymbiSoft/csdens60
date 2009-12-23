@@ -2,7 +2,7 @@
 # Autor: Jorge Aguirre Andreu
 # Descripción: Puedes calcular la cantidad aproximada de dosis de insulina que necesitas según que alimentos tomes.
 # ADVERTENCIA: EL CALCULO ES UNA MERA APROXIMACION, DEBE SEGUIR LAS INDICACIONES DE SU MEDICO ENDOCRINO, ASI COMO
-# CONFIGURAR CORRECTAMENTE LOS PARAMETROS NECESARIOS DE RATIOS SIGUIENDO CONSEJO MEDICO.
+# CONFIGURAR CORRECTAMENTE LOS PARAMETROS NECESARIOS DE INSULINAS SIGUIENDO CONSEJO MEDICO.
 #
 #   Copyright (C) 2009  Jorge Aguirre Andreu
 #
@@ -40,7 +40,7 @@ def handle_redraw(rect):
     global imDieta
     global datos
     global actPos
-    global ratios
+    global insus
     global resultado
     global j
     flechaIzquierdaX=195
@@ -99,8 +99,8 @@ def handle_redraw(rect):
     canvasDieta.line((20,105,330,105),0)
     canvasDieta.text((30,118),getLang(u"GLUCACTUAL"),0x000000,font=(u"legend",17,appuifw.STYLE_BOLD))    
     canvasDieta.text((225,118),u"%03d mg"%datos[0],colorTexto[0],font=(u"legend",17))
-    canvasDieta.text((30,137),u"Ratio",0x000000,font=(u"legend",17,appuifw.STYLE_BOLD))    
-    canvasDieta.text((215,137),u"%s"%ratios[j],colorTexto[1],font=(u"legend",17))
+    canvasDieta.text((30,137),getLang(u"MOMENTO"),0x000000,font=(u"legend",17,appuifw.STYLE_BOLD))    
+    canvasDieta.text((215,137),u"%s"%insus[j],colorTexto[1],font=(u"legend",17))
     canvasDieta.line((20,140,330,140),0)
     canvasDieta.text((30,155),getLang(u"TIPO1"),0x000000,font=(u"legend",17,appuifw.STYLE_BOLD))
     canvasDieta.text((210,155),u"%02d "%datos[2]+getLang(u"VASO"),colorTexto[2],font=(u"legend",17))
@@ -139,8 +139,8 @@ def volverAtras():
 #2 racion de hidratos de carbono -> 1 pieza mediana de fruta
 #1 racion de hidratos de carbono -> 1 plato de verdura
 #0 racion de hidratos de carbono -> carne o pescado
-#para calcular la dosis de insulina, la formula es (cantidad de raciones de hc)/(ratio pertinente) +
-#correcion de glucosa si superamos 250 mg, cuya formula es (glucosa actual - 100) / (factor sensibilidad)
+#para calcular la dosis de insulina, la formula es (cantidad de raciones de hc)*(ratio pertinente) +
+#correcion de glucosa si superamos 180 mg, cuya formula es (glucosa actual - 100) / (factor sensibilidad)
 #mis datos, total = 36 mañana = 4 mediodia = 3 cena = 2
     
 def calculo_dosis(glucos,raciones,rat):
@@ -158,12 +158,22 @@ def calculo_dosis(glucos,raciones,rat):
     res += fruta*raciones[3]
     res += verdura*raciones[4]
     res += protein*raciones[5]
-    # division entera
-    res = res // rat
-    if glucos > 250:
+    # formula de hidratos de carbono por ratio actual
+    res = res * rat
+    # sirve para redondear la cantidad de insulina
+    if res - int(res) >= 0.5:
+        res += 1
+    # si supera los 180, aplicamos la formula del bolo corrector
+    if glucos >= 180:
         factorSensibilidad = int(1800//totalInsulina)
         boloCorrector = (glucos - 100)//factorSensibilidad
         res += boloCorrector
+    # si estamos entre 100 y 70, restamos una unidad a la dosis de insulina para evitar hipoglucemias
+    elif glucos < 100 and glucos >= 70:
+        res -= 1
+    # si estamos por debajo de 70, informar de hipoglucemia 
+    elif glucos < 70:
+        res = 0        
     return res    
     
 def press_select():
@@ -177,7 +187,7 @@ def press_select():
     if actMod==True:
         if movimientos[actPos][2] == u"glucosaactual":
             gluc = datos[actPos]
-        elif movimientos[actPos][2] == u"ratio":
+        elif movimientos[actPos][2] == u"insu":
             if j == 0:
                 rati = base_de_datos.obtener_ratiodesayuno_actual()
             elif j == 1:
@@ -201,7 +211,7 @@ def press_select():
         actMod=True
     appuifw.app.body = canvasDieta
     
-def moverCursor(despratio,desp,despracion,pos):
+def moverCursor(despinsu,desp,despracion,pos):
     global actPos
     global movimientos
     global datos
@@ -210,20 +220,20 @@ def moverCursor(despratio,desp,despracion,pos):
         # si estamos en glucosa actual
         if movimientos[actPos][2] == u"glucosaactual":
             datos[actPos]+=desp
-        # si estamos en ratios
-        elif movimientos[actPos][2] == u"ratio":
-            if despratio>0:
-                if j>2:
-                    j=2
+        # si estamos en insus
+        elif movimientos[actPos][2] == u"insu":
+            if despinsu>0:
+                if j>99:
+                    j=99
                 else:
-                    j+=despratio
-                    if j>2:
-                        j=2
-            elif despratio<0:
+                    j+=despinsu
+                    if j>99:
+                        j=99
+            elif despinsu<0:
                 if j<0:
                     j=0
                 else:
-                    j+=despratio
+                    j+=despinsu
                     if j<0:
                         j=0
         # si estamos en alguna opcion de raciones
@@ -235,20 +245,23 @@ def moverCursor(despratio,desp,despracion,pos):
                 datos[actPos]=movimientos[actPos][3] 
         else:
             # control de limites inferiores depende del caso
-            if datos[actPos]<0:
+            if actPos == 0:
+                if datos[actPos]<movimientos[actPos][4]:
+                    datos[actPos]=movimientos[actPos][4]               
+            elif datos[actPos]<0:
                 datos[actPos]=0
     else:        
         actPos+=movimientos[actPos][1][pos]
     appuifw.app.body = canvasDieta
     
 def press_up():
-    moverCursor(0,50,5,0)
+    moverCursor(5,50,5,0)
 
 def press_right():
     moverCursor(1,1,1,1)
 
 def press_down():
-    moverCursor(0,-50,-5,2)
+    moverCursor(5,-50,-5,2)
 
 def press_left():
     moverCursor(-1,-1,-1,3)
@@ -265,17 +278,18 @@ def teclaPresionada(key):
 def mostrarDieta(vAtras):
     global movimientos
     movimientos=[
-        [0,[0,0,1,0],u"glucosaactual",500],
-        [1,[-1,0,1,0],u"ratio",2],
-        [2,[-1,0,1,0],u"lacteos",50],
-        [3,[-1,0,1,0],u"farinaceos",50],
-        [4,[-1,0,1,0],u"legumbrespatatas",50],
-        [5,[-1,0,1,0],u"frutas",50],
-        [6,[-1,0,1,0],u"verduras",50],
-        [7,[-1,0,0,0],u"proteinicos",50]
+        [0,[0,0,1,0],u"glucosaactual",600,30],
+        [1,[-1,0,1,0],u"insu",5],
+        [2,[-1,0,1,0],u"lacteos",10],
+        [3,[-1,0,1,0],u"farinaceos",10],
+        [4,[-1,0,1,0],u"legumbrespatatas",10],
+        [5,[-1,0,1,0],u"frutas",10],
+        [6,[-1,0,1,0],u"verduras",10],
+        [7,[-1,0,0,0],u"proteinicos",10]
         ]       
     global datos
     datos=[0 for x in range(8)]
+    datos[0] = 100
     global contadorraciones
     contadorraciones =[0 for x in range(6)]
     global actPos
@@ -284,14 +298,15 @@ def mostrarDieta(vAtras):
     actMod=False
     global resultado
     resultado = 0
-    global ratios
-    ratios = [u"Desayuno",u"Almuerzo",u"Cena"]
+    global insus
+    insus = [u"Desayuno",u"Almuerzo",u"Cena"]
     global j
     j = 0
     global rati
     rati = base_de_datos.obtener_ratiodesayuno_actual()
+    # por defecto 100 mg de glucosa por ser la medida optima
     global gluc
-    gluc = 0
+    gluc = 100
     ruta = unidad+':\\python\\resources\\ui\\'
     global imDieta
     imDieta = graphics.Image.open(ruta+'fondo11.png')

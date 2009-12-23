@@ -101,6 +101,9 @@ except:
     dbconf.execute(u"insert into tpersonal(nombre,valor) values('peso',0.00)")
     dbconf.execute(u"insert into tpersonal(nombre,valor) values('altura',0)")
     dbconf.execute(u"insert into tpersonal(nombre,valor) values('totalinsu',1)")
+    dbconf.execute(u"insert into tpersonal(nombre,valor) values('insudesayuno',0)")
+    dbconf.execute(u"insert into tpersonal(nombre,valor) values('insualmuerzo',0)")
+    dbconf.execute(u"insert into tpersonal(nombre,valor) values('insucena',0)")
     dbconf.execute(u"insert into tpersonal(nombre,valor) values('ratiodesayuno',0.01)")
     dbconf.execute(u"insert into tpersonal(nombre,valor) values('ratioalmuerzo',0.01)")
     dbconf.execute(u"insert into tpersonal(nombre,valor) values('ratiocena',0.01)")
@@ -316,8 +319,11 @@ def obtener_totalinsu_actual():
         return dbvconf.col(2)
     return None
 
-def actualizar_ratiodesayuno(rd):
-    dbconf.execute(u"update tpersonal set valor=%02.2f where nombre='ratiodesayuno'"%(rd))    
+def actualizar_insudesayuno(rd):
+    # cogemos de prueba un alimento de 3 raciones de hidratos de carbono 
+    ratio3raciones = rd / 3
+    dbconf.execute(u"update tpersonal set valor=%02.2f where nombre='ratiodesayuno'"%(ratio3raciones))
+    dbconf.execute(u"update tpersonal set valor=%02d where nombre='insudesayuno'"%(rd))    
     
 def obtener_ratiodesayuno_actual():
     dbvconf.prepare(dbconf,u"select * from tpersonal where nombre='ratiodesayuno'")
@@ -326,8 +332,18 @@ def obtener_ratiodesayuno_actual():
         return dbvconf.col(2)
     return None
     
-def actualizar_ratioalmuerzo(ra):
-    dbconf.execute(u"update tpersonal set valor=%02.2f where nombre='ratioalmuerzo'"%(ra))    
+def obtener_insudesayuno_actual():
+    dbvconf.prepare(dbconf,u"select * from tpersonal where nombre='insudesayuno'")
+    if dbvconf.count_line()!=0:
+        dbvconf.get_line()
+        return dbvconf.col(2)
+    return None
+    
+def actualizar_insualmuerzo(ra):
+    # cogemos de prueba un alimento de 3 raciones de hidratos de carbono
+    ratio3raciones = ra / 3
+    dbconf.execute(u"update tpersonal set valor=%02.2f where nombre='ratioalmuerzo'"%(ratio3raciones))
+    dbconf.execute(u"update tpersonal set valor=%02d where nombre='insualmuerzo'"%(ra))    
     
 def obtener_ratioalmuerzo_actual():
     dbvconf.prepare(dbconf,u"select * from tpersonal where nombre='ratioalmuerzo'")
@@ -336,11 +352,29 @@ def obtener_ratioalmuerzo_actual():
         return dbvconf.col(2)
     return None
     
-def actualizar_ratiocena(rc):
-    dbconf.execute(u"update tpersonal set valor=%02.2f where nombre='ratiocena'"%(rc))    
+def obtener_insualmuerzo_actual():
+    dbvconf.prepare(dbconf,u"select * from tpersonal where nombre='insualmuerzo'")
+    if dbvconf.count_line()!=0:
+        dbvconf.get_line()
+        return dbvconf.col(2)
+    return None
+    
+def actualizar_insucena(rc):
+    # cogemos de prueba un alimento de 4 raciones de hidratos de carbono
+    ratio4raciones = rc / 4
+    print ratio4raciones
+    dbconf.execute(u"update tpersonal set valor=%02.2f where nombre='ratiocena'"%(ratio4raciones))
+    dbconf.execute(u"update tpersonal set valor=%02d where nombre='insucena'"%(rc))    
     
 def obtener_ratiocena_actual():
     dbvconf.prepare(dbconf,u"select * from tpersonal where nombre='ratiocena'")
+    if dbvconf.count_line()!=0:
+        dbvconf.get_line()
+        return dbvconf.col(2)
+    return None
+    
+def obtener_insucena_actual():
+    dbvconf.prepare(dbconf,u"select * from tpersonal where nombre='insucena'")
     if dbvconf.count_line()!=0:
         dbvconf.get_line()
         return dbvconf.col(2)
