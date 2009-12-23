@@ -101,9 +101,9 @@ csds60={
     u"PESO":u"Peso",
     u"ALTURA":u"Altura",
     u"TOTALINSU":u"Cantidad total insulina",
-    u"RATD":u"Ratio desayuno",
-    u"RATA":u"Ratio almuerzo",
-    u"RATC":u"Ratio cena",
+    u"RATD":u"Insulina desayuno",
+    u"RATA":u"Insulina almuerzo",
+    u"RATC":u"Insulina cena",
     u"ADDINSULINA":u"Añadir nueva insulina",
     u"ELIMINSULINA":u"Ver insulinas disponibles",
     u"BORRAINSU":u"Para borrar la insulina seleccionada,",
@@ -127,5 +127,7 @@ csds60={
     u"CALCULODOSIS":u"Calcular",
     u"VASO":u"vaso/os",
     u"PIEZA":u"pieza/as",
-    u"PLATO":u"plato/os"
+    u"PLATO":u"plato/os",
+    u"MOMENTO":u"Momento del día",
+    u"HIPO":u"¡Toma algo para subir el nivel de azúcar!"
     }
