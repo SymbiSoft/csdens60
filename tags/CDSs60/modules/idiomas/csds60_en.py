@@ -101,9 +101,9 @@ csds60={
     u"PESO":u"Weight",
     u"ALTURA":u"Height",
     u"TOTALINSU":u"Total insuline quantity",
-    u"RATD":u"Breakfast ratio",
-    u"RATA":u"Lunch ratio",
-    u"RATC":u"Dinner ratio",
+    u"RATD":u"Breakfast insuline",
+    u"RATA":u"Lunch insuline",
+    u"RATC":u"Dinner insuline",
     u"ADDINSULINA":u"Add new insuline",
     u"ELIMINSULINA":u"View availables insulines",
     u"BORRAINSU":u"You have to push the keyboard",
@@ -127,5 +127,7 @@ csds60={
     u"CALCULODOSIS":u"Calculate",
     u"VASO":u"glass/es",
     u"PIEZA":u"piece/s",
-    u"PLATO":u"plate/s"
+    u"PLATO":u"plate/s",
+    u"MOMENTO":u"Day time",
+    u"HIPO":u"Take something to raise up the sugar level!"
     }
