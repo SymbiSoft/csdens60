@@ -56,6 +56,7 @@ def numDias(mes,ano):
         num+=1
     return num
 
+# "Drawing a Calendar on Python Canvas"<http://wiki.forum.nokia.com/index.php/Drawing_a_Calendar_on_Python_Canvas>(16 Agosto 2009)
 def dibujarCalendario():
     meses=[getLang(u"ENERO"),getLang(u"FEBRERO"),getLang(u"MARZO"),getLang(u"ABRIL"),getLang(u"MAYO"),getLang(u"JUNIO"),getLang(u"JULIO"),getLang(u"AGOSTO"),getLang(u"SEPTIEMBRE"),getLang(u"OCTUBRE"),getLang(u"NOVIEMBRE"),getLang(u"DICIEMBRE")]
     global actDia
@@ -70,6 +71,7 @@ def dibujarCalendario():
     calAlto=35
     numerar=False
     contador=0
+    # "How to plot a graph"<http://wiki.forum.nokia.com/index.php/How_to_plot_graph>(26 Septiembre 2009)
     canvasDiario.rectangle((19,105,340,380),outline=0xaaaaaa,fill=0xaaaaaa)
     canvasDiario.rectangle((16,102,337,377),outline=0x000000,fill=0xffffff)
     canvasDiario.text((110,125),u"%s %d" % (meses[actMes-1],actAno),0x000000,font=(u"annotation",20))
@@ -176,6 +178,7 @@ def volverAtras():
     gvAtras[len(gvAtras)-1](gvAtrasEnvio)
 
 def mostrarDiario(vAtras):
+    # "How to get current date and time"<http://wiki.forum.nokia.com/index.php/How_to_get_current_date_and_time>(15 Septiembre 2009)
     global actDia
     actDia=(localtime()[2])-1
     global actMes

@@ -39,6 +39,7 @@ def fijarIdioma(id):
     global idioma
     idioma=id
 
+# Recupera la cadena de texto dependiendo del idioma del sistema
 def getLang(palabra):
     global idioma
     exec("from csds60_"+idioma+" import csds60")
