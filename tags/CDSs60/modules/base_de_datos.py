@@ -35,6 +35,9 @@ modulospropios = unidad+':\\Python\\modules'
 sys.path.append(modulospropios)
 #from configuracion import *
 
+# "Working database example for e32db in Python PyS60"
+# <http://wiki.forum.nokia.com/index.php/Working_database_example_for_e32db_in_Python_PyS60>(10 Octubre 2009)
+
 db = e32db.Dbms()
 dbv = e32db.Db_view()
 dbconf = e32db.Dbms()
@@ -72,6 +75,26 @@ actMes = localtime()[1]
 actAno = localtime()[0]
 database = u"csds60"
 database = database +"_"+ str(actMes)+"_"+str(actAno) + ".db"
+
+# Actualiza la base de datos     
+def actualizar_db(datab):
+    dbconf.execute(u"update dbproperties set valor='%s' where nombre='db'"%(datab))
+    
+# cierra las bases de datos    
+def cerrar_bds():
+    actualizar_db(database)
+    dbconf.close()
+    dbcitas.close()
+    db.close()
+
+# cierra la base de datos actual    
+def cerrar_bd_actual():
+    db.close()
+
+# abre la base de datos     
+def abrir_bd(bd):
+    db.open(u'%s:\\Python\\resources\\db\\%s'%(unidad,bd))
+    
 # tenemos una bd independiente llamada conf.cfg para almacenar parametros invariables
 # que solo se van a modificar muy pocas veces
 try:
@@ -116,10 +139,12 @@ except:
     dbconf.execute(u"insert into insulinas (tipo,orden,ult) values('%s',%d,%d)"%('Rapida',0,0))
     dbconf.execute(u"insert into insulinas (tipo,orden,ult) values('%s',%d,%d)"%('Lantus',1,1))    
     
+# Recupera el numero de bases de datos creadas
 def obtener_numero_dbs():
     dbvconf.prepare(dbconf,u"select * from dbs")
     return dbvconf.count_line()
-    
+
+# Recupera la base de datos actual    
 def obtener_db_actual():
     dbvconf.prepare(dbconf,u"select * from dbproperties where nombre='db'")
     if dbvconf.count_line()!=0:
@@ -150,8 +175,10 @@ except:
     dbcitas.create(u'%s:\\Python\\resources\\db\\citas.db'%(unidad))
     dbcitas.open(u'%s:\\Python\\resources\\db\\citas.db'%(unidad))
     dbcitas.execute(u"create table registroscitas (fecha date,descripcion varchar)")
-    
+
+# Recupera un registro de un dia del diario    
 def obtener_diario_dia(dia,mes,ano,tipo):
+    # "How to format time"<http://wiki.forum.nokia.com/index.php/How_to_format_time>(15 Septiembre 2009)
     fechaValues=[ano,mes,dia,0,0,0,0,0,1]
     fecha=time.mktime(time.struct_time(fechaValues))
     dbv.prepare(db,u"select * from diario where fecha=#%s# and tipo='%s'"%(e32db.format_time(fecha),tipo))
@@ -163,6 +190,7 @@ def obtener_diario_dia(dia,mes,ano,tipo):
             return dbv.col(4)
     return 0
 
+# Actualiza un registro de un dia de diario y de extra
 def actualizar_diario_dia(dia,mes,ano,tipo,valor,extra,orden):
     fechaValues=[ano,mes,dia,0,0,0,0,0,1]
     fecha=time.mktime(time.struct_time(fechaValues))
@@ -180,6 +208,7 @@ def actualizar_diario_dia(dia,mes,ano,tipo,valor,extra,orden):
             if valor > 0:
                 db.execute(u"insert into diario (fecha,tipo,valor,extra,orden) values(#%s#,'%s',%d,'%s',%d)"%(e32db.format_time(fecha),tipo,valor,extra,orden))
 
+# Recupera la insulina de una posicion determinada                
 def obtener_insulina(posicion):
     dbvconf.prepare(dbconf,u"select * from insulinas where orden=%d"%(posicion));
     if dbvconf.count_line()!=0:
@@ -190,10 +219,12 @@ def obtener_insulina(posicion):
             return u"Nada"
     return None
 
+# Recupera el numero de insulinas actual
 def obtener_numero_insulinas():
     dbvconf.prepare(dbconf,u"select * from insulinas where orden>=0")
     return dbvconf.count_line()-1
-    
+
+# Actualiza el orden de insulina    
 def actualizar_insulina(insu):
     contadorinsu = obtener_numero_insulinas() + 1
     dbconf.execute(u"insert into insulinas (tipo,orden,ult) values('%s',%d,%d)"%(insu,contadorinsu,contadorinsu))
@@ -206,7 +237,8 @@ def deshabilita_insulina(posicion):
         # para evitar un bug por no haber insulinas
         #if dbvconf.col(1) > 0:    
             dbconf.execute(u"update insulinas set orden=-1 where ult=%d"%(posicion))
-            
+
+# Resetea las insulinas a su valor por defecto            
 def reset_insulina():
     # esta consulta sirve para borrar los registros de las insulinas nuevas
     sqllarga1 = u"delete from diario where tipo<>'desayunoRapidaantes' and tipo<>'desayunoRapidadespues' and tipo<>'almuerzoRapidaantes' \
@@ -217,10 +249,12 @@ def reset_insulina():
     dbconf.execute(u"insert into insulinas (tipo,orden,ult) values('%s',%d,%d)"%('Rapida',0,0))
     dbconf.execute(u"insert into insulinas (tipo,orden,ult) values('%s',%d,%d)"%('Lantus',1,1))
 
+# Recupera todos los datos del mes de diario
 def obtener_datos_diario():
     dbv.prepare(db,u"select * from diario order by fecha,orden")
     return dbv
-    
+
+# Actualiza las citas de un dia    
 def actualizar_registros_citas(dia,mes,ano,descripcion):
     fechaValues=[ano,mes,dia,0,0,0,0,0,1]
     fecha=time.mktime(time.struct_time(fechaValues))
@@ -229,7 +263,8 @@ def actualizar_registros_citas(dia,mes,ano,descripcion):
         dbcitas.execute(u"update registroscitas set descripcion='%s' where fecha=#%s#"%(descripcion,e32db.format_time(fecha)))
     else:
         dbcitas.execute(u"insert into registroscitas (fecha,descripcion) values(#%s#,'%s')"%(e32db.format_time(fecha),descripcion))
-    
+
+# Recupera las citas de un dia        
 def obtener_registros_citas(dia,mes,ano):
     fechaValues=[ano,mes,dia,0,0,0,0,0,1]
     fecha=time.mktime(time.struct_time(fechaValues))
@@ -238,14 +273,16 @@ def obtener_registros_citas(dia,mes,ano):
         dbvcitas.get_line()
         return dbvcitas.col(2)
     return None
-    
+
+# Elimina el registro de un dia de una cita    
 def borrar_registros_citas(dia,mes,ano):
     fechaValues=[ano,mes,dia,0,0,0,0,0,1]
     fecha=time.mktime(time.struct_time(fechaValues))
     dbvcitas.prepare(dbcitas,u"select * from registroscitas where fecha=#%s#"%(e32db.format_time(fecha)))
     if dbvcitas.count_line()!=0:
         dbcitas.execute(u"delete from registroscitas where fecha=#%s#"%(e32db.format_time(fecha)))
-        
+
+# Recupera los idiomas disponibles de la base de datos        
 def obtener_idiomas(posicion):
     dbvconf.prepare(dbconf,u"select * from idiomas where id = %d"%(posicion))
     if dbvconf.count_line()!=0:
@@ -253,21 +290,26 @@ def obtener_idiomas(posicion):
         idArray = [dbvconf.col(2),dbvconf.col(3)]
         return idArray
     return None
-    
+
+# Recupera el numero de idiomas de la base de datos    
 def obtener_numero_idiomas():
     dbvconf.prepare(dbconf,u"select * from idiomas")
     return dbvconf.count_line()-1
-    
+
+# Recupera la base de datos de una posicion    
 def obtener_dbs(posicion):
     dbvconf.prepare(dbconf,u"select * from dbs where id = %d"%(posicion))
     if dbvconf.count_line()!=0:
         dbvconf.get_line()
         return dbvconf.col(2)
     return None
-    
+
+# Actualiza el idioma actual al señalado    
 def actualizar_idioma(idiom):
     dbconf.execute(u"update dbproperties set valor='%s' where nombre='idioma'"%(idiom))
-    
+
+# Recupera el idioma actual del sistema, en vez de la constante, el nombre del idioma
+# es --> español en --> ingles    
 def obtener_idioma_actual():
     dbvconf.prepare(dbconf,u"select * from dbproperties where nombre='idioma'")
     if dbvconf.count_line()!=0:
@@ -278,40 +320,45 @@ def obtener_idioma_actual():
             dbvconf.get_line()            
             return dbvconf.col(3)
     return None
-    
+
+# Recupera la constante del idioma actual  
 def obtener_idioma_act_conf():
     dbvconf.prepare(dbconf,u"select valor from dbproperties where nombre='idioma'")
     if dbvconf.count_line()!=0:
         dbvconf.get_line()
         return dbvconf.col(1)
     return None
-    
-def actualizar_db(datab):
-    dbconf.execute(u"update dbproperties set valor='%s' where nombre='db'"%(datab))
 
+# Actualiza el peso
 def actualizar_peso(p):
     dbconf.execute(u"update tpersonal set valor=%03.2f where nombre='peso'"%(p))    
-    
+
+# Recupera el peso    
 def obtener_peso_actual():
     dbvconf.prepare(dbconf,u"select * from tpersonal where nombre='peso'")
     if dbvconf.count_line()!=0:
         dbvconf.get_line()
         return dbvconf.col(2)
     return None
-    
+
+# Actualiza la altura    
 def actualizar_altura(a):
     dbconf.execute(u"update tpersonal set valor=%03d where nombre='altura'"%(a))    
-    
+
+# Recupera la altura    
 def obtener_altura_actual():
     dbvconf.prepare(dbconf,u"select * from tpersonal where nombre='altura'")
     if dbvconf.count_line()!=0:
         dbvconf.get_line()
         return dbvconf.col(2)
     return None
-    
+
+# Actualiza el total de insulina    
 def actualizar_totalinsu(ti):
     dbconf.execute(u"update tpersonal set valor=%03d where nombre='totalinsu'"%(ti))    
-    
+
+
+# Recupera el total de insulina    
 def obtener_totalinsu_actual():
     dbvconf.prepare(dbconf,u"select * from tpersonal where nombre='totalinsu'")
     if dbvconf.count_line()!=0:
@@ -319,60 +366,69 @@ def obtener_totalinsu_actual():
         return dbvconf.col(2)
     return None
 
+# Actualiza insulina desayuno    
 def actualizar_insudesayuno(rd):
     # cogemos de prueba un alimento de 3 raciones de hidratos de carbono 
     ratio3raciones = rd / 3
     dbconf.execute(u"update tpersonal set valor=%02.2f where nombre='ratiodesayuno'"%(ratio3raciones))
     dbconf.execute(u"update tpersonal set valor=%02d where nombre='insudesayuno'"%(rd))    
-    
+
+# Recupera el ratio del desayuno    
 def obtener_ratiodesayuno_actual():
     dbvconf.prepare(dbconf,u"select * from tpersonal where nombre='ratiodesayuno'")
     if dbvconf.count_line()!=0:
         dbvconf.get_line()
         return dbvconf.col(2)
     return None
-    
+
+# Recupera la insulina del desayuno    
 def obtener_insudesayuno_actual():
     dbvconf.prepare(dbconf,u"select * from tpersonal where nombre='insudesayuno'")
     if dbvconf.count_line()!=0:
         dbvconf.get_line()
         return dbvconf.col(2)
     return None
-    
+
+# Actualiza insulina almuerzo    
 def actualizar_insualmuerzo(ra):
     # cogemos de prueba un alimento de 3 raciones de hidratos de carbono
     ratio3raciones = ra / 3
     dbconf.execute(u"update tpersonal set valor=%02.2f where nombre='ratioalmuerzo'"%(ratio3raciones))
     dbconf.execute(u"update tpersonal set valor=%02d where nombre='insualmuerzo'"%(ra))    
-    
+
+# Recupera el ratio del almuerzo    
 def obtener_ratioalmuerzo_actual():
     dbvconf.prepare(dbconf,u"select * from tpersonal where nombre='ratioalmuerzo'")
     if dbvconf.count_line()!=0:
         dbvconf.get_line()
         return dbvconf.col(2)
     return None
-    
+
+# Recupera la insulina del almuerzo    
 def obtener_insualmuerzo_actual():
     dbvconf.prepare(dbconf,u"select * from tpersonal where nombre='insualmuerzo'")
     if dbvconf.count_line()!=0:
         dbvconf.get_line()
         return dbvconf.col(2)
     return None
-    
+
+# Actualiza insulina cena    
 def actualizar_insucena(rc):
     # cogemos de prueba un alimento de 4 raciones de hidratos de carbono
     ratio4raciones = rc / 4
     print ratio4raciones
     dbconf.execute(u"update tpersonal set valor=%02.2f where nombre='ratiocena'"%(ratio4raciones))
     dbconf.execute(u"update tpersonal set valor=%02d where nombre='insucena'"%(rc))    
-    
+
+# Recupera el ratio de la cena    
 def obtener_ratiocena_actual():
     dbvconf.prepare(dbconf,u"select * from tpersonal where nombre='ratiocena'")
     if dbvconf.count_line()!=0:
         dbvconf.get_line()
         return dbvconf.col(2)
     return None
-    
+
+# Recupera la insulina de la cena    
 def obtener_insucena_actual():
     dbvconf.prepare(dbconf,u"select * from tpersonal where nombre='insucena'")
     if dbvconf.count_line()!=0:
@@ -380,16 +436,19 @@ def obtener_insucena_actual():
         return dbvconf.col(2)
     return None
 
+# Actualiza el numero de tiras para que salte la alarma
 def actualizar_alarmatiras(al):
     dbconf.execute(u"update tpersonal set valor=%d where nombre='alarmatiras'"%(al))    
-    
+
+# Recupera el numero de tiras para que salte la alarma    
 def obtener_alarmatiras_actual():
     dbvconf.prepare(dbconf,u"select * from tpersonal where nombre='alarmatiras'")
     if dbvconf.count_line()!=0:
         dbvconf.get_line()
         return dbvconf.col(2)
     return None   
-    
+
+# Recupera la cantidad de tiras actual    
 def obtener_qtirasactual_actual():
     dbvconf.prepare(dbconf,u"select * from tpersonal where nombre='qtirasactual'")
     if dbvconf.count_line()!=0:
@@ -405,9 +464,11 @@ def actualizar_qtirasactual(q):
         qdiferencia = 0
     dbconf.execute(u"update tpersonal set valor=%d where nombre='qtirasactual'"%(qdiferencia))
 
+# Actualiza la cantidad de tiras total
 def actualizar_qtirastotal(q):
     dbconf.execute(u"update tpersonal set valor=%d where nombre='qtirastotal'"%(q))    
-    
+
+# Recupera la cantidad de tiras total    
 def obtener_qtirastotal():
     dbvconf.prepare(dbconf,u"select * from tpersonal where nombre='qtirastotal'")
     if dbvconf.count_line()!=0:
@@ -419,47 +480,40 @@ def obtener_qtirastotal():
 def reset_qtirasactual():
     qtotaltiras = int(obtener_qtirastotal())
     dbconf.execute(u"update tpersonal set valor=%d where nombre='qtirasactual'"%(qtotaltiras))
-    
-def cerrar_bds():
-    actualizar_db(database)
-    dbconf.close()
-    dbcitas.close()
-    db.close()
-    
-def cerrar_bd_actual():
-    db.close()
-    
-def abrir_bd(bd):
-    db.open(u'%s:\\Python\\resources\\db\\%s'%(unidad,bd))
-    
+
+# Recupera las raciones de lacteos    
 def obtener_lacteos():
     dbvconf.prepare(dbconf,u"select * from tiposalimentos where tipo='vaso de leche o 2 yogures naturales'")
     if dbvconf.count_line()!=0:
         dbvconf.get_line()
         return dbvconf.col(2)
     return None
-    
+
+# Recupera las raciones de farinaceos    
 def obtener_farinaceos():
     dbvconf.prepare(dbconf,u"select * from tiposalimentos where tipo='un pan o tazon de cereales o pasta'")
     if dbvconf.count_line()!=0:
         dbvconf.get_line()
         return dbvconf.col(2)
     return None
-    
+
+# Recupera las raciones de legumbres    
 def obtener_legumbres():
     dbvconf.prepare(dbconf,u"select * from tiposalimentos where tipo='tazon de legumbres o patatas'")
     if dbvconf.count_line()!=0:
         dbvconf.get_line()
         return dbvconf.col(2)
     return None
-    
+
+# Recupera las raciones de frutas    
 def obtener_frutas():
     dbvconf.prepare(dbconf,u"select * from tiposalimentos where tipo='1 pieza mediana de fruta'")
     if dbvconf.count_line()!=0:
         dbvconf.get_line()
         return dbvconf.col(2)
     return None
-    
+
+# Recupera las raciones de verduras    
 def obtener_verduras():
     dbvconf.prepare(dbconf,u"select * from tiposalimentos where tipo='1 plato de verdura'")
     if dbvconf.count_line()!=0:
@@ -467,6 +521,7 @@ def obtener_verduras():
         return dbvconf.col(2)
     return None
 
+# Recupera las raciones de proteinicos
 def obtener_proteinicos():
     dbvconf.prepare(dbconf,u"select * from tiposalimentos where tipo='carne o pescado'")
     if dbvconf.count_line()!=0:

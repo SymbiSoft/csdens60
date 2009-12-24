@@ -39,6 +39,7 @@ from e32socket import *
 import base_de_datos
 
 
+# Sirve para crear un archivo xml del mes para su uso con csds60analyzer
 def generar_xml():
     global unidad
     xml=u""
@@ -55,6 +56,7 @@ def generar_xml():
     fichero=codecs.open(unidad+':\\Python\\resources\\xml\db_'+base_de_datos.obtener_db_actual()+'.xml','w','utf8')
     fichero.write(xmlFinal)
 
+# Sirve para crear un html de un mes para visualizarlo en una pantalla mas grande como un ordenador
 def generar_html():
     global unidad
     
@@ -112,7 +114,8 @@ childNodes[j].className==\"datosDiaTitulo\"){var diaValor=dias[i].childNodes[j];
     htmlFinal=cabecerahtml+css+javascript+u"</head><body><div id=\"datosCont\">"+html[12:]+u"</div></body></html>"
     fichero=codecs.open(unidad+':\\Python\\resources\\html\datos_'+base_de_datos.obtener_db_actual()+'.html','w','utf8')
     fichero.write(htmlFinal)
-    
+
+# Envia por bluetooth los dos archivos anteriores    
 def enviarBluetooth():
     global unidad
     generar_xml()
@@ -122,6 +125,7 @@ def enviarBluetooth():
         htmlpath = u''
         xmlpath = xmlpath + unidad+':\\Python\\resources\\xml\db_'+base_de_datos.obtener_db_actual()+'.xml'
         htmlpath = htmlpath + unidad+':\\Python\\resources\\html\datos_'+base_de_datos.obtener_db_actual()+'.html'
+        # "How to send files using bluetooth"<http://wiki.forum.nokia.com/index.php/How_to_send_files_using_bluetooth>(2 Noviembre 2009)
         #encuentra dispositivos con Bluetooth
         phone = bt_obex_discover()
         #direccion mac del dispositivo

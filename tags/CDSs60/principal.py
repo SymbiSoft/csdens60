@@ -127,6 +127,7 @@ def press_citas():
 def press_estadisticas():
     est.mostrarEst([mostrarPrincipal])
 
+# "How to use Canvas"<http://wiki.forum.nokia.com/index.php/How_to_use_Canvas>(5 Agosto 2009)
 def handle_redraw(rect):
     global photo
     canvas.blit(im[photo])
@@ -136,7 +137,7 @@ def handle_redraw(rect):
 
 def confirma():
     #TODO: ESTO HAY QUE QUITARLO!
-    cerrar_bds()
+
     app_lock.signal()
     #TODO: ESTO HAY QUE QUITARLO!
     return
@@ -146,7 +147,8 @@ def confirma():
         cerrar_bds()
         appuifw.note(getLang(u"HASTA LUEGO"), "conf")
         app_lock.signal()
-        
+
+# "How to detect key presses in Python"<http://wiki.forum.nokia.com/index.php/How_to_detect_key_presses_in_Python>(14 Septiembre 2009)        
 def teclaPresionada(key):
     if key['type']==3:
         if key['scancode']==164:
@@ -158,10 +160,14 @@ def verLicencia():
 def mostrarPrincipal():
     global soloLectura
     soloLectura = False
-    dbAct = obtener_db_actual()
-    if dbAct != u"csds60_"+str(actMes)+"_"+str(actAno)+".db":
-        soloLectura = True
-    else:
+    try:
+        dbAct = obtener_db_actual()
+        if dbAct != u"csds60_"+str(actMes)+"_"+str(actAno)+".db":
+            soloLectura = True
+        else:
+            soloLectura = False
+    # "How to use keys in PyS60"<http://wiki.forum.nokia.com/index.php/How_to_use_Keys_in_PyS60>(4 Agosto 2009)
+    except:
         soloLectura = False
     global canvas
     canvas=appuifw.Canvas(redraw_callback=handle_redraw, event_callback=teclaPresionada)    
