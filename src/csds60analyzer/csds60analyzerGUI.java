@@ -68,11 +68,14 @@ public class csds60analyzerGUI extends javax.swing.JFrame{
                 while(diasIT.hasNext()){
                     Element diaActual=diasIT.next();
                     Integer fechaActual=Integer.parseInt(diaActual.getChildText("fecha").substring(0,10));
+                    
                     Calendar fad=GregorianCalendar.getInstance();
                     fad.setTimeInMillis(fechaActual.longValue()*1000);
+
                     int dia=fad.get(Calendar.DAY_OF_MONTH);
-                    int mes=fad.get(Calendar.MONTH);
+                    int mes=fad.get(Calendar.MONTH)+1;
                     int ano=fad.get(Calendar.YEAR);
+
                     if(diaActual.getChildren().toString().contains("desayunoantes")){
                         int desayunoAntesActual=Integer.parseInt(diaActual.getChildText("desayunoantes"));
                         desayunoAntes.add(new Day(dia,mes,ano),desayunoAntesActual);
