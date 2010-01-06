@@ -23,6 +23,8 @@
 
 import e32, appuifw, sys, os, graphics, codecs, key_codes
 
+sys.setdefaultencoding('utf-8')
+
 try:
     raise Exception
 except Exception:
@@ -50,7 +52,24 @@ def generar_xml():
         if fecha!=datos.col(1):
             fecha=datos.col(1)
             xml=xml+u"</dia>\n<dia>\n\t<fecha>"+str(fecha)+u"</fecha>\n"
-        xml=xml+u"\t<"+str(datos.col(2))+u">"+str(datos.col(3))+u"</"+str(datos.col(2))+u">\n"
+        if str(datos.col(2)) == u"Antes del desayuno":
+            texto = u"desayunoantes"
+            xml=xml+u"\t<"+texto+u">"+str(datos.col(3))+u"</"+texto+u">\n"
+        elif str(datos.col(2)) == u"Despues del desayuno":
+            texto = u"desayunodespues"
+            xml=xml+u"\t<"+texto+u">"+str(datos.col(3))+u"</"+texto+u">\n"
+        elif str(datos.col(2)) == u"Antes del almuerzo":
+            texto = u"almuerzoantes"
+            xml=xml+u"\t<"+texto+u">"+str(datos.col(3))+u"</"+texto+u">\n"
+        elif str(datos.col(2)) == u"Despues del almuerzo":
+            texto = u"almuerzodespues"
+            xml=xml+u"\t<"+texto+u">"+str(datos.col(3))+u"</"+texto+u">\n"
+        elif str(datos.col(2)) == u"Antes de la cena":
+            texto = u"cenaantes"
+            xml=xml+u"\t<"+texto+u">"+str(datos.col(3))+u"</"+texto+u">\n"
+        elif str(datos.col(2)) == u"Despues de la cena":
+            texto = u"cenadespues"
+            xml=xml+u"\t<"+texto+u">"+str(datos.col(3))+u"</"+texto+u">\n"
         datos.next_line()
     xmlFinal=u"<?xml version=\"1.0\" encoding=\"UTF-8\"?><root>"+xml[6:]+u"</dia></root>"
     fichero=codecs.open(unidad+':\\Python\\resources\\xml\db_'+base_de_datos.obtener_db_actual()+'.xml','w','utf8')
@@ -61,7 +80,7 @@ def generar_html():
     global unidad
     
     html=u""
-    cabecerahtml=u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"><html><head><title>CSDs60WebAnalyzer</title>"
+    cabecerahtml=u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//ES\"><html><head><title>CSDs60WebAnalyzer</title>"
     css=u"<style type=\"text/css\">#datosCont{margin:20px auto 0;padding:15px 20px;width:700px}div.dat\
 osDia{margin-bottom:15px}div.datosDiaTitulo{border-bottom:2px solid #97d25d;cursor:pointer;font-we\
 ight:700}div.datosDiaCont{display:none;padding-left:20px}div.datosDiaContAtr{float:left;width:70%}\
@@ -104,8 +123,71 @@ childNodes[j].className==\"datosDiaTitulo\"){var diaValor=dias[i].childNodes[j];
             if chk == u"" and comida == False:
                 html=html+u"<div class=\"datosDiaContAtr\">"+str(datos.col(2))+u"</div><div class=\"datosDiaContVal\">"+str(datos.col(3))+term+u"</div>"
             elif chk == u"" and comida == True:
-                # falla si metemos una �
-                comd = u""+str(datos.col(4)) 
+                # Decoding to unicode
+                input_s = str(datos.col(4))
+                repr(input_s)
+
+                uni = input_s.decode('utf-8')
+                repr(uni)
+
+                # cp1252 is the encoding used on my windows-pc,
+                #output_s = input_s.encode('utf-8')
+                #repr(output_s)
+
+                #value = u""+str(datos.col(4))
+                              
+                uni = uni.replace('ñ','&ntilde;')
+                uni = uni.replace('Ñ','&Ntilde;')
+                uni = uni.replace('ç','&ccedil;')
+                uni = uni.replace('Ç','&Ccedil;')                
+                uni = uni.replace('á','&aacute;')
+                uni = uni.replace('Á','&Aacute;')
+                uni = uni.replace('é','&eacute;')
+                uni = uni.replace('É','&Eacute;')
+                uni = uni.replace('í','&iacute;')
+                uni = uni.replace('Í','&Iacute;')
+                uni = uni.replace('ó','&oacute;')
+                uni = uni.replace('Ó','&Oacute;')
+                uni = uni.replace('ú','&uacute;')
+                uni = uni.replace('Ú','&Uacute;')                
+                #uni = uni.replace('£','&pound;')
+                #uni = uni.replace('¥','&yen;')
+                #uni = uni.replace('¤','&curren;')
+                #uni = uni.replace('€','&euro;')
+                #uni = uni.replace('¡','&iexcl;')
+                #uni = uni.replace('¿','&iquest;')
+                #uni = uni.replace('§','&sect;')
+                uni = uni.replace('£','')
+                uni = uni.replace('¥','')
+                uni = uni.replace('¤','')
+                uni = uni.replace('€','')
+                uni = uni.replace('¡','')
+                uni = uni.replace('¿','')
+                uni = uni.replace('§','')
+                uni = uni.replace('$','')
+                uni = uni.replace('=','')
+                uni = uni.replace('\'','')
+                uni = uni.replace('*','')
+                uni = uni.replace('$','')
+                uni = uni.replace('?','')
+                uni = uni.replace('!','')
+                uni = uni.replace('+','')
+                uni = uni.replace('-','')
+                uni = uni.replace('_','')
+                uni = uni.replace(':','')
+                uni = uni.replace('(','')
+                uni = uni.replace(')','')
+                uni = uni.replace('{','')
+                uni = uni.replace('}','')
+                uni = uni.replace('<','')
+                uni = uni.replace('>','')
+                uni = uni.replace('"','')
+                uni = uni.replace('#','')
+                uni = uni.replace('@','')
+                uni = uni.replace('|','')
+                uni = uni.replace('%','')                
+
+                comd = u""+uni
                 html=html+u"<div class=\"datosDiaContAtr\">"+str(datos.col(2))+u"</div><div class=\"datosDiaContVal\">"+comd+u"</div>"
             elif chk != u"":
                 html=html+u"<div class=\"datosDiaContAtr\">"+str(datos.col(2))+u"</div><div class=\"datosDiaContVal\">"+chk+u"</div>"       

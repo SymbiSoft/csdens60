@@ -23,6 +23,8 @@ import e32db,sys,time
 from random import randrange
 from time import localtime
 
+sys.setdefaultencoding('utf-8')
+
 try:
     raise Exception
 except Exception:
