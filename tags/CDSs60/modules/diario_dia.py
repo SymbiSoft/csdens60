@@ -176,7 +176,7 @@ def press_select():
             actMod=True
     appuifw.app.body = canvasDiarioDia
 
-def moverCursor(desp,pos):
+def moverCursor(desp,despinsu,pos):
     global actPos
     global movimientos
     global datos
@@ -184,13 +184,23 @@ def moverCursor(desp,pos):
     global actMes
     global actAno
     if actMod==True:
-        datos[actPos]+=desp
-        if desp>0:
-            if datos[actPos]>movimientos[actPos][3]:
-                datos[actPos]=movimientos[actPos][3]
+        if movimientos[actPos][2] == u"1i" or movimientos[actPos][2] == u"1d" or movimientos[actPos][2] == u"4i" or movimientos[actPos][2] == u"4d" or movimientos[actPos][2] == u"7i" or movimientos[actPos][2] == u"7d":
+            datos[actPos]+=despinsu
+            if despinsu>0:
+                if datos[actPos]>movimientos[actPos][3]:
+                    datos[actPos]=movimientos[actPos][3]
+            else:
+                if datos[actPos]<0:
+                    datos[actPos]=0
         else:
-            if datos[actPos]<0:
-                datos[actPos]=0
+            datos[actPos]+=desp
+            if desp>0:
+                if datos[actPos]>movimientos[actPos][3]:
+                    datos[actPos]=movimientos[actPos][3]
+            else:
+                if datos[actPos]<0:
+                    datos[actPos]=0
+        
     else:
         actPos+=movimientos[actPos][1][pos]
     if movimientos[actPos][2][1]==u"t":
@@ -206,16 +216,16 @@ def moverCursor(desp,pos):
     appuifw.app.body = canvasDiarioDia
 
 def press_up():
-    moverCursor(50,0)
+    moverCursor(50,5,0)
 
 def press_right():
-    moverCursor(1,1)
+    moverCursor(1,1,1)
 
 def press_down():
-    moverCursor(-50,2)
+    moverCursor(-50,-5,2)
 
 def press_left():
-    moverCursor(-1,3)
+    moverCursor(-1,-1,3)
 
 def volverAtras():
     global gvAtras
@@ -291,6 +301,9 @@ def mostrar_diario_dia(dia,mes,ano,vAtras):
     datos[23] = u"N"
     for i in range(24):
         datos[i]=base_de_datos.obtener_diario_dia(actDia,actMes,actAno,movimientos[i][4])
+    datos[2] = 0
+    datos[9] = 0
+    datos[16] = 0
     global actPos
     actPos=0
     global actMod
