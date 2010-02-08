@@ -37,11 +37,12 @@ unidad=path[0]
 modulospropios = unidad+':\\Python\\modules'
 sys.path.append(modulospropios)
 
-import dieta, est, citas, config, export, diario, licencia
+import dieta, citas, config, export, diario, licencia
 from idioma import getLang
 from configuracion import *
 from base_de_datos import cerrar_bds
 from base_de_datos import obtener_db_actual
+from base_de_datos import comprobar_db
 
 # ------------------------------------------
 # FIN: IMPORTAR
@@ -51,58 +52,56 @@ from base_de_datos import obtener_db_actual
 ruta = unidad+':\\python\\resources\\ui\\'
 
 im=[
-    graphics.Image.open(ruta+'menuprincipal0.png'),
-    graphics.Image.open(ruta+'menuprincipal1.png'), 
-    graphics.Image.open(ruta+'menuprincipal2.png'),
-    graphics.Image.open(ruta+'menuprincipal3.png'), 
-    graphics.Image.open(ruta+'menuprincipal4.png'),
-    graphics.Image.open(ruta+'menuprincipal5.png')
+    graphics.Image.open(ruta+'menuprincipalDiario.png'),
+    graphics.Image.open(ruta+'menuprincipalComidas.png'), 
+    graphics.Image.open(ruta+'menuprincipalConfiguracion.png'),
+    graphics.Image.open(ruta+'menuprincipalExportar.png'), 
+    graphics.Image.open(ruta+'menuprincipalCitas.png')
     ]
-    
+
 tx=[
     getLang(u"MENUDIARIO"),
     getLang(u"MENUDIETA"),
     getLang(u"MENUCONFIGURACIÓN"),
     getLang(u"MENUEXPORTAR"),
-    getLang(u"MENUCITASMÉDICAS"),
-    getLang(u"MENUESTADÍSTICAS")
+    getLang(u"MENUCITASMÉDICAS")
     ]
     
 photo = 0
+
+def press_up():
+    global photo
+    photo = 0
+    appuifw.app.body=canvas
+    press_diario()
+    canvas.blit(im[photo])
+
+def press_down():
+    global photo
+    photo = 3
+    appuifw.app.body=canvas
+    press_exportar()
+    canvas.blit(im[photo])
     
 def press_right():
-    #giro a la derecha del menu
     global photo
-    if photo == 5:
-        photo = 0
-    else:
-        photo = photo + 1
+    photo = 1
     appuifw.app.body=canvas
+    press_dieta()
+    canvas.blit(im[photo])
     
 def press_left():
-    #giro a la izquierda del menu
     global photo
-    if photo == 0:
-        photo = 5
-    else:
-        photo = photo - 1
+    photo = 4
     appuifw.app.body=canvas
+    press_citas()
+    canvas.blit(im[photo])    
     
 def press_select():
-	#en python no existe la sentencia switch, para seleccionar opciones
     global photo
-    if photo == 0:
-        press_diario()
-    elif photo == 1:
-        press_dieta()
-    elif photo == 2:
-        press_configuracion()
-    elif photo == 3:
-        press_exportar()
-    elif photo == 4:
-        press_citas()
-    elif photo == 5:
-        press_estadisticas()
+    photo = 2
+    appuifw.app.body=canvas
+    press_configuracion()
     canvas.blit(im[photo])
 
 def press_diario():
@@ -124,9 +123,6 @@ def press_exportar():
 def press_citas():
     citas.mostrarCitas([mostrarPrincipal])
 
-def press_estadisticas():
-    est.mostrarEst([mostrarPrincipal])
-
 # "How to use Canvas"<http://wiki.forum.nokia.com/index.php/How_to_use_Canvas>(5 Agosto 2009)
 def handle_redraw(rect):
     global photo
@@ -136,17 +132,16 @@ def handle_redraw(rect):
     canvas.text((78,243),tx[photo],0x000000,font="title")
 
 def confirma():
-    #TODO: ESTO HAY QUE QUITARLO!
-    cerrar_bds()
-    app_lock.signal()
-    #TODO: ESTO HAY QUE QUITARLO!
-    return
     opcion = [getLang(u"SÍ"),getLang(u"NO")]
     test = appuifw.popup_menu(opcion,getLang(u"¿ESTÁ SEGURO?"))
     if test == 0 :
-        cerrar_bds()
-        appuifw.note(getLang(u"HASTA LUEGO"), "conf")
-        app_lock.signal()
+        try:
+            cerrar_bds()
+            appuifw.note(getLang(u"HASTA LUEGO"), "conf")
+            app_lock.signal()
+        except:
+            appuifw.note(getLang(u"HASTA LUEGO"), "conf")
+            app_lock.signal()
 
 # "How to detect key presses in Python"<http://wiki.forum.nokia.com/index.php/How_to_detect_key_presses_in_Python>(14 Septiembre 2009)        
 def teclaPresionada(key):
@@ -155,9 +150,13 @@ def teclaPresionada(key):
             verLicencia()
             
 def verLicencia():
-    licencia.mostrar_licencia([mostrarPrincipal])
+    licencia.mostrar_licencia([mostrarPrincipal])        
 
 def mostrarPrincipal():
+    try:
+        comprobar_db()
+    except:
+        print u"Cargando"
     global soloLectura
     soloLectura = False
     try:
@@ -175,12 +174,14 @@ def mostrarPrincipal():
     canvas.bind(key_codes.EKeySelect, press_select)
     canvas.bind(key_codes.EKeyRightArrow, press_right)
     canvas.bind(key_codes.EKeyLeftArrow, press_left)
-    canvas.bind(key_codes.EKey2, press_diario)
-    canvas.bind(key_codes.EKey6, press_dieta)
-    canvas.bind(key_codes.EKey9, press_configuracion)
-    canvas.bind(key_codes.EKey0, press_exportar)
-    canvas.bind(key_codes.EKey7, press_citas)
-    canvas.bind(key_codes.EKey4, press_estadisticas)
+    canvas.bind(key_codes.EKeyUpArrow, press_up)
+    canvas.bind(key_codes.EKeyDownArrow, press_down)
+    canvas.bind(key_codes.EKey2, press_up)
+    canvas.bind(key_codes.EKey6, press_right)
+    canvas.bind(key_codes.EKey5, press_select)
+    canvas.bind(key_codes.EKey4, press_left)
+    canvas.bind(key_codes.EKey8, press_down)
+    #canvas.bind(key_codes.EKey4, press_estadisticas)
     appuifw.app.exit_key_handler = confirma
     appuifw.app.screen = 'full'
     appuifw.app.title = u"CSDs60"

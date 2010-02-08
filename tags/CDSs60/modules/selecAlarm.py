@@ -97,6 +97,7 @@ def press_select():
     global movimientos
     global actPos
     global datos
+    global qactual
     if actMod==True:
         if movimientos[actPos][2] == u"alarmatiras":
             base_de_datos.actualizar_alarmatiras(datos[actPos])
@@ -104,9 +105,9 @@ def press_select():
             appuifw.app.body = canvasSelecAlarm
         elif movimientos[actPos][2] == u"qtirasactual":
             base_de_datos.actualizar_qtirasactual(datos[actPos])
-            appuifw.note(getLang(u"QTIRASACT"),"info")
+            qactual = int(base_de_datos.obtener_qtirasactual_actual())
             actMod=False
-            volverAtras()
+            appuifw.app.body = canvasSelecAlarm
         elif movimientos[actPos][2] == u"qtirastotal":
             base_de_datos.actualizar_qtirastotal(datos[actPos])
             actMod=False
@@ -115,8 +116,8 @@ def press_select():
     else:
         if movimientos[actPos][2] == u"resettiras":
             base_de_datos.reset_qtirasactual()
-            appuifw.note(getLang(u"RESETTIRAS"),"info")
-            volverAtras()
+            qactual = int(base_de_datos.obtener_qtirasactual_actual())            
+            appuifw.app.body = canvasSelecAlarm
         else:    
             actMod=True
             appuifw.app.body = canvasSelecAlarm
