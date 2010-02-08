@@ -77,25 +77,6 @@ actMes = localtime()[1]
 actAno = localtime()[0]
 database = u"csds60"
 database = database +"_"+ str(actMes)+"_"+str(actAno) + ".db"
-
-# Actualiza la base de datos     
-def actualizar_db(datab):
-    dbconf.execute(u"update dbproperties set valor='%s' where nombre='db'"%(datab))
-    
-# cierra las bases de datos    
-def cerrar_bds():
-    actualizar_db(database)
-    dbconf.close()
-    dbcitas.close()
-    db.close()
-
-# cierra la base de datos actual    
-def cerrar_bd_actual():
-    db.close()
-
-# abre la base de datos     
-def abrir_bd(bd):
-    db.open(u'%s:\\Python\\resources\\db\\%s'%(unidad,bd))
     
 # tenemos una bd independiente llamada conf.cfg para almacenar parametros invariables
 # que solo se van a modificar muy pocas veces
@@ -530,3 +511,33 @@ def obtener_proteinicos():
         dbvconf.get_line()
         return dbvconf.col(2)
     return None
+    
+# Actualiza la base de datos     
+def actualizar_db(datab):
+    dbconf.execute(u"update dbproperties set valor='%s' where nombre='db'"%(datab))
+    
+# cierra las bases de datos    
+def cerrar_bds():
+    actualizar_db(database)
+    dbconf.close()
+    dbcitas.close()
+    db.close()
+
+# cierra la base de datos actual    
+def cerrar_bd_actual():
+    db.close()
+
+# abre la base de datos     
+def abrir_bd(bd):
+    db.open(u'%s:\\Python\\resources\\db\\%s'%(unidad,bd))
+    
+def comprobar_db():
+    dbconf.open(u'%s:\\Python\\resources\\config\\conf.cfg'%(unidad))
+    db.open(u'%s:\\Python\\resources\\db\\%s'%(unidad,database))    
+
+def obtener_id_db_actual(bd):
+    dbvconf.prepare(dbconf,u"select * from dbs where nombre='%s'"%(bd))
+    if dbvconf.count_line()!=0:
+        dbvconf.get_line()
+        return dbvconf.col(1)
+    return 0

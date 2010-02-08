@@ -39,6 +39,7 @@ def handle_redraw(rect):
     global imSelecBD
     global colorTexto
     global datos
+    global actPos
     colorTexto = 0x000000
     flechaIzquierdaX=80
     flechaIzquierdaY=190
@@ -55,11 +56,10 @@ def handle_redraw(rect):
     canvasSelecBD.text((240,410),getLang(u"VOLVER"),0xffffff,font=(u"legend",25,appuifw.STYLE_BOLD))
     canvasSelecBD.text((85,85),getLang(u"BD"),0xbbbbbb,font=(u"symbol",27))
     canvasSelecBD.text((84,84),getLang(u"BD"),0x000000,font=(u"symbol",27))  
-    
+    nombre = base_de_datos.obtener_db_actual()
     # recuperamos la cadena de texto asociada a la bd
-    canvasSelecBD.text((95,200),base_de_datos.obtener_db_actual(),colorTexto,font=(u"symbol",20))
-    canvasSelecBD.text((30,300),getLang(u"REINICIA"),0x000000,font=(u"symbol",18,appuifw.STYLE_BOLD))
-    canvasSelecBD.text((30,320),getLang(u"REINICIA1"),0x000000,font=(u"symbol",18,appuifw.STYLE_BOLD))
+    canvasSelecBD.text((95,200),nombre,colorTexto,font=(u"symbol",20))
+    actPos = base_de_datos.obtener_id_db_actual(nombre)    
     #print base_de_datos.obtener_db_actual()
     
 def press_select():
@@ -79,7 +79,7 @@ def moverCursor(desp,pos):
         if actPos == 0 and pos == 1: # si estamos en la posicion 0 y queremos ir a la izquierda, no avanza
             desp = 0
         elif actPos == len(datos)-1 and pos == 0: # si estamos en la posicion ultima y queremos ir a la derecha, no avanza
-            desp = 0
+            desp = 0   
         actPos += desp # avanza por las bds
         datos[actPos] = base_de_datos.obtener_dbs(actPos) # recupera el valor para dicha posicion
         base_de_datos.actualizar_db(datos[actPos])
@@ -102,12 +102,12 @@ def press_left():
     moverCursor(-1,1)
 
 def mostrar_selecBD(vAtras):
-    global actPos
-    actPos=0
+        
     global actMod
     actMod=False
     global datos
     datos=[0 for x in range(base_de_datos.obtener_numero_dbs())]
+    
     for i in range(len(datos)):
         datos[i] = base_de_datos.obtener_dbs(i) #datos[0] = [nombre de bd]
     ruta = unidad+':\\python\\resources\\ui\\'

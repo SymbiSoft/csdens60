@@ -274,6 +274,7 @@ def teclaPresionada(key):
     if key['type']==3:
         if key['scancode']==164:
             resultado = calculo_dosis(gluc,contadorraciones,rati)
+            appuifw.app.body = canvasDieta
 
 def mostrarDieta(vAtras):
     global movimientos
