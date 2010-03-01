@@ -137,10 +137,10 @@ def confirma():
     if test == 0 :
         try:
             cerrar_bds()
-            appuifw.note(getLang(u"HASTA LUEGO"), "conf")
+            #appuifw.note(getLang(u"HASTA LUEGO"), "conf")
             app_lock.signal()
         except:
-            appuifw.note(getLang(u"HASTA LUEGO"), "conf")
+            #appuifw.note(getLang(u"HASTA LUEGO"), "conf")
             app_lock.signal()
 
 # "How to detect key presses in Python"<http://wiki.forum.nokia.com/index.php/How_to_detect_key_presses_in_Python>(14 Septiembre 2009)        
@@ -153,10 +153,10 @@ def verLicencia():
     licencia.mostrar_licencia([mostrarPrincipal])        
 
 def mostrarPrincipal():
-    try:
-        comprobar_db()
-    except:
-        print u"Cargando"
+    #try:
+     #   comprobar_db()
+    #except:
+     #   print u"Cargando"
     global soloLectura
     soloLectura = False
     try:
