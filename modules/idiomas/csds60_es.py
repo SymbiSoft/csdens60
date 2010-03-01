@@ -87,7 +87,7 @@ csds60={
     u"NUEVO":u"nuevo",
     u"CITA":u"Citas",
     u"NREG":u"Nuevo registro",
-    u"BREG":u"Registros eliminados",
+    u"BREG":u"Eliminar registro",
     u"IDIOMA":u"Selección de idioma",
     u"PERSONAL":u"Ajustes personales",
     u"BD":u"Cambiar base de datos",
@@ -125,9 +125,9 @@ csds60={
     u"TIPO6":u"Pescado/Carne",
     u"CALCINSU":u"Cálculo dosis APROXIMADA",
     u"CALCULODOSIS":u"Calcular",
-    u"VASO":u"vaso/os",
-    u"PIEZA":u"pieza/as",
-    u"PLATO":u"plato/os",
+    u"VASO":u"vaso/s",
+    u"PIEZA":u"pieza/s",
+    u"PLATO":u"plato/s",
     u"MOMENTO":u"Momento del día",
     u"HIPO":u"¡Toma algo para subir el nivel de azúcar!"
     }

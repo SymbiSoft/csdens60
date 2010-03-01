@@ -40,7 +40,7 @@ def handle_redraw(rect):
     global imDieta
     global datos
     global actPos
-    global insus
+    global momentos
     global resultado
     global j
     flechaIzquierdaX=195
@@ -100,7 +100,7 @@ def handle_redraw(rect):
     canvasDieta.text((30,118),getLang(u"GLUCACTUAL"),0x000000,font=(u"legend",17,appuifw.STYLE_BOLD))    
     canvasDieta.text((225,118),u"%03d mg"%datos[0],colorTexto[0],font=(u"legend",17))
     canvasDieta.text((30,137),getLang(u"MOMENTO"),0x000000,font=(u"legend",17,appuifw.STYLE_BOLD))    
-    canvasDieta.text((215,137),u"%s"%insus[j],colorTexto[1],font=(u"legend",17))
+    canvasDieta.text((215,137),u"%s"%momentos[j],colorTexto[1],font=(u"legend",17))
     canvasDieta.line((20,140,330,140),0)
     canvasDieta.text((30,155),getLang(u"TIPO1"),0x000000,font=(u"legend",17,appuifw.STYLE_BOLD))
     canvasDieta.text((210,155),u"%02d "%datos[2]+getLang(u"VASO"),colorTexto[2],font=(u"legend",17))
@@ -187,7 +187,7 @@ def press_select():
     if actMod==True:
         if movimientos[actPos][2] == u"glucosaactual":
             gluc = datos[actPos]
-        elif movimientos[actPos][2] == u"insu":
+        elif movimientos[actPos][2] == u"momentos":
             if j == 0:
                 rati = base_de_datos.obtener_ratiodesayuno_actual()
             elif j == 1:
@@ -211,7 +211,7 @@ def press_select():
         actMod=True
     appuifw.app.body = canvasDieta
     
-def moverCursor(despinsu,desp,despracion,pos):
+def moverCursor(despmomento,desp,despracion,pos):
     global actPos
     global movimientos
     global datos
@@ -220,20 +220,20 @@ def moverCursor(despinsu,desp,despracion,pos):
         # si estamos en glucosa actual
         if movimientos[actPos][2] == u"glucosaactual":
             datos[actPos]+=desp
-        # si estamos en insus
-        elif movimientos[actPos][2] == u"insu":
-            if despinsu>0:
-                if j>99:
-                    j=99
+        # si estamos en momentos
+        elif movimientos[actPos][2] == u"momentos":
+            if despmomento>0:
+                if j>2:
+                    j=2
                 else:
-                    j+=despinsu
-                    if j>99:
-                        j=99
-            elif despinsu<0:
+                    j+=despmomento
+                    if j>2:
+                        j=2
+            elif despmomento<0:
                 if j<0:
                     j=0
                 else:
-                    j+=despinsu
+                    j+=despmomento
                     if j<0:
                         j=0
         # si estamos en alguna opcion de raciones
@@ -255,13 +255,13 @@ def moverCursor(despinsu,desp,despracion,pos):
     appuifw.app.body = canvasDieta
     
 def press_up():
-    moverCursor(5,50,5,0)
+    moverCursor(0,50,5,0)
 
 def press_right():
     moverCursor(1,1,1,1)
 
 def press_down():
-    moverCursor(5,-50,-5,2)
+    moverCursor(0,-50,-5,2)
 
 def press_left():
     moverCursor(-1,-1,-1,3)
@@ -280,7 +280,7 @@ def mostrarDieta(vAtras):
     global movimientos
     movimientos=[
         [0,[0,0,1,0],u"glucosaactual",600,30],
-        [1,[-1,0,1,0],u"insu",5],
+        [1,[-1,0,1,0],u"momentos",0],
         [2,[-1,0,1,0],u"lacteos",10],
         [3,[-1,0,1,0],u"farinaceos",10],
         [4,[-1,0,1,0],u"legumbrespatatas",10],
@@ -299,8 +299,8 @@ def mostrarDieta(vAtras):
     actMod=False
     global resultado
     resultado = 0
-    global insus
-    insus = [u"Desayuno",u"Almuerzo",u"Cena"]
+    global momentos
+    momentos = [getLang(u"DESAYUNO"),getLang(u"ALMUERZO"),getLang(u"CENA")]
     global j
     j = 0
     global rati
