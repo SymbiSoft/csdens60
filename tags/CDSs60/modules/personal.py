@@ -71,13 +71,13 @@ def handle_redraw(rect):
     canvasPersonal.text((250,205),u"%03d u"%datos[2],colorTexto[2],font=(u"legend",17))
     canvasPersonal.line((20,225,330,225),0)
     canvasPersonal.text((30,240),getLang(u"RATD"),0x000000,font=(u"legend",17,appuifw.STYLE_BOLD))
-    canvasPersonal.text((250,240),u"%02d ml"%datos[3],colorTexto[3],font=(u"legend",17))
+    canvasPersonal.text((250,240),u"%02d ui"%datos[3],colorTexto[3],font=(u"legend",17))
     canvasPersonal.line((20,260,330,260),0)
     canvasPersonal.text((30,275),getLang(u"RATA"),0x000000,font=(u"legend",17,appuifw.STYLE_BOLD))
-    canvasPersonal.text((250,275),u"%02d ml"%datos[4],colorTexto[4],font=(u"legend",17))
+    canvasPersonal.text((250,275),u"%02d ui"%datos[4],colorTexto[4],font=(u"legend",17))
     canvasPersonal.line((20,295,330,295),0)
     canvasPersonal.text((30,310),getLang(u"RATC"),0x000000,font=(u"legend",17,appuifw.STYLE_BOLD))
-    canvasPersonal.text((250,310),u"%02d ml"%datos[5],colorTexto[5],font=(u"legend",17))
+    canvasPersonal.text((250,310),u"%02d ui"%datos[5],colorTexto[5],font=(u"legend",17))
     canvasPersonal.line((20,330,330,330),0)
 
 def volverAtras():
