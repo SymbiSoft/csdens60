@@ -81,48 +81,266 @@ def generar_html():
     
     html=u""
     cabecerahtml=u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//ES\"><html><head><title>CSDs60WebAnalyzer</title>"
-    css=u"<style type=\"text/css\">#datosCont{margin:20px auto 0;padding:15px 20px;width:700px}div.dat\
-osDia{margin-bottom:15px}div.datosDiaTitulo{border-bottom:2px solid #97d25d;cursor:pointer;font-we\
-ight:700}div.datosDiaCont{display:none;padding-left:20px}div.datosDiaContAtr{float:left;width:70%}\
-div.datosDiaContVal{float:right;text-align:center;width:30%}</style>"
-    javascript=u"<script type=\"text/javascript\">function mostrar(act){var hijos=act.parentNode.child\
-Nodes;for(var i=0;i<hijos.length;i++){if(hijos[i].tagName==\"DIV\"&&hijos[i].className==\"datosDia\
-Cont\"){if(hijos[i].style.display==\"block\"){hijos[i].style.display=\"none\"}else{hijos[i].style.\
-display=\"block\"}}}}window.onload=function(){var dias=document.getElementById(\"datosCont\").chil\
-dNodes;for(var i=0;i<dias.length;i++){if(dias[i].tagName==\"DIV\"&&dias[i].className==\"datosDia\"\
-){for(var j=0;j<dias[i].childNodes.length;j++){if(dias[i].childNodes[j].tagName==\"DIV\"&&dias[i].\
-childNodes[j].className==\"datosDiaTitulo\"){var diaValor=dias[i].childNodes[j];var fecha=new Date\
-();fecha.setTime(diaValor.innerHTML*1000);diaValor.innerHTML=fecha.getDate()+\"/\"+(fecha.getMonth(\
-)+1)+\"/\"+fecha.getFullYear();dias[i].childNodes[j].onclick=function(){mostrar(this)}}}}}}</script>"
+    #css=u"<style type=\"text/css\">#datosCont{margin:20px auto 0;padding:15px 20px;width:700px}div.dat\
+#osDia{margin-bottom:15px}div.datosDiaTitulo{border-bottom:2px solid #97d25d;cursor:pointer;font-we\
+#ight:700}div.datosDiaCont{display:none;padding-left:20px}div.datosDiaContAtr{float:left;width:70%}\
+#div.datosDiaContVal{float:right;text-align:center;width:30%}</style>"
+    #javascript=u"<script type=\"text/javascript\">function mostrar(act){var hijos=act.parentNode.child\
+#Nodes;for(var i=0;i<hijos.length;i++){if(hijos[i].tagName==\"DIV\"&&hijos[i].className==\"datosDia\
+#Cont\"){if(hijos[i].style.display==\"block\"){hijos[i].style.display=\"none\"}else{hijos[i].style.\
+#display=\"block\"}}}}window.onload=function(){var dias=document.getElementById(\"datosCont\").chil\
+#dNodes;for(var i=0;i<dias.length;i++){if(dias[i].tagName==\"DIV\"&&dias[i].className==\"datosDia\"\
+#){for(var j=0;j<dias[i].childNodes.length;j++){if(dias[i].childNodes[j].tagName==\"DIV\"&&dias[i].\
+#childNodes[j].className==\"datosDiaTitulo\"){var diaValor=dias[i].childNodes[j];var fecha=new Date\
+#();fecha.setTime(diaValor.innerHTML*1000);diaValor.innerHTML=fecha.getDate()+\"/\"+(fecha.getMonth(\
+#)+1)+\"/\"+fecha.getFullYear();dias[i].childNodes[j].onclick=function(){mostrar(this)}}}}}}</script>"
     datos=base_de_datos.obtener_datos_diario()   
+    
     fecha=0
+    fechaantigua=-1
     comida = False
+    depdesant=u"" 
+    depdesdes=u""
+    depalmant=u""
+    depalmdes=u""
+    depcenant=u""
+    depcendes=u""
+    glucag=u""
+    glucdesant=u""
+    glucdesdes=u""
+    glucalmant=u""
+    glucalmdes=u""
+    gluccenant=u""
+    gluccendes=u""
+    orina=u""
+    insudesant=u""
+    insudesdes=u""
+    insualmant=u""
+    insualmdes=u""
+    insucenant=u""
+    insucendes=u""
+    acetona=u""
+    desayuno=u""
+    medman=u""
+    almuerzo=u"" 
+    merienda=u""
+    cena=u""
+    resopon=u""
+    notas=u""
+    medica=u""
+    
+    html=html+u"/head><body><table border=\"1\" width=\"100%\"><tr><td align=\"center\" rowspan=\"4\">\
+Fecha</td><td align=\"center\" colspan=\"6\">Dosis de insulina</td><td align=\"center\" colspan=\"6\">\
+Glucosa en sangre</td><td align=\"center\" colspan=\"2\" rowspan=\"2\">Orina</td><td align=\"center\" colspan=\"15\">\
+Datos extra</td></tr><tr><td align=\"center\" colspan=\"2\">Desayuno</td><td align=\"center\" colspan=\"2\">\
+Almuerzo</td><td align=\"center\" colspan=\"2\">Cena</td><td align=\"center\" colspan=\"2\">Desayuno</td>\
+<td align=\"center\" colspan=\"2\">Almuerzo</td><td align=\"center\" colspan=\"2\">Cena</td><td align=\"center\" colspan=\"6\">\
+Comidas</td><td align=\"center\" rowspan=\"3\">Medicamentos</td><td align=\"center\" colspan=\"6\">Deporte</td>\
+<td align=\"center\" rowspan=\"3\">Notas extra</td><td align=\"center\" rowspan=\"3\">Glucag&oacute;n</td></tr><tr>\
+<td align=\"center\" rowspan=\"2\">Antes</td><td align=\"center\" rowspan=\"2\">Despu&eacute;s</td><td align=\"center\" rowspan=\"2\">\
+Antes</td><td align=\"center\" rowspan=\"2\">Despu&eacute;s</td><td align=\"center\" rowspan=\"2\">Antes</td>\
+<td align=\"center\" rowspan=\"2\">Despu&eacute;s</td><td align=\"center\" rowspan=\"2\">Antes</td><td align=\"center\" rowspan=\"2\">\
+Despu&eacute;s</td><td align=\"center\" rowspan=\"2\">Antes</td><td align=\"center\" rowspan=\"2\">Despu&eacute;s</td>\
+<td align=\"center\" rowspan=\"2\">Antes</td><td align=\"center\" rowspan=\"2\">Despu&eacute;s</td><td align=\"center\" rowspan=\"2\">\
+Glucosa</td><td align=\"center\" rowspan=\"2\">Acetona</td><td align=\"center\" rowspan=\"2\">Desayuno</td>\
+<td align=\"center\" rowspan=\"2\">Mediama&ntilde;ana</td><td align=\"center\" rowspan=\"2\">Almuerzo</td>\
+<td align=\"center\" rowspan=\"2\">Merienda</td><td align=\"center\" rowspan=\"2\">Cena</td><td align=\"center\" rowspan=\"2\">\
+Resop&oacute;n</td><td align=\"center\" colspan=\"2\">Desayuno</td><td align=\"center\" colspan=\"2\">Almuerzo</td>\
+<td align=\"center\" colspan=\"2\">Cena</td></tr><tr><td align=\"center\">Antes</td><td align=\"center\">Despu&eacute;s</td>\
+<td align=\"center\">Antes</td><td align=\"center\">Despu&eacute;s</td><td align=\"center\">Antes</td><td align=\"center\">\
+Despu&eacute;s</td></tr>"
+
+    #sirve para construir la pagina dinamicamente, entraria en el segundo dia, es ahi cuando rellenamos todo lo del dia anterior
+    entraunavez=0
     for i in range(datos.count_line()):        
         datos.get_line()
+        ord = int(datos.col(5))
+        
         if fecha!=datos.col(1):
             fecha=datos.col(1)
-            html=html+u"</div></div><div class=\"datosDia\"><div class=\"datosDiaTitulo\">"+str(fecha)+"</div><div class=\"datosDiaCont\">"
-            #html=html+u"</div></div><div class=\"datosDia\"><div class=\"datosDiaTitulo\">Datos extra</div><div class=\"datosDiaCont\">"           
-        ord = int(datos.col(5))
+            
+            if entraunavez==1: 
+                #esto es para que dibuje las celdas si estan vacias
+                if depdesant==u"":
+                    depdesant=u"&nbsp;"
+                if depdesdes==u"":   
+                    depdesdes=u"&nbsp;"
+                if depalmant==u"": 
+                    depalmant=u"&nbsp;"
+                if depalmdes==u"": 
+                    depalmdes=u"&nbsp;"
+                if depcenant==u"": 
+                    depcenant=u"&nbsp;"
+                if depcendes==u"": 
+                    depcendes=u"&nbsp;"
+                if glucag==u"": 
+                    glucag=u"&nbsp;"
+                if glucdesant==u"":  
+                    glucdesant=u"&nbsp;"
+                if glucdesdes==u"": 
+                    glucdesdes=u"&nbsp;"
+                if glucalmant==u"": 
+                    glucalmant=u"&nbsp;"
+                if glucalmdes==u"": 
+                    glucalmdes=u"&nbsp;"
+                if gluccenant==u"": 
+                    gluccenant=u"&nbsp;"
+                if gluccendes==u"": 
+                    gluccendes=u"&nbsp;"
+                if orina==u"": 
+                    orina=u"&nbsp;"
+                if insudesant==u"": 
+                    insudesant=u"&nbsp;"
+                if insudesdes==u"": 
+                    insudesdes=u"&nbsp;"
+                if insualmant==u"": 
+                    insualmant=u"&nbsp;"
+                if insualmdes==u"": 
+                    insualmdes=u"&nbsp;"
+                if insucenant==u"": 
+                    insucenant=u"&nbsp;"
+                if insucendes==u"": 
+                    insucendes=u"&nbsp;"
+                if acetona==u"": 
+                    acetona=u"&nbsp;"
+                if desayuno==u"": 
+                    desayuno=u"&nbsp;"
+                if medman==u"": 
+                    medman=u"&nbsp;"
+                if almuerzo==u"": 
+                    almuerzo=u"&nbsp;"
+                if merienda==u"": 
+                    merienda=u"&nbsp;"
+                if cena==u"": 
+                    cena=u"&nbsp;"
+                if resopon==u"": 
+                    resopon=u"&nbsp;"
+                if notas==u"": 
+                    notas=u"&nbsp;"
+                if medica==u"": 
+                    medica=u"&nbsp;"            
+                         
+                #escribir pagina web,al final fuera del buble hay que repetir una vez mas esto, para el ultimo dia del mes
+                html=html+u"<tr><td align=\"center\">"+fechaantigua+"</td><td align=\"center\">"+insudesant+"</td><td align=\"center\">"+insudesdes+"</td>\
+<td align=\"center\">"+insualmant+"</td><td align=\"center\">"+insualmdes+"</td><td align=\"center\">"+insucenant+"</td><td align=\"center\">\
+"+insucendes+"</td><td align=\"center\">"+glucdesant+"</td><td align=\"center\">"+glucdesdes+"</td><td align=\"center\">"+glucalmant+"</td>\
+<td align=\"center\">"+glucalmdes+"</td><td align=\"center\">"+gluccenant+"</td><td align=\"center\">"+gluccendes+"</td><td align=\"center\">\
+"+orina+"</td><td align=\"center\">"+acetona+"</td><td align=\"center\">"+desayuno+"</td><td align=\"center\">"+medman+"</td><td align=\"center\">\
+"+almuerzo+"</td><td align=\"center\">"+merienda+"</td><td align=\"center\">"+cena+"</td><td align=\"center\">"+resopon+"</td><td align=\"center\">\
+"+medica+"</td><td align=\"center\">"+depdesant+"</td><td align=\"center\">"+depdesdes+"</td><td align=\"center\">"+depalmant+"\
+</td><td align=\"center\">"+depalmdes+"</td><td align=\"center\">"+depcenant+"</td><td align=\"center\">"+depcendes+"</td><td align=\"center\">\
+"+notas+"</td><td align=\"center\">"+glucag+"</td></tr>"
+                
+            entraunavez=1
+            
+            depdesant=u"" 
+            depdesdes=u""
+            depalmant=u""
+            depalmdes=u""
+            depcenant=u""
+            depcendes=u""
+            glucag=u""
+            glucdesant=u""
+            glucdesdes=u""
+            glucalmant=u""
+            glucalmdes=u""
+            gluccenant=u""
+            gluccendes=u""
+            orina=u""
+            insudesant=u""
+            insudesdes=u""
+            insualmant=u""
+            insualmdes=u""
+            insucenant=u""
+            insucendes=u""
+            acetona=u""
+            desayuno=u""
+            medman=u""
+            almuerzo=u"" 
+            merienda=u""
+            cena=u""
+            resopon=u""
+            notas=u""
+            medica=u""
+            
+            #html=html+u"</div></div><div class=\"datosDia\"><div class=\"datosDiaTitulo\">"+str(fecha)+"</div><div class=\"datosDiaCont\">"            
+        
         chk = u""
-        term = u""
+        term = u""        
+        
         if ord == 5 or ord == 6 or ord == 12 or ord == 13 or ord == 19 or ord == 20 or ord == 23:
             if str(datos.col(4)) == u"S":
                 chk = u"Si"
             else:
                 chk = u"No"
+            
+            if ord == 5:
+                depdesant=chk
+            elif ord == 6:
+                depdesdes=chk
+            elif ord == 12:
+                depalmant=chk
+            elif ord == 13:
+                depalmdes=chk
+            elif ord == 19:
+                depcenant=chk
+            elif ord == 20:
+                depcendes=chk
+            elif ord == 23:
+                glucag=chk
+            
         elif ord == 0 or ord == 1 or ord == 7 or ord == 8 or ord == 14 or ord == 15 or ord == 21:
             term = u" mg"
+            
+            if ord == 0:
+                glucdesant=str(datos.col(3))+term
+            elif ord == 1:
+                glucdesdes=str(datos.col(3))+term
+            elif ord == 7:
+                glucalmant=str(datos.col(3))+term
+            elif ord == 8:
+                glucalmdes=str(datos.col(3))+term
+            elif ord == 14:
+                gluccenant=str(datos.col(3))+term
+            elif ord == 15:
+                gluccendes=str(datos.col(3))+term
+            elif ord == 21:
+                orina=str(datos.col(3))+term
+                
         elif ord == 3 or ord == 4 or ord == 10 or ord == 11 or ord == 17 or ord == 18:
-            term = u" ml"
+            term = u" ui"
+            
+            #las insulinas quedan de la forma nombreinsulina<br>cantidad<br>
+            if ord == 3:
+                insudesant=insudesant+(str(datos.col(2)))[25:]+"<br/>"+str(datos.col(3))+term+"<br/>"
+                #insudesant=insudesant+(str(datos.col(2))).substring(25,(len(str(datos.col(2)))))+"<br/>"+str(datos.col(3))+term+"<br/>"
+            elif ord == 4:
+                insudesdes=insudesdes+(str(datos.col(2)))[26:]+"<br/>"+str(datos.col(3))+term+"<br/>"
+                #insudesdes=insudesdes+(str(datos.col(2))).substring(25,(len(str(datos.col(2)))))+"<br/>"+str(datos.col(3))+term+"<br/>"
+            elif ord == 10:
+                insualmant=insualmant+(str(datos.col(2)))[25:]+"<br/>"+str(datos.col(3))+term+"<br/>"
+                #insualmant=insualmant+(str(datos.col(2))).substring(25,(len(str(datos.col(2)))))+"<br/>"+str(datos.col(3))+term+"<br/>"
+            elif ord == 11:
+                insualmdes=insualmdes+(str(datos.col(2)))[26:]+"<br/>"+str(datos.col(3))+term+"<br/>"
+                #insualmdes=insualmdes+(str(datos.col(2))).substring(25,(len(str(datos.col(2)))))+"<br/>"+str(datos.col(3))+term+"<br/>"
+            elif ord == 17:
+                insucenant=insucenant+(str(datos.col(2)))[23:]+"<br/>"+str(datos.col(3))+term+"<br/>"
+                #insucenant=insucenant+(str(datos.col(2))).substring(23,(len(str(datos.col(2)))))+"<br/>"+str(datos.col(3))+term+"<br/>"
+            elif ord == 18:
+                insucendes=insucendes+(str(datos.col(2)))[24:]+"<br/>"+str(datos.col(3))+term+"<br/>"
+                #insucendes=insucendes+(str(datos.col(2))).substring(23,(len(str(datos.col(2)))))+"<br/>"+str(datos.col(3))+term+"<br/>"
+                
         elif ord == 22:
             term = u" +"
+            
+            acetona=str(datos.col(3))+term
+            
         elif ord == 24 or ord == 25 or ord == 26 or ord == 27 or ord == 28 or ord == 29 or ord == 30 or ord == 31:   
             comida = True
         if ord != 2 and ord != 9 and ord != 16:
-            if chk == u"" and comida == False:
-                html=html+u"<div class=\"datosDiaContAtr\">"+str(datos.col(2))+u"</div><div class=\"datosDiaContVal\">"+str(datos.col(3))+term+u"</div>"
-            elif chk == u"" and comida == True:
+            #if chk == u"" and comida == False:
+             #   html=html+u"<div class=\"datosDiaContAtr\">"+str(datos.col(2))+u"</div><div class=\"datosDiaContVal\">"+str(datos.col(3))+term+u"</div>"
+            if chk == u"" and comida == True:
                 # Decoding to unicode
                 input_s = str(datos.col(4))
                 repr(input_s)
@@ -188,12 +406,44 @@ childNodes[j].className==\"datosDiaTitulo\"){var diaValor=dias[i].childNodes[j];
                 uni = uni.replace('%','')                
 
                 comd = u""+uni
-                html=html+u"<div class=\"datosDiaContAtr\">"+str(datos.col(2))+u"</div><div class=\"datosDiaContVal\">"+comd+u"</div>"
-            elif chk != u"":
-                html=html+u"<div class=\"datosDiaContAtr\">"+str(datos.col(2))+u"</div><div class=\"datosDiaContVal\">"+chk+u"</div>"       
+                if ord == 24:
+                    desayuno=comd
+                elif ord == 25:
+                    medman=comd
+                elif ord == 26:
+                    almuerzo=comd
+                elif ord == 27:
+                    merienda=comd
+                elif ord == 28:
+                    cena=comd
+                elif ord == 29:
+                    resopon=comd
+                elif ord == 30:
+                    notas=comd
+                elif ord == 31:
+                    medica=comd
+
+                #html=html+u"<div class=\"datosDiaContAtr\">"+str(datos.col(2))+u"</div><div class=\"datosDiaContVal\">"+comd+u"</div>"
+            #elif chk != u"":
+             #   html=html+u"<div class=\"datosDiaContAtr\">"+str(datos.col(2))+u"</div><div class=\"datosDiaContVal\">"+chk+u"</div>"       
         comida = False
+
+        #aqui guardamos la fecha para poder distinguir las filas de la tabla en el html
+        fechaantigua=str(fecha)
         datos.next_line()
-    htmlFinal=cabecerahtml+css+javascript+u"</head><body><div id=\"datosCont\">"+html[12:]+u"</div></body></html>"
+    if fechaantigua>0:    
+        html=html+u"<tr><td align=\"center\">"+fechaantigua+"</td><td align=\"center\">"+insudesant+"</td><td align=\"center\">"+insudesdes+"</td>\
+<td align=\"center\">"+insualmant+"</td><td align=\"center\">"+insualmdes+"</td><td align=\"center\">"+insucenant+"</td><td align=\"center\">\
+"+insucendes+"</td><td align=\"center\">"+glucdesant+"</td><td align=\"center\">"+glucdesdes+"</td><td align=\"center\">"+glucalmant+"</td>\
+<td align=\"center\">"+glucalmdes+"</td><td align=\"center\">"+gluccenant+"</td><td align=\"center\">"+gluccendes+"</td><td align=\"center\">\
+"+orina+"</td><td align=\"center\">"+acetona+"</td><td align=\"center\">"+desayuno+"</td><td align=\"center\">"+medman+"</td><td align=\"center\">\
+"+almuerzo+"</td><td align=\"center\">"+merienda+"</td><td align=\"center\">"+cena+"</td><td align=\"center\">"+resopon+"</td><td align=\"center\">\
+"+medica+"</td><td align=\"center\">"+depdesant+"</td><td align=\"center\">"+depdesdes+"</td><td align=\"center\">"+depalmant+"\
+</td><td align=\"center\">"+depalmdes+"</td><td align=\"center\">"+depcenant+"</td><td align=\"center\">"+depcendes+"</td><td align=\"center\">\
+"+notas+"</td><td align=\"center\">"+glucag+"</td></tr>"
+    
+    htmlFinal=cabecerahtml+html[12:]+u"</body></html>"
+    #htmlFinal=cabecerahtml+css+javascript+u"</head><body><div id=\"datosCont\">"+html[12:]+u"</div></body></html>"
     fichero=codecs.open(unidad+':\\Python\\resources\\html\datos_'+base_de_datos.obtener_db_actual()+'.html','w','utf8')
     fichero.write(htmlFinal)
 

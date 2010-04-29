@@ -121,7 +121,7 @@ def handle_redraw(rect):
     canvasDieta.text((210,330),u"%02d "%datos[7]+getLang(u"PLATO"),colorTexto[7],font=(u"legend",17))
     canvasDieta.line((20,350,330,350),0)
     canvasDieta.text((30,365),getLang(u"CALCINSU"),0x000000,font=(u"legend",17,appuifw.STYLE_BOLD))
-    canvasDieta.text((250,365),u"%02d ml"%resultado,0x0000ff,font=(u"legend",17))
+    canvasDieta.text((250,365),u"%02d ui"%resultado,0x0000ff,font=(u"legend",17))
     canvasDieta.text((140,85),getLang(u"DIETA"),0xbbbbbb,font=(u"symbol",27))
     canvasDieta.text((139,84),getLang(u"DIETA"),0x000000,font=(u"symbol",27))
     canvasDieta.text((240,410),getLang(u"VOLVER"),0xffffff,font=(u"legend",25,appuifw.STYLE_BOLD))
