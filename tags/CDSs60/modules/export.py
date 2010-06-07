@@ -460,15 +460,24 @@ Despu&eacute;s</td></tr><tr><td colspan=\"30\" id=\"separador\"></td></tr>"
         fechaantigua=str(format_time(fecha))
         datos.next_line()
     
-    pdesayuno=(pdesant+pdesdes)/(contdesant+contdesdes)
-    pdesant=pdesant/contdesant
-    pdesdes=pdesdes/contdesdes
-    palmuerzo=(palmant+palmdes)/(contalmant+contalmdes)
-    palmant=palmant/contalmant
-    palmdes=palmdes/contalmdes
-    pcena=(pcenant+pcendes)/(contcenant+contcendes)
-    pcenant=pcenant/contcenant
-    pcendes=pcendes/contcendes
+    if (contdesant+contdesdes) != 0:
+        pdesayuno=(pdesant+pdesdes)/(contdesant+contdesdes)
+    if contdesant != 0:
+        pdesant=pdesant/contdesant
+    if contdesdes != 0:
+        pdesdes=pdesdes/contdesdes
+    if (contalmant+contalmdes) != 0:
+        palmuerzo=(palmant+palmdes)/(contalmant+contalmdes)
+    if contalmant != 0:
+        palmant=palmant/contalmant
+    if contalmdes != 0:
+        palmdes=palmdes/contalmdes
+    if (contcenant+contcendes) != 0:
+        pcena=(pcenant+pcendes)/(contcenant+contcendes)
+    if contcenant != 0:
+        pcenant=pcenant/contcenant
+    if contcendes != 0:
+        pcendes=pcendes/contcendes
     
     if entraunavez>0:    
         html=html+u"<tr><td class=\"fecha\">"+fechaantigua[:10]+"</td><td class=\"dosisinsulina\">"+insudesant+"</td><td class=\"dosisinsulina\">"+insudesdes+"</td>\
