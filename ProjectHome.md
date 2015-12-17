@@ -1,0 +1,1 @@
+Proyecto de fin de carrera, es un sistema de gestión de todos los aspectos del control de la diabetes para la plataforma s60, en concreto resolución de 352x416
